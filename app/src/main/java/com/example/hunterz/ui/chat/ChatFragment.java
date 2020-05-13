@@ -1,4 +1,4 @@
-package com.example.hunterz.ui.slideshow;
+package com.example.hunterz.ui.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +14,23 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.hunterz.R;
 
-public class SlideshowFragment extends Fragment {
+public class ChatFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private ChatViewModel chatViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
+        chatViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        final TextView textView = view.findViewById(R.id.text_share);
+        chatViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
-        return root;
+
+
+        return view;
     }
 }

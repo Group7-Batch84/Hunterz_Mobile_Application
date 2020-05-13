@@ -1,16 +1,16 @@
-package com.example.hunterz.ui.send;
+package com.example.hunterz.ui.member_status;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SendViewModel extends ViewModel {
+public class MemberStatusViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SendViewModel() {
+    public MemberStatusViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is send fragment");
+        mText.setValue("This is slideshow fragment");
     }
 
     public LiveData<String> getText() {

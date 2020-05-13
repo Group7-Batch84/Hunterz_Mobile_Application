@@ -31,6 +31,8 @@ public class SignIn extends AppCompatActivity {
 
                 valid.emptyField(username, getString(R.string.userName_errorMessage));
                 valid.emptyField(password, getString(R.string.passWord_errorMessage));
+
+                openHome();
             }
         });
 
@@ -47,6 +49,13 @@ public class SignIn extends AppCompatActivity {
     public void openRegister()
     {
         Intent intent = new Intent(this,SignUp.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void openHome()
+    {
+        Intent intent = new Intent(this,Home.class);
         startActivity(intent);
         finish();
     }

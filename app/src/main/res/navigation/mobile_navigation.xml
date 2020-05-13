@@ -12,32 +12,50 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.hunterz.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_manage_member"
+        android:name="com.example.hunterz.ui.manage_member.ManageMemberFragment"
+        android:label="@string/menu_manage_memebr"
+        tools:layout="@layout/fragment_manage_member" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.hunterz.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_member_status"
+        android:name="com.example.hunterz.ui.member_status.MemberStatusFragment"
+        android:label="@string/menu_member_status"
+        tools:layout="@layout/fragment_member_status" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.hunterz.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:id="@+id/nav_pay_fee"
+        android:name="com.example.hunterz.ui.pay_fee.PayFeeFragment"
+        android:label="@string/menu_pay_fee"
+        tools:layout="@layout/fragment_pay_fee" />
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="com.example.hunterz.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        android:id="@+id/nav_payment"
+        android:name="com.example.hunterz.ui.pay_fee.PayFeeFragment"
+        android:label="@string/menu_payment"
+        tools:layout="@layout/fragment_pay_fee" />
 
     <fragment
-        android:id="@+id/nav_send"
-        android:name="com.example.hunterz.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        android:id="@+id/nav_manage_team"
+        android:name="com.example.hunterz.ui.pay_fee.PayFeeFragment"
+        android:label="@string/menu_manage_team"
+        tools:layout="@layout/fragment_pay_fee" />
+    <!--Communicate-->
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.example.hunterz.ui.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/nav_send_post"
+        android:name="com.example.hunterz.ui.send_post.SendPostFragment"
+        android:label="@string/menu_send_post"
+        tools:layout="@layout/fragment_send_post" />
+
+    <fragment
+        android:id="@+id/nav_send_notification"
+        android:name="com.example.hunterz.ui.send_notification.SendNotificationFragment"
+        android:label="@string/menu_send_notification"
+        tools:layout="@layout/fragment_send_notification" />
 </navigation>

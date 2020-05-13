@@ -1,4 +1,4 @@
-package com.example.hunterz.ui.share;
+package com.example.hunterz.ui.send_post;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +14,23 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.hunterz.R;
 
-public class ShareFragment extends Fragment {
+public class SendPostFragment extends Fragment {
 
-    private ShareViewModel shareViewModel;
+    private SendPostViewModel sendPostViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        shareViewModel =
-                ViewModelProviders.of(this).get(ShareViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_share, container, false);
-        final TextView textView = root.findViewById(R.id.text_share);
-        shareViewModel.getText().observe(this, new Observer<String>() {
+        sendPostViewModel = ViewModelProviders.of(this).get(SendPostViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_send_post, container, false);
+        final TextView textView = view.findViewById(R.id.text_send);
+        sendPostViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
-        return root;
+
+
+        return view;
     }
 }
