@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--LOGO-->
+    <ImageView
+        android:id="@+id/startLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:contentDescription="@string/app_name"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/hunterz_logo"
+        />
+    <!--FROM TITLE-->
+    <TextView
+        android:id="@+id/fromTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startLogo"
+        android:layout_marginTop="70dp"
+        android:fontFamily="monospace"
+        android:text="@string/from"
+        android:textAlignment="center"
+        android:textColor="#5A6164"
+        android:textSize="16sp"
+        android:visibility="visible" />
+    <!--CLUB TITLE-->
+    <TextView
+        android:id="@+id/clubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fromTitle"
+        android:layout_marginTop="3dp"
+        android:fontFamily="monospace"
+        android:text="@string/club_name"
+        android:textAlignment="center"
+        android:textColor="#4A84FF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Hunterz</string>
+
+    <!--SPLASH ACTIVITY-->
+    <string name="from">from</string>
+    <string name="club_name">HUNTERZ</string>
+
+    <!--SIGN IN ACTIVITY-->
+    <string name="signIn_btn_title">SIGN IN</string>
+    <string name="signUp_btn_title">SIGN UP</string>
+
+    <string name="username_title">Username</string>
+    <string name="password_title">Password</string>
+    <string name="username_hint">Enter your Email</string>
+    <string name="password_hint">Enter your Password</string>
+    <string name="or_title">OR</string>
+                                                                    <!--Error Message-->
+    <string name="userName_errorMessage">Username Field is Empty</string>
+    <string name="passWord_errorMessage">Password Field is Empty</string>
+
+    <!--SIGN UP ACTIVITY-->
+    <string name="signUp_title">BECOME A MEMBER</string>
+    <string name="fullName_title">Full Name</string>
+    <string name="fullName_hint">Enter your Name</string>
+    <string name="phoneNo_title">Phone Number</string>
+    <string name="phoneNo_hint">Enter your Phone Number</string>
+    <string name="email_tile">Email</string>
+    <string name="email_hint">Enter your Email</string>
+    <string name="nic_tile">NIC Number</string>
+    <string name="nic_hint">Enter your NIC Number</string>
+    <string name="password_tile">Password</string>
+    <string name="conPassword_tile">Confirm Password</string>
+    <string name="conPassword_hint">Confirm Password</string>
+    <string name="register_btn">REGISTER</string>
+    <string name="questionSignIn">Have an Account?</string>
+    <string name="signIn_btn">SIGN IN</string>
+                                                                            <!--Error Message-->
+    <string name="fullName_errorMessage">Full Name Field is Empty</string>
+    <string name="fullName_errorMessage_Alphabet">Enter Alphabet Value Only</string>
+    <string name="phoneNo_errorMessage">Phone Number Field is Empty</string>
+    <string name="phoneNo_errorMessage_10_Digit">Enter Valid 10 Digit Phone Number</string>
+    <string name="phoneNo_errorMessage_Start_0">Phone Number Should Start With \'0\' </string>
+    <string name="nic_errorMessage">NIC Number Field is Empty</string>
+    <string name="nic_errorMessage_valid">Invalid NIC Number</string>
+    <string name="email_errorMessage">Email Id Field is Empty</string>
+    <string name="email_errorMessage_Valid">Enter Valid Email Id</string>
+    <string name="email_errorMessage_Exist">Email is Already Exist</string>
+    <string name="password_errorMessage">Password Field is Empty</string>
+    <string name="password_errorMessage_Pattern">Password Should Have 8 Characters with at least a Digit, a Special Character, a Upper Case Character</string>
+    <string name="confirm_password_errorMessage">Confirm Password Field is Empty</string>
+    <string name="confirm_password_errorMessage_Match">Confirm Password did not Match</string>
+
+
+
+
+</resources>
