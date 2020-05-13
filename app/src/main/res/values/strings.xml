@@ -14,7 +14,7 @@
     <string name="username_hint">Enter your Email</string>
     <string name="password_hint">Enter your Password</string>
     <string name="or_title">OR</string>
-                                                                    <!--Error Message-->
+    <!--Error Message-->
     <string name="userName_errorMessage">Username Field is Empty</string>
     <string name="passWord_errorMessage">Password Field is Empty</string>
 
@@ -34,7 +34,7 @@
     <string name="register_btn">REGISTER</string>
     <string name="questionSignIn">Have an Account?</string>
     <string name="signIn_btn">SIGN IN</string>
-                                                                            <!--Error Message-->
+    <!--Error Message-->
     <string name="fullName_errorMessage">Full Name Field is Empty</string>
     <string name="fullName_errorMessage_Alphabet">Enter Alphabet Value Only</string>
     <string name="phoneNo_errorMessage">Phone Number Field is Empty</string>
@@ -49,8 +49,20 @@
     <string name="password_errorMessage_Pattern">Password Should Have 8 Characters with at least a Digit, a Special Character, a Upper Case Character</string>
     <string name="confirm_password_errorMessage">Confirm Password Field is Empty</string>
     <string name="confirm_password_errorMessage_Match">Confirm Password did not Match</string>
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
-
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
 
 
 </resources>
