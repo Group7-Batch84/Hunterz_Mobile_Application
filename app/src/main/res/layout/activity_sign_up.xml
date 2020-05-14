@@ -207,7 +207,7 @@
             android:background="@drawable/custom_button"
             android:text="@string/register_btn"
             android:textColor="#ffffff"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_below="@+id/conPassword_txt"
             />
         <LinearLayout

@@ -71,9 +71,33 @@
     <string name="menu_send_notification">Send Notification</string>
 
     <!--MANAGE MEMBER-->
-    <string name="add_member">ADD MEMBER</string>
-    <string name="view_member">VIEW ALL</string>
-    <string name="search_member">SEARCH</string>
+    <string name="add_member">Add Member</string>
+    <string name="view_member">View All</string>
+    <string name="search_member">Search</string>
+                <!--Add Member-->
+    <string name="member_id_title">Membet ID</string>
+
+    <string name="fullName_admin_hint">Enter Member Name</string>
+    <string name="phoneNo_admin_hint">Enter Member Phone Number</string>
+    <string name="email_admin_hint">Enter Member Email</string>
+    <string name="nic_admin_hint">Enter Member NIC Number</string>
+    <string name="Password_admin_hint">Enter Password</string>
+    <string name="conPassword_admin_hint">Confirm Password</string>
+    <string name="register_admin_btn">ADD MEMBER</string>
+    <string name="gender_title">Gender</string>
+    <string name="male_rad">Male</string>
+    <string name="female_rad">Female</string>
+    <string name="address_title">Address</string>
+    <string name="address_admin_hint">Enter Member Address</string>
+    <string name="dob_title">Date Of Birth</string>
+    <string name="date_picker_btn">Date Picker</string>
+    <string name="sport_type_title">Sport Types</string>
+    <string name="cricket_chk">Cricket</string>
+    <string name="football_chk">Football</string>
+    <string name="volleyball_chk">Volley Ball</string>
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

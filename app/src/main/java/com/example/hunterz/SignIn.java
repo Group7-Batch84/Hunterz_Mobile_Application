@@ -8,10 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SignIn extends AppCompatActivity {
 
     private Button signUp_btn,signIn_btn;
     private EditText password,username;
+
+   // private FirebaseAuth mAuth;
 
     Validation valid = new Validation();
 
@@ -24,6 +28,8 @@ public class SignIn extends AppCompatActivity {
         signIn_btn = findViewById(R.id.signIn_btn);
         password = findViewById(R.id.passWord_txt);
         username = findViewById(R.id.userName_txt);
+
+      //  mAuth = FirebaseAuth.getInstance();
 
         signIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override

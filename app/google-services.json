@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "70419881778",
+    "firebase_url": "https://hunterz-mobile-application.firebaseio.com",
+    "project_id": "hunterz-mobile-application",
+    "storage_bucket": "hunterz-mobile-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70419881778:android:e77bc46bda25b0a476412b",
+        "android_client_info": {
+          "package_name": "com.example.hunterz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70419881778-ml9trfh4amclkhlh973atln9o397qklo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIXx0dGFKkB2Pqf6g7fgBx_Z-jp6zBYNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70419881778-ml9trfh4amclkhlh973atln9o397qklo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
