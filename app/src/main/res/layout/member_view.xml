@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp">
+
+    <RelativeLayout
+        android:id="@+id/image_RL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+        <!--Member Name-->
+        <TextView
+            android:id="@+id/member_name"
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/rounded_corner_headng"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member Image-->
+        <ImageView
+            android:id="@+id/member_image"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_below="@+id/member_name"
+            android:src="@drawable/hunterz_logo"
+            android:contentDescription="member Pic"
+            />
+
+        <!--Member ID-->
+        <TextView
+            android:id="@+id/member_id"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/member_name"
+            android:layout_toEndOf="@+id/member_image"
+            android:layout_toRightOf="@+id/member_image"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member Email ID-->
+        <TextView
+            android:id="@+id/member_email"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/member_id"
+            android:layout_toEndOf="@+id/member_image"
+            android:layout_toRightOf="@+id/member_image"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member Phone Number-->
+        <TextView
+            android:id="@+id/member_phone"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/member_email"
+            android:layout_toEndOf="@+id/member_image"
+            android:layout_toRightOf="@+id/member_image"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member NIC Number-->
+        <TextView
+            android:id="@+id/member_nic"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/member_phone"
+            android:layout_toEndOf="@+id/member_image"
+            android:layout_toRightOf="@+id/member_image"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Status Line-->
+        <TextView
+            android:id="@+id/status_line"
+            android:padding="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:layout_below="@+id/member_image"
+            android:textColor="#FFFFFF"
+            android:textSize="4sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

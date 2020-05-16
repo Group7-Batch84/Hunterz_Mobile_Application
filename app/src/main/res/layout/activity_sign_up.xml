@@ -133,7 +133,7 @@
             android:layout_marginTop="5dp"
             android:hint="@string/nic_hint"
             android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_below="@+id/nic_title"
             />

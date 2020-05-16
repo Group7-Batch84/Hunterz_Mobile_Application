@@ -1,6 +1,19 @@
 package com.example.hunterz;
 
+import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
 
 public class Validation {
 
@@ -209,4 +222,87 @@ public class Validation {
             }
         }
     }
+
+    public String selectGender(RadioGroup genderGroupradio, RadioButton male, RadioButton female, TextView errorLabel, String errorMessage1)
+    {
+        int selected = genderGroupradio.getCheckedRadioButtonId();
+
+        if (selected == -1)
+        {
+            errorLabel.setText(errorMessage1);
+            return "";
+        } else
+        {
+            if (male.isChecked())
+            {
+                errorLabel.setText("");
+                return "Male";
+            }
+            else if (female.isChecked())
+            {
+                errorLabel.setText("");
+                return "Female";
+            }
+        }
+        return "";
+    }
+
+    public String selectDOB(TextView defaultDate,TextView errorLabel,int year,String errorMessage1,String errorMessage2)
+    {
+        String dob = defaultDate.getText().toString();
+        if(dob.equals("DD/MM/YYYY"))
+        {
+            errorLabel.setText(errorMessage1);
+            return "";
+        }
+        else
+        {
+            if(2007 <= year)
+            {
+                errorLabel.setText(errorMessage2);
+                return "";
+            }
+            else
+            {
+                errorLabel.setText("");
+                return dob;
+            }
+        }
+    }
+
+    public String selectSportType(CheckBox cricket,CheckBox football,CheckBox volleyBall,TextView errorLabel,String errorMessage)
+    {
+        ArrayList<String> sportType = new ArrayList<>();
+        String selected = "";
+
+        if(cricket.isChecked())
+        {
+            sportType.add("Cricket ");
+        }
+        if(football.isChecked())
+        {
+            sportType.add("Football ");
+        }
+        if(volleyBall.isChecked())
+        {
+            sportType.add("Volleyball ");
+        }
+        else if(cricket.isChecked() == false && football.isChecked() == false && volleyBall.isChecked() == false)
+        {
+            sportType.clear();
+            errorLabel.setText(errorMessage);
+            return "";
+        }
+        else
+        {
+            for(int i = 0; i < sportType.size(); i++)
+            {
+                selected = selected + sportType.get(i);
+            }
+            errorLabel.setText("");
+        }
+        return selected;
+    }
+
+
 }
