@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,8 +50,10 @@ public class SearchMember extends Fragment {
     private Button datePicker_Btn,searchBtn,changeBtn,clearBtn,updateBtn;
     private TextView selectedDate;
     private ImageView memberImage;
-
+    private String selectedSearchType;
     private Uri mImageUri;
+
+    DatabaseReference databaseReference;
 
     Calendar calendar;
     DatePickerDialog datePickerDialog;
@@ -91,10 +99,12 @@ public class SearchMember extends Fragment {
                 if(value.equals("Register Number"))
                 {
                     searchMember.setHint(getString(R.string.register_search_hint));
+                    selectedSearchType = "Register Number";
                 }
                 else if(value.equals("NIC Number"))
                 {
                     searchMember.setHint(getString(R.string.nic_search_hint));
+                    selectedSearchType = "NIC Number";
                 }
             }
 
@@ -161,6 +171,7 @@ public class SearchMember extends Fragment {
 
         return view;
     }
+
 
 
     public void onChooseFile(View v) // To choose the insert file

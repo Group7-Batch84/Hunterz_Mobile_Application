@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -76,8 +78,12 @@ public class Validation {
         }
     }
 
+    FirebaseAuth auth;
+
     public String emaiId(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,boolean ifExists)
     {
+
+        auth = FirebaseAuth.getInstance();
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         String emailId = textField.getText().toString();

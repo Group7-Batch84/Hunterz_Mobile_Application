@@ -5,12 +5,8 @@ import android.graphics.Bitmap;
 public class Member {
 
     private String id,fullName,phoneNo,email,nicNo,gender,address,dateOfBirth,sportType,password,status,image;
-   // private int image;
 
-
-    public Member(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public Member() {
     }
 
     public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, String status, String image) {

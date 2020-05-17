@@ -151,7 +151,7 @@ public class AddMember extends Fragment {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("Success", "createUserWithEmail:success");
-
+                                        clearDetails();
 
 
                                     } else {
@@ -190,7 +190,7 @@ public class AddMember extends Fragment {
         value[8] = valid.selectSportType(cricketChk,footballChk,volleyballChk,sportTypeError,getString(R.string.sportType_errorMessage));
         value[9] = valid.password(password,getString(R.string.password_errorMessage),getString(R.string.password_errorMessage_Pattern));
         value[10] = valid.confirmPassword(conPassword,getString(R.string.confirm_password_errorMessage),getString(R.string.confirm_password_errorMessage_Match),value[9]);
-        value[11] = "Active";
+        value[11] = "Activate";
 
         for(int i = 0; i < value.length;i++)
         {
@@ -299,6 +299,7 @@ public class AddMember extends Fragment {
         footballChk.setChecked(false);
         password.getText().clear();
         conPassword.getText().clear();
+        memberImage.setImageDrawable(null);
     }
 
 

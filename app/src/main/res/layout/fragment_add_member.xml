@@ -427,6 +427,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
+            android:scaleType="fitXY"
             android:background="@drawable/imageview_border"
             android:contentDescription="@string/app_name"
             android:layout_below="@+id/add_image_btn"

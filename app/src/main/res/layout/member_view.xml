@@ -31,8 +31,8 @@
             android:id="@+id/member_image"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:scaleType="fitXY"
             android:layout_below="@+id/member_name"
-            android:src="@drawable/hunterz_logo"
             android:contentDescription="member Pic"
             />
 

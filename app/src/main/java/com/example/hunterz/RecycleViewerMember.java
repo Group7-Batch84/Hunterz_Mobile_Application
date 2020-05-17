@@ -1,6 +1,8 @@
 package com.example.hunterz;
 
 import android.graphics.Color;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,23 +37,24 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        holder.memberImage.setImageResource(member.get(position).getImage());
-//        holder.memberName.setText(member.get(position).getName());
-//        holder.memberEmail.setText(member.get(position).getEmail());
-//        holder.memberId.setText(member.get(position).getId());
-//        holder.memberNic.setText(member.get(position).getNic());
-//        holder.memberPhone.setText(member.get(position).getPhone());
-//
-//        String status =  member.get(position).getStatus();
-//
-//        if(status.equals("Activate"))
-//        {
-//            holder.memberStatus.setBackgroundColor(Color.parseColor("#3b944b"));
-//        }
-//        else if(status.equals("Deactivate"))
-//        {
-//            holder.memberStatus.setBackgroundColor(Color.parseColor("#b42959"));
-//        }
+
+        Picasso.get().load(member.get(position).getImage()).into(holder.memberImage);
+        holder.memberName.setText(member.get(position).getFullName());
+        holder.memberEmail.setText(member.get(position).getEmail());
+        holder.memberId.setText(member.get(position).getId());
+        holder.memberNic.setText(member.get(position).getNicNo());
+        holder.memberPhone.setText(member.get(position).getPhoneNo());
+
+        String status =  member.get(position).getStatus();
+
+        if(status.equals("Activate"))
+        {
+            holder.memberStatus.setBackgroundColor(Color.parseColor("#3b944b"));
+        }
+        else if(status.equals("Deactivate"))
+        {
+            holder.memberStatus.setBackgroundColor(Color.parseColor("#b42959"));
+        }
 
     }
 
