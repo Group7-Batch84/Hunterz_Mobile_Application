@@ -42,6 +42,7 @@
     <string name="phoneNo_errorMessage_Start_0">Phone Number Should Start With \'0\' </string>
     <string name="nic_errorMessage">NIC Number Field is Empty</string>
     <string name="nic_errorMessage_valid">Invalid NIC Number</string>
+    <string name="nic_errorMessage_exist">NIC Number Already Exist</string>
     <string name="email_errorMessage">Email Id Field is Empty</string>
     <string name="email_errorMessage_Valid">Enter Valid Email Id</string>
     <string name="email_errorMessage_Exist">Email is Already Exist</string>
@@ -102,6 +103,7 @@
     <string name="dob_errorMessage1">Pick Member Date Of Birth</string>
     <string name="dob_errorMessage2">Member is Too Young!</string>
     <string name="sportType_errorMessage">Select Sport Type</string>
+    <string name="image_errorMessage">Upload Member Image</string>
 
                 <!--Search & Update Member-->
     <string-array name="types_array">    <!--Drop Down List-->

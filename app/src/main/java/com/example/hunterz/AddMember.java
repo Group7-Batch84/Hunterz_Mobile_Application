@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -30,16 +31,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.w3c.dom.Text;
 
+import java.security.Provider;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -165,7 +169,6 @@ public class AddMember extends Fragment {
                                 }
                             });
                 }
-                Toast.makeText(getContext(), selectedDate.getText().toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -177,13 +180,14 @@ public class AddMember extends Fragment {
     public boolean validAll()
     {
         int count = 0;
+        boolean result = false;
 
         value[0] = "HUN001";
         value[1] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
-        value[3] = "Email";
-        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid));
+        value[3] = valid.emaiId(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
+        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
         value[5] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[6] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[7] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
@@ -191,10 +195,11 @@ public class AddMember extends Fragment {
         value[9] = valid.password(password,getString(R.string.password_errorMessage),getString(R.string.password_errorMessage_Pattern));
         value[10] = valid.confirmPassword(conPassword,getString(R.string.confirm_password_errorMessage),getString(R.string.confirm_password_errorMessage_Match),value[9]);
         value[11] = "Activate";
+        result = valid.checkImage(memberImage);
 
         for(int i = 0; i < value.length;i++)
         {
-            if(!value[i].equals(""))
+            if(value[i] != "")
             {
                 count++;
             }
@@ -202,7 +207,12 @@ public class AddMember extends Fragment {
 
         if(count == 12)
         {
-            return true;
+            if(result)
+            {
+                return true;
+            }
+            //Toast.makeText(getContext(),getString(R.string.image_errorMessage), LENGTH_LONG).show();
+            StyleableToast.makeText(getContext(),getString(R.string.image_errorMessage),R.style.errorToast).show();
         }
         return false;
     }
@@ -302,5 +312,29 @@ public class AddMember extends Fragment {
         memberImage.setImageDrawable(null);
     }
 
+    public String checkEmail(String email)
+    {
+        String result = "";
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+
+                boolean check = !task.getResult().getSignInMethods().isEmpty();
+
+                if(check)
+                {
+                    emailId.setError("Email Id is Already Exist");
+
+                }
+                else
+                {
+
+                }
+            }
+
+        });
+
+        return "";
+    }
 
 }

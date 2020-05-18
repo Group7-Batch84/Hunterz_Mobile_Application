@@ -3,14 +3,25 @@ package com.example.hunterz;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -78,15 +89,16 @@ public class Validation {
         }
     }
 
-    FirebaseAuth auth;
-
-    public String emaiId(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,boolean ifExists)
+    FirebaseAuth mAuth;
+    String value = "";
+    public String emaiId(final EditText textField, String errorMessage1, String errorMessage2,final String errorMessage3)
     {
 
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        String emailId = textField.getText().toString();
+        final String emailId = textField.getText().toString();
+        String finalValue = "";
 
         if(emailId.isEmpty())
         {
@@ -100,20 +112,32 @@ public class Validation {
         }
         else
         {
-            if(ifExists) // checking whether email is exist
-            {
-                textField.setError(errorMessage3);
-                return "";
-            }
-            else
-            {
-                return emailId;
-            }
+            mAuth.fetchSignInMethodsForEmail(emailId).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+
+                    boolean check = !task.getResult().getSignInMethods().isEmpty();
+
+                    if(check)
+                    {
+                        textField.setError(errorMessage3);
+                        value = "";
+                    }
+                    else
+                    {
+                        value = emailId;
+                    }
+                }
+
+            });
+                return value;
+
         }
     }
 
-
-    public String nicNumber(EditText textField,String errorMessage1,String errorMessage2)
+    DatabaseReference databaseReference;
+    String nicValue;
+    public String nicNumber(final EditText textField, String errorMessage1, String errorMessage2, final String errorMessage3)
     {
         String nicNo = textField.getText().toString();
         String nicPattern = "[0-9]{9}[x|X|v|V]$";
@@ -130,7 +154,33 @@ public class Validation {
         }
         else
         {
-            return nicNo;
+            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+
+            databaseReference.orderByChild("nicNo").equalTo(nicNo).addValueEventListener(new ValueEventListener()
+            {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if(dataSnapshot.exists()) {
+
+                        textField.setError(errorMessage3);
+                        nicValue = "";
+                    }
+                    else
+                    {
+                        nicValue = textField.getText().toString();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.e("TAG", "Failed to read user", error.toException());
+                }
+            });
+
+            return nicValue;
         }
     }
 
@@ -310,5 +360,16 @@ public class Validation {
         return selected;
     }
 
+    public boolean checkImage(ImageView image)
+    {
+        if(image.getDrawable() == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }

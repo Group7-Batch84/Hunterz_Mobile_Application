@@ -65,7 +65,7 @@ public class SignUp extends AppCompatActivity {
                 getString(R.string.phoneNo_errorMessage_Start_0));
 //      value[2] = valid.emaiId(emaiId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid)
 ////                ,getString(R.string.email_errorMessage_Exist),checkIfExists(emailID.getText().toString()));
-        value[3] = valid.nicNumber(nicNumber,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid));
+        value[3] = valid.nicNumber(nicNumber,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
         value[4] = valid.password(password,getString(R.string.password_errorMessage),getString(R.string.password_errorMessage_Pattern));
         value[5] = valid.confirmPassword(conPassword,getString(R.string.confirm_password_errorMessage),getString(R.string.confirm_password_errorMessage_Match),value[4]);
     }

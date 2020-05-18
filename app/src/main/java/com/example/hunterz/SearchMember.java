@@ -29,7 +29,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class SearchMember extends Fragment {
         emailId = view.findViewById(R.id.email_txt);
         nicNo = view.findViewById(R.id.nic_txt);
         address = view.findViewById(R.id.address_txt);
-        password = view.findViewById(R.id.address_txt);
+        password = view.findViewById(R.id.password_txt);
         gender = view.findViewById(R.id.radioGroupGender);
         maleRad = view.findViewById(R.id.male_rad);
         femaleRad = view.findViewById(R.id.female_rad);
@@ -141,6 +143,57 @@ public class SearchMember extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(!searchMember.getText().toString().equals("")) {
+
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+
+                    databaseReference.orderByChild("nicNo").equalTo(searchMember.getText().toString()).addValueEventListener(new ValueEventListener()
+                    {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    if(dataSnapshot.exists()) {
+
+                                        ArrayList<Member> list = new ArrayList<>();
+
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Member user = postSnapshot.getValue(Member.class);
+                                            list.add(user);
+                                        }
+
+                                        fullName.setText(list.get(0).getFullName());
+                                        phoneNo.setText(list.get(0).getPhoneNo());
+                                        emailId.setText(list.get(0).getEmail());
+                                        nicNo.setText(list.get(0).getNicNo());
+                                        address.setText(list.get(0).getAddress());
+                                        password.setText(list.get(0).getPassword());
+                                        Picasso.get().load(list.get(0).getImage()).into(memberImage);
+                                        selectedDate.setText(list.get(0).getDateOfBirth());
+                                        getGender(list.get(0).getGender());
+//                            cricketChk.setText(list.get(i).getFullName());
+//                            footballChk.setText(list.get(i).getFullName());
+//                            volleyballChk.setText(list.get(i).getFullName());
+
+                                    }
+                                    else
+                                    {
+                                        searchMember.setError("Invalid Search Value");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+                                    // Failed to read value
+                                    Log.e("TAG", "Failed to read user", error.toException());
+                                }
+                    });
+                }
+                else
+                {
+                    searchMember.setError("Search Field is Empty");
+                }
 
             }
         });
@@ -222,6 +275,18 @@ public class SearchMember extends Fragment {
         volleyballChk.setChecked(false);
         footballChk.setChecked(false);
         password.getText().clear();
+    }
+
+    public void getGender(String value)
+    {
+        if(value.equals("Male"))
+        {
+            maleRad.setChecked(true);
+        }
+        if(value.equals("Female"))
+        {
+            femaleRad.setChecked(true);
+        }
     }
 
 }

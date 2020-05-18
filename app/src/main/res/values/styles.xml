@@ -25,6 +25,11 @@
         <item name="color">#FFFFFF</item>
     </style>
 
+    <!-- Error Toast Message Color-->
+    <style name="errorToast">
+        <item name="android:colorBackground">#FD0E0E</item>
+        <item name="android:textColor"></item>
+    </style>
 
 
 </resources>
