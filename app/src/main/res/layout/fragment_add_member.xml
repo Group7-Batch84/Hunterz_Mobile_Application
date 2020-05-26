@@ -23,6 +23,7 @@
             android:layout_marginLeft="20dp"
             android:layout_alignParentLeft="true"
             />
+
         <!--Item ID-->
         <TextView
             android:id="@+id/member_id"
@@ -30,7 +31,6 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="HUN001"
             android:gravity="center"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
@@ -325,7 +325,7 @@
             />
 
         <CheckBox
-            android:id="@+id/volleyball_chk"
+            android:id="@+id/volleyball_chk1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/volleyball_chk"
@@ -344,7 +344,7 @@
             android:layout_marginTop="5dp"
             android:textColor="#DD2121"
             android:fontFamily="sans-serif"
-            android:layout_below="@+id/volleyball_chk"
+            android:layout_below="@+id/volleyball_chk1"
             />
 
         <TextView

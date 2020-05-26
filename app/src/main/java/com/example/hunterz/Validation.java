@@ -326,7 +326,7 @@ public class Validation {
         }
     }
 
-    public String selectSportType(CheckBox cricket,CheckBox football,CheckBox volleyBall,TextView errorLabel,String errorMessage)
+    public String selectSportType(CheckBox cricket,CheckBox football,CheckBox volleyball,TextView errorLabel,String errorMessage)
     {
         ArrayList<String> sportType = new ArrayList<>();
         String selected = "";
@@ -339,11 +339,11 @@ public class Validation {
         {
             sportType.add("Football ");
         }
-        if(volleyBall.isChecked())
+        if(volleyball.isChecked())
         {
             sportType.add("Volleyball ");
         }
-        else if(cricket.isChecked() == false && football.isChecked() == false && volleyBall.isChecked() == false)
+        if((cricket.isChecked() == false && volleyball.isChecked() == false && football.isChecked() == false))
         {
             sportType.clear();
             errorLabel.setText(errorMessage);
@@ -371,5 +371,83 @@ public class Validation {
             return true;
         }
     }
+
+//    String IDS="";
+//    public void generateID(final String id,final int length,String table,String column) // Auto Generate ID
+//    {
+//
+//            databaseReference = FirebaseDatabase.getInstance().getReference(table);
+//
+//            databaseReference.addValueEventListener(new ValueEventListener() {
+//
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    int count = 0;
+//                    String idType = "";
+//
+//                    ArrayList<Member> list = new ArrayList<>();
+//
+//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                        Member user = postSnapshot.getValue(Member.class);
+//                        list.add(user);
+//                        count++;
+//                    }
+//
+//                    idType = list.get(list.size() - 1).getId().toString();
+//
+//                    if (count > 0) {
+//                        String x = idType.substring(length);
+//                        int ID = Integer.parseInt(x);
+//
+//                        if (ID > 0 && ID < 9) {
+//                            ID = ID + 1;
+//                            IDS = id + "00" + ID;
+//                        } else if (ID >= 9 && ID < 99) {
+//                            ID = ID + 1;
+//                            IDS = id + "0" + ID;
+//                        } else if (ID >= 99) {
+//                            ID = ID + 1;
+//                            IDS = id + ID;
+//                        }
+//
+//                    } else {
+//                        IDS = id + "001";
+//                    }
+//
+//                    Log.d("Value",IDS);
+//                }
+//
+//
+//                @Override
+//                public void onCancelled(DatabaseError error) {
+//                    // Failed to read value
+//                    Log.e("TAG", "Failed to read user", error.toException());
+//                }
+//
+//            });
+//    }
+
+    public void viewSportType(String sportType,CheckBox football,CheckBox cricket, CheckBox volleyball)
+    {
+        String[] splitedType = sportType.split(" ");
+
+        for(int i = 0 ; i < splitedType.length; i++)
+        {
+            if(splitedType[i].equals("Football"))
+            {
+                football.setChecked(true);
+            }
+            else if(splitedType[i].equals("Cricket"))
+            {
+                cricket.setChecked(true);
+            }
+            else if(splitedType[i].equals("Volleyball"))
+            {
+                volleyball.setChecked(true);
+            }
+        }
+
+    }
+
 
 }

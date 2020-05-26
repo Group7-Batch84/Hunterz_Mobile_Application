@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/new_member"
+        android:title="@string/new_member"
+        android:icon="@drawable/ic_new_32dp"/>
+    <item
+        android:id="@+id/member_status"
+        android:title="@string/member_status"
+        android:icon="@drawable/ic_status_24dp"/>
+</menu>

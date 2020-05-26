@@ -9,6 +9,19 @@ public class Member {
     public Member() {
     }
 
+    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password) {
+        this.id = id;
+        this.fullName = fullName;
+        this.phoneNo = phoneNo;
+        this.email = email;
+        this.nicNo = nicNo;
+        this.gender = gender;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.sportType = sportType;
+        this.password = password;
+    }
+
     public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, String status, String image) {
         this.id = id;
         this.fullName = fullName;

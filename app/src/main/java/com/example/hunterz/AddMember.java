@@ -32,8 +32,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,6 +47,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import org.w3c.dom.Text;
 
 import java.security.Provider;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -66,6 +70,8 @@ public class AddMember extends Fragment {
     Calendar calendar;  // Calender
     DatePickerDialog datePickerDialog; // Date Picker
     int Year;
+
+    private String IDS; // ID
 
     private FirebaseAuth mAuth;
     DatabaseReference databaseReference;
@@ -97,12 +103,15 @@ public class AddMember extends Fragment {
         femaleRad = view.findViewById(R.id.female_rad);
         cricketChk = view.findViewById(R.id.cricket_chk);
         footballChk = view.findViewById(R.id.football_chk);
-        volleyballChk = view.findViewById(R.id.volleyball_chk);
+        volleyballChk = view.findViewById(R.id.volleyball_chk1);
         memberImage = view.findViewById(R.id.member_image);
         addImageBtn = view.findViewById(R.id.add_image_btn);
         genderError = view.findViewById(R.id.gender_error);
         sportTypeError = view.findViewById(R.id.sport_type_error);
         dobError = view.findViewById(R.id.dob_error);
+
+        // Show member Id
+       generateID("HUN",3,"Member","id");
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -147,7 +156,7 @@ public class AddMember extends Fragment {
             public void onClick(View v) {
                 if (validAll())
                 {
-                    uploadImage();
+                    uploadImage(); // In this method (Image Upload  and other details )
                     mAuth.createUserWithEmailAndPassword(emailId.getText().toString(), password.getText().toString())
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -182,7 +191,8 @@ public class AddMember extends Fragment {
         int count = 0;
         boolean result = false;
 
-        value[0] = "HUN001";
+        generateID("HUN",3,"Member","id");
+        value[0] = IDS;
         value[1] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
@@ -276,21 +286,20 @@ public class AddMember extends Fragment {
                     Toast.makeText(getContext(),"Uploaded Success",Toast.LENGTH_SHORT).show();
                 }
             })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+progress+"%");
+                        }
+                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
 
                             Toast.makeText(getContext(),"Failed",Toast.LENGTH_SHORT).show();
                         }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded"+(int)progress+"%");
-                        }
                     });
-
 
         }
     }
@@ -312,29 +321,60 @@ public class AddMember extends Fragment {
         memberImage.setImageDrawable(null);
     }
 
-    public String checkEmail(String email)
+
+    public void generateID(final String id,final int length,String table,String column) // Auto Generate ID
     {
-        String result = "";
-        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+        databaseReference = FirebaseDatabase.getInstance().getReference(table);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+
             @Override
-            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int count = 0;
+                String idType = "";
+                ArrayList<Member> list = new ArrayList<>();
 
-                boolean check = !task.getResult().getSignInMethods().isEmpty();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Member user = postSnapshot.getValue(Member.class);
+                    list.add(user);
 
-                if(check)
-                {
-                    emailId.setError("Email Id is Already Exist");
-
+                    count++;
                 }
-                else
-                {
 
+                idType = list.get(list.size() - 1).getId().toString();
+
+                if (count > 0) {
+                    String x = idType.substring(length);
+                    int ID = Integer.parseInt(x);
+
+                    if (ID > 0 && ID < 9) {
+                        ID = ID + 1;
+                        IDS = id + "00" + ID;
+                    } else if (ID >= 9 && ID < 99) {
+                        ID = ID + 1;
+                        IDS = id + "0" + ID;
+                    } else if (ID >= 99) {
+                        ID = ID + 1;
+                        IDS = id + ID;
+                    }
+
+                } else {
+                    IDS = id + "001";
                 }
+
+                     memberId.setText(IDS);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("TAG", "Failed to read user", error.toException());
             }
 
         });
-
-        return "";
     }
+
+
 
 }
