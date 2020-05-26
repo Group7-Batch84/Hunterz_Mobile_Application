@@ -276,9 +276,9 @@ public class AddMember extends Fragment {
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            String uploadId = databaseReference.push().getKey();
+                           // String uploadId = databaseReference.push().getKey();
                             Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9],value[11],uri.toString());
-                            databaseReference.child(uploadId).setValue(member);
+                            databaseReference.child(IDS).setValue(member);
                         }
                     });
 
@@ -337,13 +337,13 @@ public class AddMember extends Fragment {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Member user = postSnapshot.getValue(Member.class);
                     list.add(user);
-
                     count++;
                 }
 
-                idType = list.get(list.size() - 1).getId().toString();
 
                 if (count > 0) {
+
+                    idType = list.get(list.size() - 1).getId().toString();
                     String x = idType.substring(length);
                     int ID = Integer.parseInt(x);
 

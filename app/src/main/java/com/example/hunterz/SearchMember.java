@@ -75,7 +75,7 @@ public class SearchMember extends Fragment {
     DatePickerDialog datePickerDialog;
     int Year;
 
-    String[] value = new String[12];
+    String[] value = new String[9];
     Validation valid = new Validation();
 
     @Override
@@ -209,26 +209,28 @@ public class SearchMember extends Fragment {
             @Override
             public void onClick(View v) {
 
+                String id = memberId.getText().toString();
+
                 if (validAll())
                 {
                     if(!searchMember.getText().toString().equals("") && !searchMember.isEnabled()) {
 
-                        uploadImage();
+                       // uploadImage();
 
                         databaseReference = FirebaseDatabase.getInstance().getReference("Member");
 
-                        Member member = new Member();
-                        member.setFullName(value[0]);
-                        member.setPhoneNo(value[1]);
-                        member.setEmail(value[2]);
-                        member.setNicNo(value[3]);
-                        member.setGender(value[4]);
-                        member.setAddress(value[5]);
-                        member.setDateOfBirth(value[6]);
-                        member.setSportType(value[7]);
-                        member.setPassword(value[8]);
-                        member.setImage(mImageUri.toString());
-                        databaseReference.child("id").setValue(member);
+                        databaseReference.child(id).child("fullName").setValue(value[0]);
+                        databaseReference.child(id).child("phoneNo").setValue(value[1]);
+                        databaseReference.child(id).child("email").setValue(value[2]);
+                        databaseReference.child(id).child("nicNo").setValue(value[3]);
+                        databaseReference.child(id).child("gender").setValue(value[4]);
+                        databaseReference.child(id).child("address").setValue(value[5]);
+                        databaseReference.child(id).child("dateOfBirth").setValue(value[6]);
+                        databaseReference.child(id).child("sportType").setValue(value[7]);
+                        databaseReference.child(id).child("password").setValue(password.getText().toString());
+//                        databaseReference.child(id).child("image").setValue();
+
+                        Toast.makeText(getContext(),"Successfully Updated!", LENGTH_LONG).show();
 
                     }
 
@@ -258,21 +260,23 @@ public class SearchMember extends Fragment {
 
     public boolean validAll()
     {
-        int count = 0;
+        int count = 0,length = 8;
         boolean result = false;
 
         value[0] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[1] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
-        value[2] = valid.emaiId(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
-        value[3] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
+        value[2] = valid.emaiIdUpdate(emailId,memberId.getText().toString(),getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
+        value[3] = valid.nicNumberUpdate(nicNo,memberId.getText().toString(),getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
         value[4] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[5] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[6] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
         value[7] = valid.selectSportType(cricketChk,footballChk,volleyballChk,sportTypeError,getString(R.string.sportType_errorMessage));
-        value[8] = valid.password(newPassword,getString(R.string.password_errorMessage),getString(R.string.password_errorMessage_Pattern));
 
-//        value[10] = "Activate";
+        if(newPasswordChk.isChecked()) {
+            length = 9;
+            value[8] = valid.passwordUpdate(newPassword,password,getString(R.string.password_errorMessage), getString(R.string.password_errorMessage_Pattern));
+        }
         result = valid.checkImage(memberImage);
 
         for(int i = 0; i < value.length;i++)
@@ -283,7 +287,7 @@ public class SearchMember extends Fragment {
             }
         }
 
-        if(count == 9)
+        if(count == length)
         {
             if(result)
             {

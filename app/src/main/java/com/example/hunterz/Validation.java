@@ -112,23 +112,30 @@ public class Validation {
         }
         else
         {
-            mAuth.fetchSignInMethodsForEmail(emailId).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+
+            databaseReference.orderByChild("email").equalTo(emailId).addValueEventListener(new ValueEventListener()
+            {
+
                 @Override
-                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    boolean check = !task.getResult().getSignInMethods().isEmpty();
+                    if(dataSnapshot.exists()) {
 
-                    if(check)
-                    {
                         textField.setError(errorMessage3);
                         value = "";
                     }
                     else
                     {
-                        value = emailId;
+                        value = textField.getText().toString();
                     }
                 }
 
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.e("TAG", "Failed to read user", error.toException());
+                }
             });
                 return value;
 
@@ -372,60 +379,7 @@ public class Validation {
         }
     }
 
-//    String IDS="";
-//    public void generateID(final String id,final int length,String table,String column) // Auto Generate ID
-//    {
-//
-//            databaseReference = FirebaseDatabase.getInstance().getReference(table);
-//
-//            databaseReference.addValueEventListener(new ValueEventListener() {
-//
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    int count = 0;
-//                    String idType = "";
-//
-//                    ArrayList<Member> list = new ArrayList<>();
-//
-//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                        Member user = postSnapshot.getValue(Member.class);
-//                        list.add(user);
-//                        count++;
-//                    }
-//
-//                    idType = list.get(list.size() - 1).getId().toString();
-//
-//                    if (count > 0) {
-//                        String x = idType.substring(length);
-//                        int ID = Integer.parseInt(x);
-//
-//                        if (ID > 0 && ID < 9) {
-//                            ID = ID + 1;
-//                            IDS = id + "00" + ID;
-//                        } else if (ID >= 9 && ID < 99) {
-//                            ID = ID + 1;
-//                            IDS = id + "0" + ID;
-//                        } else if (ID >= 99) {
-//                            ID = ID + 1;
-//                            IDS = id + ID;
-//                        }
-//
-//                    } else {
-//                        IDS = id + "001";
-//                    }
-//
-//                    Log.d("Value",IDS);
-//                }
-//
-//
-//                @Override
-//                public void onCancelled(DatabaseError error) {
-//                    // Failed to read value
-//                    Log.e("TAG", "Failed to read user", error.toException());
-//                }
-//
-//            });
-//    }
+
 
     public void viewSportType(String sportType,CheckBox football,CheckBox cricket, CheckBox volleyball)
     {
@@ -449,5 +403,149 @@ public class Validation {
 
     }
 
+    //  Update Validation
+
+    public String nicNumberUpdate(final EditText textField, final String id, String errorMessage1, String errorMessage2, final String errorMessage3)
+    {
+        String nicNo = textField.getText().toString();
+        String nicPattern = "[0-9]{9}[x|X|v|V]$";
+
+        if(nicNo.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            return "";
+        }
+        else if(!nicNo.matches(nicPattern))
+        {
+            textField.setError(errorMessage2);
+            return "";
+        }
+        else
+        {
+            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+
+            databaseReference.orderByChild("nicNo").equalTo(nicNo).addValueEventListener(new ValueEventListener()
+            {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<Member> list = new ArrayList<>();
+                    if(dataSnapshot.exists()) {
+
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            Member user = postSnapshot.getValue(Member.class);
+                            list.add(user);
+
+                        }
+                        if(id.equals(list.get(0).getId()))
+                        {
+                            nicValue = textField.getText().toString();
+                        }
+                        else {
+                            textField.setError(errorMessage3);
+                            nicValue = "";
+                        }
+                    }
+                    else
+                    {
+                        nicValue = textField.getText().toString();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.e("TAG", "Failed to read user", error.toException());
+                }
+            });
+
+            return nicValue;
+        }
+    }
+
+
+    public String emaiIdUpdate(final EditText textField,final String id, String errorMessage1, String errorMessage2,final String errorMessage3)
+    {
+
+        mAuth = FirebaseAuth.getInstance();
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        final String emailId = textField.getText().toString();
+        String finalValue = "";
+
+        if(emailId.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            return "";
+        }
+        else if(!emailId.matches(emailPattern)) // checking email pattern
+        {
+            textField.setError(errorMessage2);
+            return "";
+        }
+        else
+        {
+            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+
+            databaseReference.orderByChild("email").equalTo(emailId).addValueEventListener(new ValueEventListener()
+            {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<Member> list = new ArrayList<>();
+                    if(dataSnapshot.exists()) {
+
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            Member user = postSnapshot.getValue(Member.class);
+                            list.add(user);
+
+                        }
+                        if(id.equals(list.get(0).getId()))
+                        {
+                            value = textField.getText().toString();
+                        }
+                        else {
+                            textField.setError(errorMessage3);
+                            value = "";
+                        }
+                    }
+                    else
+                    {
+                        value = textField.getText().toString();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.e("TAG", "Failed to read user", error.toException());
+                }
+            });
+            return value;
+
+        }
+    }
+
+    public String passwordUpdate(EditText textField,TextView textView,String errorMessage1,String errorMessage2)
+    {
+        String password = "(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-]).{8}";
+        String passWord = textField.getText().toString();
+
+        if(passWord.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            return "";
+        }
+        else if(!passWord.matches(password))
+        {
+            textField.setError(errorMessage2);
+            return "";
+        }
+        else
+        {
+            textView.setText(passWord);
+            return passWord;
+        }
+    }
 
 }
