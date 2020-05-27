@@ -352,6 +352,9 @@ public class SearchMember extends Fragment {
         password.setText("");
         newPassword.setEnabled(false);
         newPasswordChk.setChecked(false);
+
+        emailId.setError(null);
+        nicNo.setError(null);
     }
 
     public void getGender(String value)

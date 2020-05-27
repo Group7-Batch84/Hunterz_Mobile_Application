@@ -128,25 +128,11 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (getRegisterData())
                 {
-                    String uploadId = databaseReference.push().getKey();
+                    //String uploadId = databaseReference.push().getKey();
                     Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9]);
-                    databaseReference.child(uploadId).setValue(member);
-//                   databaseReference.addValueEventListener(new ValueEventListener() {
-//                       @Override
-//                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-////                           progressBar.setVisibility(View.VISIBLE);
-//
-//
-//                           clearDetails();
-//                           Toast.makeText(SignUp.this,"Successfully Requested",Toast.LENGTH_LONG).show();
-//                       }
-//
-//                       @Override
-//                       public void onCancelled(@NonNull DatabaseError databaseError) {
-//                           Log.d("Error","Something Went Wroung");
-//                       }
-//                   });
+                    databaseReference.child(IDS).setValue(member);
+                    clearDetails();
+                    Toast.makeText(SignUp.this,"Successfully Requested",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -164,8 +150,8 @@ public class SignUp extends AppCompatActivity {
     {
         int count = 0;
 
-        //generateID("NEW",3,"Pending_Member","id");
-        value[0] = "IDS";
+        generateID("NEW",3,"Pending_Member","id");
+        value[0] = IDS;
         value[1] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
@@ -214,9 +200,8 @@ public class SignUp extends AppCompatActivity {
                     count++;
                 }
 
-                idType = list.get(list.size() - 1).getId().toString();
-
                 if (count > 0) {
+                    idType = list.get(list.size() - 1).getId().toString();
                     String x = idType.substring(length);
                     int ID = Integer.parseInt(x);
 

@@ -319,6 +319,8 @@ public class AddMember extends Fragment {
         password.getText().clear();
         conPassword.getText().clear();
         memberImage.setImageDrawable(null);
+
+        emailId.setError(null);
     }
 
 
