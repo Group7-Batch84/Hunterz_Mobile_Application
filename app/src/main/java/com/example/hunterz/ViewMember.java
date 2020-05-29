@@ -75,7 +75,7 @@ public class ViewMember extends Fragment {
                         list.add(user);
                     }
 
-                    adapterMenu = new RecycleViewerMember(list,"view");
+                    adapterMenu = new RecycleViewerMember(list,"view",getContext());
                     recyclerView.setAdapter(adapterMenu);
                     progressBar.setVisibility(View.GONE);
 

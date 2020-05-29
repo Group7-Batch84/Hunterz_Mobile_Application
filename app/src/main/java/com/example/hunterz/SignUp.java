@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +32,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
 
 public class SignUp extends AppCompatActivity {
 
@@ -57,6 +69,7 @@ public class SignUp extends AppCompatActivity {
     Validation valid = new Validation();
 
     DatabaseReference databaseReference;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +99,8 @@ public class SignUp extends AppCompatActivity {
         selectedDate = findViewById(R.id.selected_date);
         datePicker_Btn = findViewById(R.id.date_picker_btn);
         progressBar = findViewById(R.id.progressBar1);
+
+
 
         // Click "Date Picker" Button
         datePicker_Btn.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +135,14 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChooseFile(v);
+            }
+        });
+
+        storageReference = FirebaseStorage.getInstance().getReference().child("Profile_Image/"+ UUID.randomUUID().toString()); // Image Storage Reference
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Pending_Member");
 
         // Click REGISTER Button
@@ -128,15 +151,38 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (getRegisterData())
                 {
-                    //String uploadId = databaseReference.push().getKey();
-                    Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9]);
-                    databaseReference.child(IDS).setValue(member);
+                    uploadImage();
                     clearDetails();
                     Toast.makeText(SignUp.this,"Successfully Requested",Toast.LENGTH_LONG).show();
                 }
 
             }
         });
+    }
+
+    public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image
+    {
+        super.onActivityResult(reqCode,resultCode,data);
+
+        if(reqCode== CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK)
+            {
+                try
+                {
+                    mImageUri = result.getUri();
+                    memberImage.setImageURI(mImageUri);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    makeText(this, getString(R.string.member_image_errorMessage1), LENGTH_LONG).show();
+                }
+            }
+            else {
+                makeText(this, getString(R.string.member_image_errorMessage2), LENGTH_LONG).show();
+            }
+        }
     }
 
     public void openLogin()
@@ -146,9 +192,15 @@ public class SignUp extends AppCompatActivity {
         finish(); // to stop the back option
     }
 
+    public void onChooseFile(View v) // To choose the insert file
+    {
+        CropImage.activity().start(SignUp.this);
+    }
+
     public boolean getRegisterData()
     {
         int count = 0;
+        boolean result = false;
 
         generateID("NEW",3,"Pending_Member","id");
         value[0] = IDS;
@@ -164,6 +216,8 @@ public class SignUp extends AppCompatActivity {
         value[8] = valid.selectSportType(cricketChk,footballChk,volleyballChk,sportTypeError,getString(R.string.sportType_errorMessage));
         value[9] = valid.password(password,getString(R.string.password_errorMessage),getString(R.string.password_errorMessage_Pattern));
         value[10] = valid.confirmPassword(conPassword,getString(R.string.confirm_password_errorMessage),getString(R.string.confirm_password_errorMessage_Match),value[9]);
+        result = valid.checkImage(memberImage);
+
 
         for(int i = 0; i < value.length;i++)
         {
@@ -175,7 +229,10 @@ public class SignUp extends AppCompatActivity {
 
         if(count == 11)
         {
-            return true;
+            if(result) {
+                return true;
+            }
+            StyleableToast.makeText(this,getString(R.string.image_errorMessage),R.style.errorToast).show();
         }
         return false;
     }
@@ -231,6 +288,50 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    ProgressDialog progressDialog;
+    private void uploadImage()
+    {
+        if(mImageUri != null)
+        {
+            // To show progress dialog
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            storageReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9],uri.toString());
+                            databaseReference.child(IDS).setValue(member);
+                        }
+                    });
+
+                    progressDialog.dismiss();
+                    Toast.makeText(SignUp.this,"Uploaded Success",Toast.LENGTH_SHORT).show();
+                }
+            })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+progress+"%");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(SignUp.this,"Failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+    }
 
     public void clearDetails()  // Clear All Data fields
     {
@@ -245,6 +346,7 @@ public class SignUp extends AppCompatActivity {
         volleyballChk.setChecked(false);
         footballChk.setChecked(false);
         password.getText().clear();
+        memberImage.setImageDrawable(null);
         conPassword.getText().clear();
     }
 

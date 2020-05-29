@@ -9,7 +9,7 @@ public class Member {
     public Member() {
     }
 
-    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password) {
+    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password,String image) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
@@ -20,6 +20,7 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.sportType = sportType;
         this.password = password;
+        this.image = image;
     }
 
     public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, String status, String image) {

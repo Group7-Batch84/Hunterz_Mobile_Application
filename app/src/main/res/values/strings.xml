@@ -126,9 +126,12 @@
     <!--Member Status-->
     <string name="new_member">New Member</string>
     <string name="member_status">Member Status</string>
-                    <!--New Member-->
+                <!--New Member-->
     <string name="accept_btn">ACCEPT</string>
     <string name="refuse_btn">REFUSE</string>
+            <!--Status Member-->
+    <string name="activate_btn">ACTIVATE</string>
+    <string name="deactivate_btn">DEACTIVATE</string>
 
 
 
