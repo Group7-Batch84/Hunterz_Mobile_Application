@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
     android:layout_margin="15dp">
 
     <RelativeLayout
@@ -27,13 +29,15 @@
             android:layout_height="wrap_content"
             />
         <!--Member Image-->
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/member_image"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:scaleType="fitXY"
             android:layout_below="@+id/member_name"
-            android:contentDescription="member Pic"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/hunterz_logo"
+            android:elevation="1dp"
             />
 
         <!--Member ID-->

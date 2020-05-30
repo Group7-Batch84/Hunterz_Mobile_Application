@@ -161,7 +161,6 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     String status = member.get(viewHolder.getAdapterPosition()).getStatus();
 
                     if (status.equals("Activate")) {
-
                        relativeLayoutDetail.setBackgroundResource(R.drawable.activate_detail);
                     } else if (status.equals("Deactivate")) {
                         relativeLayoutDetail.setBackgroundResource(R.drawable.deactivate_detail);
@@ -231,6 +230,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         }
         else if(type.equals("status"))
         {
+            id = member.get(position).getId();
             Picasso.get().load(member.get(position).getImage()).into(holder.memberImageStatus);
             holder.memberNameStatus.setText(member.get(position).getFullName());
             holder.memberNicNoStatus.setText(member.get(position).getNicNo());
@@ -247,6 +247,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             holder.activateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    changeStatus("Activate",id);
                     Toast.makeText(v.getContext(),"Activate", Toast.LENGTH_LONG).show();
                 }
             });
@@ -254,6 +255,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             holder.deactivateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    changeStatus("Deactivate",id);
                     Toast.makeText(v.getContext(),"Deactivate", Toast.LENGTH_LONG).show();
                 }
             });
@@ -369,10 +371,16 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         }
     }
 
-
     @Override
     public int getItemCount() {
         return member.size();
+    }
+
+    // Change member Status
+    public void changeStatus(String status,String id)
+    {
+        dataRef = FirebaseDatabase.getInstance().getReference("Member");
+        dataRef.child(id).child("status").setValue(status);
     }
 
     public void authentication(String email, String password, final View v) {
@@ -475,11 +483,10 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView memberImage,memberImageView;
         TextView memberName,memberId,memberEmail,memberPhone,memberNic,memberStatus,
          memberNameView,memberEmailView,memberPhoneView,memberNicView,memberNameStatus,memberNicNoStatus,memberEmailStatus,memberStatusLineStatus;
         Button accept_btn,refuse_btn,activateStatusBtn,deactivateStatusBtn;
-        CircleImageView memberImageStatus;
+        CircleImageView memberImage,memberImageStatus,memberImageView;
 
         RelativeLayout relativeLayoutNew,relativeLayoutStatus,relativeLayoutDetail;
 
@@ -507,7 +514,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             relativeLayoutNew = itemView.findViewById(R.id.member_new);
 
             //Status
-            memberImageStatus = itemView.findViewById(member_image);
+            memberImageStatus = itemView.findViewById(R.id.member_image_status);
             memberNameStatus = itemView.findViewById(R.id.member_name);
             memberNicNoStatus = itemView.findViewById(R.id.member_nic);
             memberEmailStatus = itemView.findViewById(R.id.member_email);

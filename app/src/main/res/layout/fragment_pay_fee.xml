@@ -1,19 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/text_tools"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:baselineAligned="false">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/rounded_background"
+            tools:context=".Register">
+
+            <!--Drop Down Select Search-->
+            <Spinner
+                android:id="@+id/select_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:padding="10dp"
+                android:background="@drawable/date_picker_button"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="5dp"/>
+
+            <!--Search-->
+            <EditText
+                android:id="@+id/search_txt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:accessibilityLiveRegion="none"
+                android:drawableStart="@drawable/ic_search_30dp"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="@string/register_search_hint"
+                android:layout_marginTop="5dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_below="@+id/select_search" />
+
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/date_picker_button"
+                android:text="@string/search_btn"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:layout_below="@+id/search_txt"
+                />
+        </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/searchlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="135dp"
+                    android:layout_height="140dp"
+                    android:layout_centerHorizontal="true"
+                    android:elevation="1dp"
+                    android:src="@drawable/hunterz_logo"
+                    tools:targetApi="lollipop" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="85dp"
+                        app:cardCornerRadius="10dp"
+                        app:contentPaddingBottom="10dp"
+                        app:contentPaddingLeft="10dp"
+                        app:contentPaddingRight="10dp"
+                        app:contentPaddingTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/profile_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="50dp"
+                                android:fontFamily="sans-serif"
+                                android:text="Ramzan Lafir"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/profile_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="5dp"
+                                android:text="ramzanlafir@yahoo.com"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <!--Phone Number-->
+                        <TextView
+                            android:id="@+id/member_phone_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="@string/phoneNo_title"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/member_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/member_phone_title"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="15dp"
+                            android:gravity="right"
+                            android:text="0771231231"
+                            android:textSize="16sp" />
+
+                        <!--Address-->
+                        <TextView
+                            android:id="@+id/member_nic_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/member_phone"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="15dp"
+                            android:text="@string/nic_tile"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/member_nic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/member_nic_title"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="15dp"
+                            android:gravity="right"
+                            android:text="987654321V"
+                            android:textSize="16sp" />
+
+                        <!--Select Month-->
+                        <TextView
+                            android:id="@+id/month_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/member_nic"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="15dp"
+                            android:text="@string/fee_month_title"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <!--Drop Down Select Search-->
+                        <Spinner
+                            android:id="@+id/select_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/month_title"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:padding="10dp"
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
+
+                        <!--Pay Amount-->
+                        <TextView
+                            android:id="@+id/pay_amount_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/select_month"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="15dp"
+                            android:text="@string/pay_amount_title"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/amount_txt"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/pay_amount_title"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="15dp"
+                            android:accessibilityLiveRegion="none"
+                            android:drawableStart="@drawable/ic_pay_amount_26dp"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:hint="@string/pay_amount_hint"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                        <Button
+                            android:id="@+id/clear_btn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="32dp"
+                            android:layout_below="@+id/amount_txt"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@drawable/sign_up_button"
+                            android:text="@string/clear_btn"
+                            android:textColor="#4A84FF"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/pay_btn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="32dp"
+                            android:layout_below="@+id/clear_btn"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="15dp"
+                            android:background="@drawable/custom_button"
+                            android:text="@string/pay_btn"
+                            android:textColor="#ffffff"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

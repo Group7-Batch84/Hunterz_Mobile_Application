@@ -133,7 +133,27 @@
     <string name="activate_btn">ACTIVATE</string>
     <string name="deactivate_btn">DEACTIVATE</string>
 
-
+    <!--PAY FEE-->
+    <string name="fee_month_title">Select The Month</string>
+            <!--Search & Update Member-->
+    <string-array name="month_array">    <!--Drop Down List-->
+        <item>Month</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="pay_amount_title">Pay Amount</string>
+    <string name="pay_amount_hint">Enter Pay Amount</string>
+    <string name="pay_btn">PAY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
