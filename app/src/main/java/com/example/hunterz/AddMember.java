@@ -197,7 +197,7 @@ public class AddMember extends Fragment {
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
         value[3] = valid.emaiId(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
-        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
+        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist)).toUpperCase();
         value[5] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[6] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[7] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
@@ -366,7 +366,6 @@ public class AddMember extends Fragment {
 
                      memberId.setText(IDS);
             }
-
 
             @Override
             public void onCancelled(DatabaseError error) {

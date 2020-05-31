@@ -1,5 +1,6 @@
 package com.example.hunterz.ui.pay_fee;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.hunterz.Member;
+import com.example.hunterz.Payment;
 import com.example.hunterz.R;
+import com.example.hunterz.RecycleViewerMember;
+import com.example.hunterz.Validation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,13 +44,15 @@ public class PayFeeFragment extends Fragment {
     private Spinner searchType,selectMonth;
     private CircleImageView memberImage;
     private EditText searchTxt,amountTxt;
-    private TextView memberName,memberEmail,memberPhone,memberNic;
+    private TextView memberName,memberEmail,memberPhone,memberNic,monthError;
     private Button payBtn,searchBtn,clearBtn;
     private RelativeLayout relativeLayout;
-    private String selectedSearchType;
+    private String selectedSearchType,IDS,selectedMonth;
     private ProgressBar progressBar;
 
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference,databaseReferencePayment;
+
+    Validation valid = new Validation();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +72,9 @@ public class PayFeeFragment extends Fragment {
         clearBtn = view.findViewById(R.id.clear_btn);
         relativeLayout = view.findViewById(R.id.searchlayout);
         progressBar = view.findViewById(R.id.progressBar1);
+        monthError = view.findViewById(R.id.month_error);
+
+        generateID("PAY",3,"Payment");
 
         // Drop down list (Search Type)
         searchType = view.findViewById(R.id.select_search);
@@ -108,12 +117,36 @@ public class PayFeeFragment extends Fragment {
         adapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectMonth.setAdapter(adapterMonth);
 
+        // Select Search Type
+        selectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedMonth = parent.getItemAtPosition(position).toString().trim();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         // Click on search button
         searchBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                search(selectedSearchType);
+//                search = searchTxt.getText().toString();
+                if(!searchTxt.getText().toString().equals(""))
+                {
+                    new Get().execute();
+                }
+                else
+                {
+                    searchTxt.setError("Search Field is Empty");
+                }
+
             }
         });
 
@@ -121,6 +154,8 @@ public class PayFeeFragment extends Fragment {
         payBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
+                valid.payMonth(monthError,selectedMonth,getString(R.string.month_errorMessage));
 
             }
         });
@@ -136,10 +171,25 @@ public class PayFeeFragment extends Fragment {
         return view;
     }
 
+    class Get extends AsyncTask<String,String,String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+
+            search(selectedSearchType);
+            return null;
+        }
+        protected void onPostExecute(String file_url) {
+
+        }
+    }
+
+
     public void search(String searchType)
     {
-        if(!searchTxt.getText().toString().equals("")) {
-
             databaseReference = FirebaseDatabase.getInstance().getReference("Member");
 
             databaseReference.orderByChild(searchType).equalTo(searchTxt.getText().toString().toUpperCase())
@@ -151,6 +201,7 @@ public class PayFeeFragment extends Fragment {
 
                     if(dataSnapshot.exists()) {
 
+                        progressBar.setVisibility(View.VISIBLE);
                         ArrayList<Member> list = new ArrayList<>();
 
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -181,11 +232,6 @@ public class PayFeeFragment extends Fragment {
                     Log.e("TAG", "Failed to read user", error.toException());
                 }
             });
-        }
-        else
-        {
-            searchTxt.setError("Search Field is Empty");
-        }
     }
 
 
@@ -199,6 +245,67 @@ public class PayFeeFragment extends Fragment {
         memberEmail.setText("");
         memberNic.setText("");
         memberImage.setImageDrawable(null);
+    }
+
+    public void generateID(final String id,final int length,String table) // Auto Generate ID
+    {
+        databaseReferencePayment = FirebaseDatabase.getInstance().getReference(table);
+
+        databaseReferencePayment.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int count = 0;
+                String idType = "";
+                ArrayList<Member> list = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Member user = postSnapshot.getValue(Member.class);
+                    list.add(user);
+                    count++;
+                }
+
+                if (count > 0) {
+
+                    idType = list.get(list.size() - 1).getId().toString();
+                    String x = idType.substring(length);
+                    int ID = Integer.parseInt(x);
+
+                    if (ID > 0 && ID < 9) {
+                        ID = ID + 1;
+                        IDS = id + "000" + ID;
+                    } else if (ID >= 9 && ID < 99) {
+                        ID = ID + 1;
+                        IDS = id + "00" + ID;
+                    } else if (ID >= 99 && ID < 999) {
+                        ID = ID + 1;
+                        IDS = id +"0"+ ID;
+                    } else if (ID >= 999) {
+                        ID = ID + 1;
+                        IDS = id + ID;
+                    }
+
+                } else {
+                    IDS = id + "0001";
+                }
+
+//                memberId.setText(IDS);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("TAG", "Failed to read user", error.toException());
+            }
+
+        });
+    }
+
+    public void addPayment()
+    {
+        Payment payment = new Payment();
+        databaseReferencePayment.child(IDS).setValue(payment);
     }
 
 }

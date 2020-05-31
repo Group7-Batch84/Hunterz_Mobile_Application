@@ -223,12 +223,25 @@
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
+                        <TextView
+                            android:id="@+id/month_error"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:textColor="#DD2121"
+                            android:layout_marginTop="3dp"
+                            android:fontFamily="sans-serif"
+                            android:layout_below="@+id/select_month"
+                            />
+
                         <!--Pay Amount-->
                         <TextView
                             android:id="@+id/pay_amount_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/select_month"
+                            android:layout_below="@+id/month_error"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="15dp"
