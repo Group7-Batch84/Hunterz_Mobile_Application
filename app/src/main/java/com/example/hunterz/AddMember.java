@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +49,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,11 +76,7 @@ public class AddMember extends Fragment {
     DatePickerDialog datePickerDialog; // Date Picker
     int Year;
 
-    private String IDS; // ID
-
-    private FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
-    StorageReference storageReference;
+    DatabaseHandler db = new DatabaseHandler(getContext());
 
     String[] value = new String[12];
     Validation valid = new Validation();
@@ -111,13 +112,7 @@ public class AddMember extends Fragment {
         dobError = view.findViewById(R.id.dob_error);
 
         // Show member Id
-       generateID("HUN",3,"Member","id");
-
-        mAuth = FirebaseAuth.getInstance();
-
-        // Database Firebase (Storage / Database)
-        storageReference = FirebaseStorage.getInstance().getReference().child("Profile_Image/"+ UUID.randomUUID().toString()); // Image Storage Reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+        memberId.setText(generateID("HUN","select member_id from member_Table"));
 
         // Click "Date Picker" Button
         datePicker_Btn.setOnClickListener(new View.OnClickListener() {
@@ -154,34 +149,29 @@ public class AddMember extends Fragment {
         register_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validAll())
-                {
-                    uploadImage(); // In this method (Image Upload  and other details )
-                    mAuth.createUserWithEmailAndPassword(emailId.getText().toString(), password.getText().toString())
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d("Success", "createUserWithEmail:success");
-                                        clearDetails();
+                DatabaseHandler dbHandler = new DatabaseHandler(getContext());
+                if (validAll()) {
 
+                    ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                    String authId = generateID("AUN","select authentication_id from authentication_Table");
 
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w("Not Success", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    selectedImage.compress(Bitmap.CompressFormat.PNG,100,stream);
+                    byte[] byteArray=stream.toByteArray(); // To get the Image
 
-                                    }
+                    boolean res = dbHandler.insertMember(value[0],value[1],value[6],value[7],value[2],value[4],value[8],value[5],value[11],byteArray,
+                            "admin001",authId,value[3],value[9],"Member"); // Insert Method
 
-                                    // ...
-                                }
-                            });
+                    if(res == true) {
+                        Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
+                        clearDetails(); // Clear all input field and image view
+                        memberId.setText(generateID("LCC","select member_id from member_Table")); // update the Id after adding an item
+                    } else {
+                        Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
+                    }
                 }
-
             }
-        });
 
+        });
 
         return view;
     }
@@ -191,13 +181,14 @@ public class AddMember extends Fragment {
         int count = 0;
         boolean result = false;
 
-        generateID("HUN",3,"Member","id");
-        value[0] = IDS;
+        value[0] = generateID("HUN","select member_id from member_Table");
         value[1] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
-        value[3] = valid.emaiId(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
-        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist)).toUpperCase();
+        value[3] = valid.emailIdCheck(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid)
+                ,getString(R.string.email_errorMessage_Exist),checkIfEmail(emailId.getText().toString()));
+        value[4] = valid.nicNumber(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),
+                getString(R.string.nic_errorMessage_exist),checkIfNic(nicNo.getText().toString())).toUpperCase();
         value[5] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[6] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[7] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
@@ -233,6 +224,7 @@ public class AddMember extends Fragment {
         CropImage.activity().start(getContext(),AddMember.this);
     }
 
+    Bitmap selectedImage;
     public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image
     {
         super.onActivityResult(reqCode,resultCode,data);
@@ -245,7 +237,10 @@ public class AddMember extends Fragment {
                 try
                 {
                     mImageUri = result.getUri();
-                    memberImage.setImageURI(mImageUri);
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(mImageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    memberImage.setImageBitmap(selectedImage);
+//                    memberImage.setImageURI(mImageUri);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -258,51 +253,6 @@ public class AddMember extends Fragment {
         }
     }
 
-    ProgressDialog progressDialog;
-    private void uploadImage()
-    {
-        if(mImageUri != null)
-        {
-            // To show progress dialog
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-            storageReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-                           // String uploadId = databaseReference.push().getKey();
-                            Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9],value[11],uri.toString());
-                            databaseReference.child(IDS).setValue(member);
-                        }
-                    });
-
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(),"Uploaded Success",Toast.LENGTH_SHORT).show();
-                }
-            })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+progress+"%");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            Toast.makeText(getContext(),"Failed",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-        }
-    }
 
     public void clearDetails()  // Clear All Data fields
     {
@@ -324,58 +274,94 @@ public class AddMember extends Fragment {
     }
 
 
-    public void generateID(final String id,final int length,String table,String column) // Auto Generate ID
+    public String generateID(String id, String query) // Auto Generate ID
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference(table);
+        DatabaseHandler db = new DatabaseHandler(getContext());
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        String IDS = "";
+        try
+        {
+            Cursor cursor = db.getId(query);
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int count = 0;
-                String idType = "";
-                ArrayList<Member> list = new ArrayList<>();
+            String idType = "";
+            int count=0;
 
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Member user = postSnapshot.getValue(Member.class);
-                    list.add(user);
-                    count++;
-                }
-
-
-                if (count > 0) {
-
-                    idType = list.get(list.size() - 1).getId().toString();
-                    String x = idType.substring(length);
-                    int ID = Integer.parseInt(x);
-
-                    if (ID > 0 && ID < 9) {
-                        ID = ID + 1;
-                        IDS = id + "00" + ID;
-                    } else if (ID >= 9 && ID < 99) {
-                        ID = ID + 1;
-                        IDS = id + "0" + ID;
-                    } else if (ID >= 99) {
-                        ID = ID + 1;
-                        IDS = id + ID;
-                    }
-
-                } else {
-                    IDS = id + "001";
-                }
-
-                     memberId.setText(IDS);
+            while (cursor.moveToNext())
+            {
+                idType = cursor.getString(0);
+                count++;
             }
+            if (count > 0)
+            {
+                String x = idType.substring(3);
+                int ID = Integer.parseInt(x);
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("TAG", "Failed to read user", error.toException());
+                if (ID > 0 && ID < 9)
+                {
+                    ID = ID + 1;
+                    IDS = id+"00" + ID;
+                }
+                else if (ID >= 9 && ID < 99)
+                {
+                    ID = ID + 1;
+                    IDS = id+"0" + ID;
+                }
+                else if (ID >= 99)
+                {
+                    ID = ID + 1;
+                    IDS = id + ID;
+                }
             }
-
-        });
+            else
+            {
+                IDS = id + "001";
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR ----",e.toString());
+        }
+        return IDS;
     }
 
+    public boolean checkIfEmail(String email)  // Checking email id whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(getContext());
 
+        Cursor cursor = dbHandler.getEmailExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfNic(String email)  // Checking Nic whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(getContext());
+
+        Cursor cursor = dbHandler.getNicExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
 
 }

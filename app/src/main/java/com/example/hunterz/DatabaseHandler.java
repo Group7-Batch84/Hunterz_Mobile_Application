@@ -76,9 +76,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "member_gender TEXT ,"+
                 "member_password TEXT ,"+
                 "member_email TEXT ,"+
-                "member_image BLOB ,"+
-                "authentication_id TEXT,"+
-                "CONSTRAINT member_authentication_FK FOREIGN KEY ('authentication_id') REFERENCES authentication_Table('authentication_id'))";
+                "member_image BLOB "+
+                ")";
         db.execSQL(PendingMemberTable);   // Create Pending Member Table
 
     }
@@ -99,12 +98,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+
+
     public boolean insertMember(String member_id, String member_name, String member_address, String member_dob, String member_phone,
-                              String member_nic, String member_sport, String member_gender, String member_status, Blob member_image,
+                              String member_nic, String member_sport, String member_gender, String member_status, byte[] member_image,
                               String admin_id,String authentication_id,String username,String password,String user_role)
     {
-        SQLiteDatabase db = this.getWritableDatabase();
-
+        SQLiteDatabase dbHandlerMember = this.getWritableDatabase();
         // Member Table
         ContentValues contentValuesMember = new ContentValues();
         contentValuesMember.put("member_id",member_id);
@@ -114,12 +114,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValuesMember.put("member_phone",member_phone);
         contentValuesMember.put("member_nic",member_nic);
         contentValuesMember.put("member_sport",member_sport);
-        contentValuesMember.put("member_genser",member_gender);
+        contentValuesMember.put("member_gender",member_gender);
         contentValuesMember.put("member_status",member_status);
-        contentValuesMember.put("member_image",member_image.toString());
+        contentValuesMember.put("member_image",member_image);
         contentValuesMember.put("admin_id",admin_id);
         contentValuesMember.put("authentication_id",authentication_id);
 
+        SQLiteDatabase dbHandlerAuthentication = this.getWritableDatabase();
         // Authentication Table
         ContentValues contentValuesAuthentication = new ContentValues();
         contentValuesAuthentication.put("authentication_id",authentication_id);
@@ -127,10 +128,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValuesAuthentication.put("password",password);
         contentValuesAuthentication.put("user_role",user_role);
 
-        long resultMember = db.insert(memberTable,null,contentValuesMember);
-        long resultAuthentication = db.insert(memberTable,null,contentValuesAuthentication);
+        long resultMember = dbHandlerMember.insert(memberTable,null,contentValuesMember);
+        long resultAuthentication = dbHandlerAuthentication.insert(authenticationTable,null,contentValuesAuthentication);
 
-        db.close();
+        dbHandlerMember.close();
+        dbHandlerAuthentication.close();
 
         if(resultMember == -1 || resultAuthentication == -1)
         {
@@ -144,8 +146,130 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    // Update Member
+    public boolean editMember(String member_id, String member_name, String member_address, String member_dob, String member_phone,
+                              String member_nic, String member_sport, String member_gender, byte[] member_image,
+                              String username,String password,String authentication_id) {
 
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues contentValuesMember = new ContentValues();
+        contentValuesMember.put("member_id",member_id);
+        contentValuesMember.put("member_name",member_name);
+        contentValuesMember.put("member_address",member_address);
+        contentValuesMember.put("member_dob",member_dob);
+        contentValuesMember.put("member_phone",member_phone);
+        contentValuesMember.put("member_nic",member_nic);
+        contentValuesMember.put("member_sport",member_sport);
+        contentValuesMember.put("member_gender",member_gender);
+        contentValuesMember.put("member_image",member_image);
 
+        long resultMember = db.update(memberTable, contentValuesMember, "member_id = ?", new String[]{member_id});
+
+        ContentValues contentValuesAuthentication = new ContentValues();
+        contentValuesAuthentication.put("username",username);
+        contentValuesAuthentication.put("password",password);
+
+        long resultAuthentication = db.update(authenticationTable, contentValuesAuthentication, "authentication_id = ?", new String[]{authentication_id});
+
+        db.close();
+
+        if (resultMember == -1 || resultAuthentication == -1)
+        {
+            Log.d("Message", "Error While adding");
+            return false;
+        } else {
+            Log.d("Message", "Successfully Added");
+            return true;
+        }
+    }
+
+    public Cursor getEmailExist()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select username from authentication_Table";
+        Cursor cursor = db.rawQuery(query,null);
+        return cursor;
+    }
+
+    public Cursor getNicExist()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select member_nic from member_Table";
+        Cursor cursor = db.rawQuery(query,null);
+        return cursor;
+    }
+
+    public Cursor getMember(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
+    public boolean insertPendingMember(String member_id, String member_name, String member_address, String member_dob, String member_phone,
+                                String member_nic, String member_sport, String member_gender, byte[] member_image,
+                                String email_id,String password)
+    {
+        SQLiteDatabase dbHandlerMember = this.getWritableDatabase();
+        // Member Table
+        ContentValues contentValuesMember = new ContentValues();
+        contentValuesMember.put("member_id",member_id);
+        contentValuesMember.put("member_name",member_name);
+        contentValuesMember.put("member_address",member_address);
+        contentValuesMember.put("member_dob",member_dob);
+        contentValuesMember.put("member_phone",member_phone);
+        contentValuesMember.put("member_nic",member_nic);
+        contentValuesMember.put("member_sport",member_sport);
+        contentValuesMember.put("member_gender",member_gender);
+        contentValuesMember.put("member_image",member_image);
+        contentValuesMember.put("member_email",email_id);
+        contentValuesMember.put("member_password",password);
+
+        long resultMember = dbHandlerMember.insert(pendingMemberTable,null,contentValuesMember);
+
+        dbHandlerMember.close();
+
+        if(resultMember == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
+    }
+
+    // Update Status
+    public boolean updateMemberStatus(String member_id,String member_status){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValuesMember = new ContentValues();
+
+        contentValuesMember.put("member_status",member_status);
+
+        long resultMember = db.update(memberTable, contentValuesMember, "member_id = ?", new String[]{member_id});
+
+        db.close();
+
+        if (resultMember == -1)
+        {
+            Log.d("Message", "Error While adding");
+            return false;
+        } else {
+            Log.d("Message", "Successfully Added");
+            return true;
+        }
+    }
+
+    // Delete pending Member
+    public boolean deletePendingMember(String member_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(pendingMemberTable, "member_id='" + member_id+"'", null) > 0;
+
+    }
 
 }

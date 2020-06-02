@@ -7,6 +7,8 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +41,8 @@ import com.google.firebase.storage.UploadTask;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
@@ -67,9 +71,7 @@ public class SignUp extends AppCompatActivity {
     String[] value = new String[11];
 
     Validation valid = new Validation();
-
-    DatabaseReference databaseReference;
-    StorageReference storageReference;
+    DatabaseHandler dbHandle = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class SignUp extends AppCompatActivity {
         datePicker_Btn = findViewById(R.id.date_picker_btn);
         progressBar = findViewById(R.id.progressBar1);
 
-
+        generateID("NEW","select member_id from pendingMember_Table");
 
         // Click "Date Picker" Button
         datePicker_Btn.setOnClickListener(new View.OnClickListener() {
@@ -142,24 +144,37 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        storageReference = FirebaseStorage.getInstance().getReference().child("Profile_Image/"+ UUID.randomUUID().toString()); // Image Storage Reference
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Pending_Member");
-
         // Click REGISTER Button
         register_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseHandler dbHandler = new DatabaseHandler(SignUp.this);
                 if (getRegisterData())
                 {
-                    uploadImage();
-                    clearDetails();
-                    Toast.makeText(SignUp.this,"Successfully Requested",Toast.LENGTH_LONG).show();
+                    if(getRegisterData())
+                    {
+                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+
+                        selectedImage.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        byte[] byteArray=stream.toByteArray(); // To get the Image
+
+                        boolean res = dbHandler.insertPendingMember(value[0],value[1],value[6],value[7],
+                                value[2],value[4],value[8],value[5],byteArray, value[3],value[9]);
+
+                        if(res == true) {
+                            clearDetails();
+                            Toast.makeText(SignUp.this, "Successfully Requested", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(SignUp.this,"Error While Adding", Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
 
             }
         });
     }
 
+    Bitmap selectedImage;
     public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image
     {
         super.onActivityResult(reqCode,resultCode,data);
@@ -172,7 +187,9 @@ public class SignUp extends AppCompatActivity {
                 try
                 {
                     mImageUri = result.getUri();
-                    memberImage.setImageURI(mImageUri);
+                    final InputStream imageStream = this.getContentResolver().openInputStream(mImageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    memberImage.setImageBitmap(selectedImage);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -202,14 +219,14 @@ public class SignUp extends AppCompatActivity {
         int count = 0;
         boolean result = false;
 
-        generateID("NEW",3,"Pending_Member","id");
-        value[0] = IDS;
+        value[0] = generateID("NEW","select member_id from pendingMember_Table");
         value[1] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[2] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
-        value[3] = valid.emaiId(emaiId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),
-                getString(R.string.email_errorMessage_Exist));
-        value[4] = valid.nicNumber(nicNumber,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist)).toUpperCase();
+        value[3] = valid.emailIdCheck(emaiId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid)
+                ,getString(R.string.email_errorMessage_Exist),checkIfEmail(emaiId.getText().toString()));
+        value[4] = valid.nicNumber(nicNumber,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),
+                getString(R.string.nic_errorMessage_exist),checkIfNic(nicNumber.getText().toString())).toUpperCase();
         value[5] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[6] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[7] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
@@ -238,100 +255,56 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    public void generateID(final String id,final int length,String table,String column) // Auto Generate ID
+    public String generateID(String id, String query) // Auto Generate ID
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference(table);
+        DatabaseHandler db = new DatabaseHandler(this);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int count = 0;
-                String idType = "";
-                ArrayList<Member> list = new ArrayList<>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Member user = postSnapshot.getValue(Member.class);
-                    list.add(user);
-
-                    count++;
-                }
-
-                if (count > 0) {
-                    idType = list.get(list.size() - 1).getId().toString();
-                    String x = idType.substring(length);
-                    int ID = Integer.parseInt(x);
-
-                    if (ID > 0 && ID < 9) {
-                        ID = ID + 1;
-                        IDS = id + "00" + ID;
-                    } else if (ID >= 9 && ID < 99) {
-                        ID = ID + 1;
-                        IDS = id + "0" + ID;
-                    } else if (ID >= 99) {
-                        ID = ID + 1;
-                        IDS = id + ID;
-                    }
-
-                } else {
-                    IDS = id + "001";
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("TAG", "Failed to read user", error.toException());
-            }
-
-        });
-    }
-
-    ProgressDialog progressDialog;
-    private void uploadImage()
-    {
-        if(mImageUri != null)
+        String IDS = "";
+        try
         {
-            // To show progress dialog
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            Cursor cursor = db.getId(query);
 
-            storageReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            String idType = "";
+            int count=0;
 
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
+            while (cursor.moveToNext())
+            {
+                idType = cursor.getString(0);
+                count++;
+            }
+            if (count > 0)
+            {
+                String x = idType.substring(3);
+                int ID = Integer.parseInt(x);
 
-                            Member member = new Member(value[0],value[1],value[2],value[3],value[4],value[5],value[6],value[7],value[8],value[9],uri.toString());
-                            databaseReference.child(IDS).setValue(member);
-                        }
-                    });
-
-                    progressDialog.dismiss();
-                    Toast.makeText(SignUp.this,"Uploaded Success",Toast.LENGTH_SHORT).show();
+                if (ID > 0 && ID < 9)
+                {
+                    ID = ID + 1;
+                    IDS = id+"00" + ID;
                 }
-            })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+progress+"%");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            Toast.makeText(SignUp.this,"Failed",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                else if (ID >= 9 && ID < 99)
+                {
+                    ID = ID + 1;
+                    IDS = id+"0" + ID;
+                }
+                else if (ID >= 99)
+                {
+                    ID = ID + 1;
+                    IDS = id + ID;
+                }
+            }
+            else
+            {
+                IDS = id + "001";
+            }
         }
+        catch(Exception e)
+        {
+            Log.d("ERROR ----",e.toString());
+        }
+        return IDS;
     }
+
 
     public void clearDetails()  // Clear All Data fields
     {
@@ -348,6 +321,46 @@ public class SignUp extends AppCompatActivity {
         password.getText().clear();
         memberImage.setImageDrawable(null);
         conPassword.getText().clear();
+    }
+
+    public boolean checkIfEmail(String email)  // Checking email id whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
+
+        Cursor cursor = dbHandler.getEmailExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfNic(String email)  // Checking Nic whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
+
+        Cursor cursor = dbHandler.getNicExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
     }
 
 }

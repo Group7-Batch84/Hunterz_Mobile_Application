@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -39,28 +41,29 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static com.example.hunterz.R.id.member_image;
 
 
 
 public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMember.ViewHolder> {
 
-    private DatabaseReference databaseReference, dataRef;
-    private StorageReference storageReference;
-    private FirebaseStorage firebaseStorage;
     ArrayList<Member> member = new ArrayList<>();
     ArrayList<Member> user = new ArrayList<>();
     private String type, get;
-    private String IDS="",id,image;
+    private String IDS="",idN,id,image;
     private FirebaseAuth mAuth;
     Context context;
     Dialog myDialog;
+    private Bitmap imageMember;
     View view;
-    private String[] value = new String[11];
+    private String[] value = new String[10];
+    private String[] dataM = new String[11];
 
     public RecycleViewerMember(ArrayList<Member> member, String type,Context context) {
         this.member = member;
@@ -75,9 +78,55 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         if (type.equals("view")) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View memberDetail = layoutInflater.inflate(R.layout.member_view, parent, false);
-            ViewHolder viewHolder = new ViewHolder(memberDetail);
+            final ViewHolder viewHolder = new ViewHolder(memberDetail);
+
+            viewHolder.relativeLayoutView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myDialog = new Dialog(context);
+                    myDialog.setContentView(R.layout.fragment_new_member_details);
+
+                    TextView fullName, phoneNo, emailId, nicNo, address, password,gender,dateOfBirth,sportType;
+                    RelativeLayout relativeLayoutDetail;
+
+                    ImageView memberImageDetails = myDialog.findViewById(R.id.profile_pic);
+                    fullName = myDialog.findViewById(R.id.profile_name);
+                    emailId = myDialog.findViewById(R.id.profile_email);
+                    phoneNo = myDialog.findViewById(R.id.member_phone);
+                    nicNo = myDialog.findViewById(R.id.member_nic);
+                    address = myDialog.findViewById(R.id.member_address);
+                    gender = myDialog.findViewById(R.id.member_gender);
+                    dateOfBirth = myDialog.findViewById(R.id.member_dateOfBirth);
+                    sportType = myDialog.findViewById(R.id.member_sport);
+                    password = myDialog.findViewById(R.id.member_password);
+                    relativeLayoutDetail = myDialog.findViewById(R.id.detailLayout);
+
+                    memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
+                    fullName.setText(member.get(viewHolder.getAdapterPosition()).getFullName());
+                    emailId.setText(member.get(viewHolder.getAdapterPosition()).getEmail());
+                    phoneNo.setText(member.get(viewHolder.getAdapterPosition()).getPhoneNo());
+                    nicNo.setText(member.get(viewHolder.getAdapterPosition()).getNicNo());
+                    address.setText(member.get(viewHolder.getAdapterPosition()).getAddress());
+                    gender.setText(member.get(viewHolder.getAdapterPosition()).getGender());
+                    dateOfBirth.setText(member.get(viewHolder.getAdapterPosition()).getDateOfBirth());
+                    sportType.setText(member.get(viewHolder.getAdapterPosition()).getSportType());
+                    password.setText(member.get(viewHolder.getAdapterPosition()).getPassword());
+
+                    String status = member.get(viewHolder.getAdapterPosition()).getStatus();
+
+                    if (status.equals("Activate")) {
+                        relativeLayoutDetail.setBackgroundResource(R.drawable.activate_detail);
+                    } else if (status.equals("Deactivate")) {
+                        relativeLayoutDetail.setBackgroundResource(R.drawable.deactivate_detail);
+                    }
+
+                    myDialog.show();
+                }
+            });
+
             return viewHolder;
-        } else if (type.equals("new")) {
+        }
+        else if (type.equals("new")) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View memberDetail = layoutInflater.inflate(R.layout.member_new, parent, false);
             final ViewHolder viewHolder = new ViewHolder(memberDetail);
@@ -103,7 +152,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     sportType = myDialog.findViewById(R.id.member_sport);
                     password = myDialog.findViewById(R.id.member_password);
 
-                    Picasso.get().load(member.get(viewHolder.getAdapterPosition()).getImage()).into(memberImageDetails);
+                    memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
                     fullName.setText(member.get(viewHolder.getAdapterPosition()).getFullName());
                     emailId.setText(member.get(viewHolder.getAdapterPosition()).getEmail());
                     phoneNo.setText(member.get(viewHolder.getAdapterPosition()).getPhoneNo());
@@ -147,7 +196,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     password = myDialog.findViewById(R.id.member_password);
                     relativeLayoutDetail = myDialog.findViewById(R.id.detailLayout);
 
-                    Picasso.get().load(member.get(viewHolder.getAdapterPosition()).getImage()).into(memberImageDetails);
+                    memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
                     fullName.setText(member.get(viewHolder.getAdapterPosition()).getFullName());
                     emailId.setText(member.get(viewHolder.getAdapterPosition()).getEmail());
                     phoneNo.setText(member.get(viewHolder.getAdapterPosition()).getPhoneNo());
@@ -178,13 +227,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Pending_Member");
-
-        dataRef = FirebaseDatabase.getInstance().getReference("Member");
-
         if (type.equals("view")) {
-            Picasso.get().load(member.get(position).getImage()).into(holder.memberImage);
+            holder.memberImage.setImageBitmap(member.get(position).getImage());
             holder.memberName.setText(member.get(position).getFullName());
             holder.memberEmail.setText(member.get(position).getEmail());
             holder.memberId.setText(member.get(position).getId());
@@ -199,9 +243,10 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                 holder.memberStatus.setBackgroundColor(Color.parseColor("#b42959"));
             }
         } else if (type.equals("new")) {
-            id = member.get(position).getId();
-            image = member.get(position).getImage();
-            Picasso.get().load(member.get(position).getImage()).into(holder.memberImageView);
+            idN = member.get(position).getId();
+            Log.d("Pendiing",idN);
+//            image = member.get(position).getImage();
+            holder.memberImageView.setImageBitmap(member.get(position).getImage());
             holder.memberNameView.setText(member.get(position).getFullName());
             holder.memberEmailView.setText(member.get(position).getEmail());
             holder.memberNicView.setText(member.get(position).getNicNo());
@@ -212,7 +257,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                 @Override
                 public void onClick(View v) {
                     view = v;
-                  new Get().execute();
+                  insertToMember(idN);
+                  delete(idN); // Delete the selected record
 
                 }
             });
@@ -221,9 +267,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             holder.refuse_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //delete(id); // Delete the selected record
-                    //deletePic(image);
-                    Toast.makeText(v.getContext(),"REFUSE", Toast.LENGTH_LONG).show();
+                    delete(idN); // Delete the selected record
+                    Toast.makeText(context,"Member Refused",LENGTH_LONG);
                 }
             });
 
@@ -231,7 +276,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         else if(type.equals("status"))
         {
             id = member.get(position).getId();
-            Picasso.get().load(member.get(position).getImage()).into(holder.memberImageStatus);
+
+            holder.memberImageStatus.setImageBitmap(member.get(position).getImage());
             holder.memberNameStatus.setText(member.get(position).getFullName());
             holder.memberNicNoStatus.setText(member.get(position).getNicNo());
             holder.memberEmailStatus.setText(member.get(position).getEmail());
@@ -263,111 +309,44 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         }
     }
 
-    int i=0;
-    class Get extends AsyncTask<String,String,String> {
-        protected void onPreExecute() {
-            super.onPreExecute();
+    public void insertToMember(String mem_id)
+    {
+        DatabaseHandler db=new DatabaseHandler(context);
+        byte[] mImage = null;
+        String authId="";
+        Cursor res =null;
+
+        res = db.getMember("SELECT * FROM pendingMember_Table WHERE member_id ='"+mem_id+"'");
+
+        Log.d("Pending ID",mem_id);
+
+        if(res.moveToFirst())
+        {
+            authId = generateID("AUN","select authentication_id from authentication_Table");
+            dataM[0] = generateID("HUN","select member_id from member_Table");
+            dataM[1] = res.getString(1);
+            dataM[2] = res.getString(2);
+            dataM[3] = res.getString(3);
+            dataM[4] = res.getString(4);
+            dataM[5] = res.getString(5);
+            dataM[6] = res.getString(6);
+            dataM[7] = res.getString(7);
+            dataM[8] = res.getString(8);
+            dataM[9] = res.getString(9);
+            dataM[10] = "Activate";
+            mImage = res.getBlob(10);
         }
-        @Override
-        protected String doInBackground(String... strings) {
-
-            i=0;
-            dataRef.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    int count = 0;
-                    String idType = "";
-                    ArrayList<Member> list = new ArrayList<>();
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Member user = postSnapshot.getValue(Member.class);
-                        list.add(user);
-                        count++;
-                    }
-
-                    if (count > 0) {
-
-                        idType = list.get(list.size() - 1).getId().toString();
-                        String x = idType.substring(3);
-                        int ID = Integer.parseInt(x);
-
-                        if (ID > 0 && ID < 9) {
-                            ID = ID + 1;
-                            IDS = "HUN" + "00" + ID;
-                        } else if (ID >= 9 && ID < 99) {
-                            ID = ID + 1;
-                            IDS = "HUN" + "0" + ID;
-                        } else if (ID >= 99) {
-                            ID = ID + 1;
-                            IDS = "HUN" + ID;
-                        }
-
-                    } else {
-                        IDS = "HUN" + "001";
-                    }
-
-                    Log.d("ID", IDS);
-                    databaseReference.orderByChild("id").equalTo(id).addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                Member user1 = postSnapshot.getValue(Member.class);
-                                user.add(user1);
-                            }
-
-                            if (i==0) {
-
-                                value[0] = user.get(0).getFullName();
-                                value[1] = user.get(0).getPhoneNo();
-                                value[2] = user.get(0).getEmail();
-                                value[3] = user.get(0).getNicNo();
-                                value[4] = user.get(0).getGender();
-                                value[5] = user.get(0).getAddress();
-                                value[6] = user.get(0).getDateOfBirth();
-                                value[7] = user.get(0).getSportType();
-                                value[8] = user.get(0).getPassword();
-                                value[9] = "Activate";
-                                value[10] = user.get(0).getImage();
-
-                                Member member = new Member(IDS, value[0], value[1], value[2], value[3], value[4], value[5], value[6], value[7], value[8], value[9], value[10]);
-                                dataRef.child(IDS).setValue(member);
-                                i++;
-                            }
-                            authentication(value[2],value[8],view);
-                            delete(user.get(0).getId());
-                            //Toast.makeText(context, "Accepted", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                            Log.e("TAG", "Failed to read user", error.toException());
-                        }
-                    });
 
 
-                }
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
 
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
+        boolean result = dbHandler.insertMember(dataM[0],dataM[1],dataM[2],dataM[3],dataM[4],dataM[5],dataM[6],dataM[7],dataM[10],mImage,
+                "admin001",authId,dataM[9],dataM[8],"Member"); // Insert Method
 
-            });
-            return null;
-        }
-        protected void onPostExecute(String file_url) {
-
-            Toast.makeText(context, "Accepted", Toast.LENGTH_SHORT).show();
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    Toast.makeText(getApplicationContext(), "Success" , Toast.LENGTH_LONG).show();
-//                }
-//            });
+        if(result == true) {
+            Toast.makeText(context,"Successfully Added!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context,"Error While Adding", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -379,8 +358,16 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
     // Change member Status
     public void changeStatus(String status,String id)
     {
-        dataRef = FirebaseDatabase.getInstance().getReference("Member");
-        dataRef.child(id).child("status").setValue(status);
+        DatabaseHandler db = new DatabaseHandler(context);
+        boolean result = db.updateMemberStatus(id,status);
+
+        if(result == true)
+        {
+            Toast.makeText(context,"Member Status Changed!", LENGTH_LONG).show();
+        } else
+        {
+            Toast.makeText(context,"Error While Changing", LENGTH_LONG).show();
+        }
     }
 
     public void authentication(String email, String password, final View v) {
@@ -406,79 +393,61 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         }
     }
 
-    public void generateID(final String id,final int length,String table) // Auto Generate ID
+    public void delete(String value) // Delete Pending member
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference(table);
+        DatabaseHandler db = new DatabaseHandler(context);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int count = 0;
-                String idType = "";
-                ArrayList<Member> list = new ArrayList<>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Member user = postSnapshot.getValue(Member.class);
-                    list.add(user);
-                    count++;
-                }
-
-                if (count > 0) {
-
-                    idType = list.get(list.size() - 1).getId().toString();
-                    String x = idType.substring(length);
-                    int ID = Integer.parseInt(x);
-
-                    if (ID > 0 && ID < 9) {
-                        ID = ID + 1;
-                        IDS = id + "00" + ID;
-                    } else if (ID >= 9 && ID < 99) {
-                        ID = ID + 1;
-                        IDS = id + "0" + ID;
-                    } else if (ID >= 99) {
-                        ID = ID + 1;
-                        IDS = id + ID;
-                    }
-
-                } else {
-                    IDS = id + "001";
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("TAG", "Failed to read user", error.toException());
-            }
-
-        });
+        db.deletePendingMember(value);
     }
 
-    public void deletePic(String imageUrl)
+    public String generateID(String id, String query) // Auto Generate ID
     {
-        storageReference = firebaseStorage.getReferenceFromUrl(imageUrl);
+        DatabaseHandler db = new DatabaseHandler(context);
 
-        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("Succes","Deleted");
+        String IDS = "";
+        try
+        {
+            Cursor cursor = db.getId(query);
+
+            String idType = "";
+            int count=0;
+
+            while (cursor.moveToNext())
+            {
+                idType = cursor.getString(0);
+                count++;
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Error","Error while Deleting");
+            if (count > 0)
+            {
+                String x = idType.substring(3);
+                int ID = Integer.parseInt(x);
+
+                if (ID > 0 && ID < 9)
+                {
+                    ID = ID + 1;
+                    IDS = id+"00" + ID;
+                }
+                else if (ID >= 9 && ID < 99)
+                {
+                    ID = ID + 1;
+                    IDS = id+"0" + ID;
+                }
+                else if (ID >= 99)
+                {
+                    ID = ID + 1;
+                    IDS = id + ID;
+                }
             }
-        });
-    }
-
-
-    public void delete(String value) // Delete
-    {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Pending_Member");
-
-        databaseReference.child(value).removeValue();
+            else
+            {
+                IDS = id + "001";
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR ----",e.toString());
+        }
+        return IDS;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -488,7 +457,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         Button accept_btn,refuse_btn,activateStatusBtn,deactivateStatusBtn;
         CircleImageView memberImage,memberImageStatus,memberImageView;
 
-        RelativeLayout relativeLayoutNew,relativeLayoutStatus,relativeLayoutDetail;
+        RelativeLayout relativeLayoutView,relativeLayoutNew,relativeLayoutStatus,relativeLayoutDetail;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -502,6 +471,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             memberPhone = itemView.findViewById(R.id.member_phone);
             memberNic = itemView.findViewById(R.id.member_nic);
             memberStatus = itemView.findViewById(R.id.status_line);
+            relativeLayoutView = itemView.findViewById(R.id.member_viewDetails);
 
             // New
             memberNameView = itemView.findViewById(R.id.member_name_view);

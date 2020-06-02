@@ -1,15 +1,18 @@
 package com.example.hunterz;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class Member {
 
-    private String id,fullName,phoneNo,email,nicNo,gender,address,dateOfBirth,sportType,password,status,image;
+    private String id,fullName,phoneNo,email,nicNo,gender,address,dateOfBirth,sportType,password,status;
+    private Bitmap image;
 
     public Member() {
     }
 
-    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password,String image) {
+
+    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, Bitmap image) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
@@ -23,7 +26,7 @@ public class Member {
         this.image = image;
     }
 
-    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, String status, String image) {
+    public Member(String id, String fullName, String phoneNo, String email, String nicNo, String gender, String address, String dateOfBirth, String sportType, String password, String status, Bitmap image) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
@@ -126,11 +129,11 @@ public class Member {
         this.status = status;
     }
 
-    public String getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 }

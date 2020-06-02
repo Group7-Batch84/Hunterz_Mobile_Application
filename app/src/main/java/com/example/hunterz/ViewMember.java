@@ -1,39 +1,24 @@
 package com.example.hunterz;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class ViewMember extends Fragment {
 
-    ViewPager viewPager;
     RecyclerView recyclerView;
-    ArrayList<Member> member;
-    DatabaseReference databaseReference;
-    RecycleViewerMember adapterMenu;
     ProgressBar progressBar;
 
     @Override
@@ -42,58 +27,40 @@ public class ViewMember extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_member, container, false);
 
-
-        member = new ArrayList<Member>();
-        recyclerView=view.findViewById(R.id.memberView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         progressBar=view.findViewById(R.id.progressBar1);
+        recyclerView=view.findViewById(R.id.memberView);
 
-        new Get().execute();
-
+        viewItems();
 
         return view;
     }
 
-    class Get extends AsyncTask<String,String,String> {
-        protected void onPreExecute() {
-            //progressBar.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-        @Override
-        protected String doInBackground(String... strings) {
 
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+    public void viewItems()
+    {
+        // Menu List
+        ArrayList<Member> member = new ArrayList<>();
+        DatabaseHandler db = new DatabaseHandler(getContext());
+        Cursor res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id");
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+        while (res.moveToNext())
+        {
+            byte[] image = res.getBlob(9);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
 
-                    ArrayList<Member> list = new ArrayList<>();
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Member user=postSnapshot.getValue(Member.class);
-                        list.add(user);
-                    }
-
-                    adapterMenu = new RecycleViewerMember(list,"view",getContext());
-                    recyclerView.setAdapter(adapterMenu);
-                    progressBar.setVisibility(View.GONE);
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-            return null;
-        }
-        protected void onPostExecute(String file_url) {
+            member.add(new Member(res.getString(0),res.getString(1),res.getString(4),res.getString(13),
+                    res.getString(5),res.getString(7),res.getString(2),res.getString(3),
+                    res.getString(6), res.getString(14),res.getString(8),bmp));
 
         }
+        res.close();
+        // Menu List View
+        RecycleViewerMember adapterMember = new RecycleViewerMember(member,"view",getContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        recyclerView.setAdapter(adapterMember);
+
+        progressBar.setVisibility(View.GONE);
     }
-
 
 
 }

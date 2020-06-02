@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +49,8 @@ import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -64,12 +69,12 @@ public class SearchMember extends Fragment {
     private Button datePicker_Btn,searchBtn,changeBtn,clearBtn,updateBtn;
     private TextView selectedDate,genderError,sportTypeError,dobError,password,memberId;
     private ImageView memberImage;
-    private String selectedSearchType;
+    private String selectedSearchType,authenticationID;
     private Uri mImageUri;
 
-    private FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
-    StorageReference storageReference;
+//    private FirebaseAuth mAuth;
+//    DatabaseReference databaseReference;
+//    StorageReference storageReference;
 
     Calendar calendar;
     DatePickerDialog datePickerDialog;
@@ -211,30 +216,31 @@ public class SearchMember extends Fragment {
 
                 String id = memberId.getText().toString();
 
-                if (validAll())
+                if(!searchMember.getText().toString().equals("") && !searchMember.isEnabled())
                 {
-                    if(!searchMember.getText().toString().equals("") && !searchMember.isEnabled()) {
+                    if (validAll())
+                    {
+                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                        DatabaseHandler db = new DatabaseHandler(getContext());
 
-                       // uploadImage();
+                        selectedImage.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        byte[] byteArray=stream.toByteArray(); // To get the Image
 
-                        databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+                        boolean result = db.editMember(searchMember.getText().toString(),value[0],value[5],value[6],value[1],value[3],value[7],
+                                value[4],byteArray,value[2],password.getText().toString(),authenticationID);
 
-                        databaseReference.child(id).child("fullName").setValue(value[0]);
-                        databaseReference.child(id).child("phoneNo").setValue(value[1]);
-                        databaseReference.child(id).child("email").setValue(value[2]);
-                        databaseReference.child(id).child("nicNo").setValue(value[3]);
-                        databaseReference.child(id).child("gender").setValue(value[4]);
-                        databaseReference.child(id).child("address").setValue(value[5]);
-                        databaseReference.child(id).child("dateOfBirth").setValue(value[6]);
-                        databaseReference.child(id).child("sportType").setValue(value[7]);
-                        databaseReference.child(id).child("password").setValue(password.getText().toString());
-//                        databaseReference.child(id).child("image").setValue();
-
-                        Toast.makeText(getContext(),"Successfully Updated!", LENGTH_LONG).show();
-
+                        if(result == true)
+                        {
+                            Toast.makeText(getContext(),"Successfully Updated!", LENGTH_LONG).show();
+                            clearDetails(); // Clear all input field and image view
+                        } else
+                            {
+                                Toast.makeText(getContext(),"Error While Updating", LENGTH_LONG).show();
+                        }
                     }
-
                 }
+
+
             }
         });
 
@@ -266,8 +272,12 @@ public class SearchMember extends Fragment {
         value[0] = valid.nameField(fullName,getString(R.string.fullName_errorMessage),getString(R.string.fullName_errorMessage_Alphabet));
         value[1] = valid.phoneNumber(phoneNo,getString(R.string.phoneNo_errorMessage),getString(R.string.phoneNo_errorMessage_10_Digit),
                 getString(R.string.phoneNo_errorMessage_Start_0));
-        value[2] = valid.emaiIdUpdate(emailId,memberId.getText().toString(),getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid),getString(R.string.email_errorMessage_Exist));
-        value[3] = valid.nicNumberUpdate(nicNo,memberId.getText().toString(),getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),getString(R.string.nic_errorMessage_exist));
+        value[2] = valid.emailIdCheckUpdate(emailId,getString(R.string.email_errorMessage),getString(R.string.email_errorMessage_Valid)
+                ,getString(R.string.email_errorMessage_Exist),
+                checkIfEmail(emailId.getText().toString()),getUpdateEmail());
+        value[3] = valid.nicNumberUpdate(nicNo,getString(R.string.nic_errorMessage),getString(R.string.nic_errorMessage_valid),
+                getString(R.string.nic_errorMessage_exist),
+                checkIfNic(nicNo.getText().toString()),getUpdateNic()).toUpperCase();
         value[4] = valid.selectGender(gender,maleRad,femaleRad,genderError,getString(R.string.select_gender_errorMessage));
         value[5] = valid.emptyField(address,getString(R.string.address_errorMessage));
         value[6] = valid.selectDOB(selectedDate,dobError,Year,getString(R.string.dob_errorMessage1),getString(R.string.dob_errorMessage2));
@@ -304,30 +314,6 @@ public class SearchMember extends Fragment {
         CropImage.activity().start(getContext(),SearchMember.this);
     }
 
-    public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image
-    {
-        super.onActivityResult(reqCode,resultCode,data);
-
-        if(reqCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-        {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK)
-            {
-                try
-                {
-                    mImageUri = result.getUri();
-                    memberImage.setImageURI(mImageUri);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    makeText(getContext(), getString(R.string.member_image_errorMessage1), LENGTH_LONG).show();
-                }
-            }
-            else {
-                makeText(getContext(), getString(R.string.member_image_errorMessage2), LENGTH_LONG).show();
-            }
-        }
-    }
 
     public void clearDetails()  // Clear All Data fields
     {
@@ -357,65 +343,84 @@ public class SearchMember extends Fragment {
         nicNo.setError(null);
     }
 
-    public void getGender(String value)
+
+    public boolean getUpdateEmail()
     {
-        if(value.equals("Male"))
-        {
-            maleRad.setChecked(true);
+        DatabaseHandler db=new DatabaseHandler(getContext());
+
+        Cursor res = db.getMember("SELECT authentication_id FROM member_Table WHERE member_Table.member_id='" + searchMember.getText().toString().toUpperCase() + "'");
+
+        String id="";
+
+        if(res.moveToFirst()) {
+
+            id = res.getString(0);
         }
-        if(value.equals("Female"))
+
+        if(authenticationID.equals(id))
         {
-            femaleRad.setChecked(true);
+            return true;
         }
+        return false;
     }
+
+    public boolean getUpdateNic()
+    {
+        DatabaseHandler db=new DatabaseHandler(getContext());
+
+        Cursor res = db.getMember("SELECT authentication_id FROM member_Table WHERE member_Table.member_nic='" + searchMember.getText().toString().toUpperCase() + "'");
+        String id="";
+
+        if(res.moveToFirst()) {
+
+           id = res.getString(0);
+        }
+
+        if(authenticationID.equals(id))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public void search(String searchType)
     {
-        if(!searchMember.getText().toString().equals("")) {
+        DatabaseHandler db=new DatabaseHandler(getContext());
+        Cursor res =null;
 
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
-
-            databaseReference.orderByChild(searchType).equalTo(searchMember.getText().toString().toUpperCase()).addValueEventListener(new ValueEventListener()
+        if(!searchMember.getText().toString().equals(""))
+        {
+            if(searchType.equals("id"))
             {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if(dataSnapshot.exists()) {
-
-                        ArrayList<Member> list = new ArrayList<>();
-
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            Member user = postSnapshot.getValue(Member.class);
-                            list.add(user);
-                        }
-
-                        memberId.setText(list.get(0).getId());
-                        searchMember.setEnabled(false);
-                        fullName.setText(list.get(0).getFullName());
-                        phoneNo.setText(list.get(0).getPhoneNo());
-                        emailId.setText(list.get(0).getEmail());
-                        nicNo.setText(list.get(0).getNicNo());
-                        address.setText(list.get(0).getAddress());
-                        password.setText(list.get(0).getPassword().toString());
-                        Picasso.get().load(list.get(0).getImage()).into(memberImage);
-                        selectedDate.setText(list.get(0).getDateOfBirth());
-                        getGender(list.get(0).getGender());
-                        valid.viewSportType(list.get(0).getSportType(),footballChk,cricketChk,volleyballChk);
-
-                    }
-                    else
-                    {
-                        searchMember.setError("Invalid Search Value");
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
+                res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id AND member_Table.member_id='" + searchMember.getText().toString().toUpperCase() + "'");
+                nicNo.setEnabled(true);
+            }
+            if(searchType.equals("nicNo"))
+            {
+                res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id AND member_Table.member_nic='" + searchMember.getText().toString().toUpperCase() + "'");
+                nicNo.setEnabled(false);
+            }
+            if(res.moveToFirst())
+            {
+                memberId.setText(res.getString(0));
+                searchMember.setEnabled(false);
+                fullName.setText(res.getString(1));
+                phoneNo.setText(res.getString(4));
+                emailId.setText(res.getString(13));
+                nicNo.setText(res.getString(5));
+                address.setText(res.getString(2));
+                password.setText(res.getString(14));
+                memberImage.setImageBitmap(printImage(res.getBlob(9)));
+                selectedDate.setText(res.getString(3));
+                valid.getGender(res.getString(7),maleRad,femaleRad);
+                valid.viewSportType(res.getString(6),footballChk,cricketChk,volleyballChk);
+                authenticationID = res.getString(11); // authentication Id
+            }
+            else
+            {
+                searchMember.setError("Invalid Search Value");
+            }
         }
         else
         {
@@ -424,51 +429,79 @@ public class SearchMember extends Fragment {
 
     }
 
-    ProgressDialog progressDialog;
-    private void uploadImage()
+    private Bitmap printImage(byte[] imageValue)  // To print the image. Convert byte to Bitmap
     {
-        if(mImageUri != null)
+        byte[] image = imageValue;
+        Bitmap bmImage = BitmapFactory.decodeByteArray(image,0,image.length);
+        return bmImage;
+    }
+
+    Bitmap selectedImage;
+    public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image
+    {
+        super.onActivityResult(reqCode,resultCode,data);
+
+        if(reqCode== CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
-            // To show progress dialog
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK)
+            {
+                try
+                {
+                    mImageUri = result.getUri();
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(mImageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    memberImage.setImageBitmap(selectedImage);
 
-            storageReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-                            String uploadId = databaseReference.push().getKey();
-                            String member = uri.toString();
-                            databaseReference.child(uploadId).setValue(member);
-                        }
-                    });
-
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(),"Uploaded Success",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    makeText(getContext(), getString(R.string.member_image_errorMessage1), LENGTH_LONG).show();
                 }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            Toast.makeText(getContext(),"Failed",Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded"+(int)progress+"%");
-                        }
-                    });
-
-
+            }
+            else {
+                makeText(getContext(), getString(R.string.member_image_errorMessage2), LENGTH_LONG).show();
+            }
         }
+    }
+
+    public boolean checkIfEmail(String email)  // Checking email id whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(getContext());
+
+        Cursor cursor = dbHandler.getEmailExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    public boolean checkIfNic(String email)  // Checking Nic whether already exist
+    {
+        DatabaseHandler dbHandler = new DatabaseHandler(getContext());
+
+        Cursor cursor = dbHandler.getNicExist();
+
+        String existEmail;
+
+        if (cursor.moveToFirst()) {
+            do {
+                existEmail = cursor.getString(0); // getting email from database
+
+                if (existEmail.equals(email)) { // checking whether email is exist
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        return false;
     }
 
 }

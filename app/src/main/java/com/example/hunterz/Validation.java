@@ -1,5 +1,6 @@
 package com.example.hunterz;
 
+import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -92,16 +93,11 @@ public class Validation {
         }
     }
 
-    FirebaseAuth mAuth;
-    String value = "";
-    public String emaiId(final EditText textField, String errorMessage1, String errorMessage2,final String errorMessage3)
+    public String emailIdCheck(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,boolean ifExists)
     {
 
-        mAuth = FirebaseAuth.getInstance();
-
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        final String emailId = textField.getText().toString();
-        String finalValue = "";
+        String emailId = textField.getText().toString();
 
         if(emailId.isEmpty())
         {
@@ -115,39 +111,31 @@ public class Validation {
         }
         else
         {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
-
-            databaseReference.orderByChild("email").equalTo(emailId).addValueEventListener(new ValueEventListener()
+            if(ifExists) // checking whether email is exist
             {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if(dataSnapshot.exists()) {
-
-                        textField.setError(errorMessage3);
-                        value = "";
-                    }
-                    else
-                    {
-                        value = textField.getText().toString();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-                return value;
-
+                textField.setError(errorMessage3);
+                return "";
+            }
+            else
+            {
+                return emailId;
+            }
         }
     }
 
-    DatabaseReference databaseReference;
-    String nicValue;
-    public String nicNumber(final EditText textField, String errorMessage1, String errorMessage2, final String errorMessage3)
+    public void getGender(String value,RadioButton maleRad,RadioButton femaleRad)
+    {
+        if(value.equals("Male"))
+        {
+            maleRad.setChecked(true);
+        }
+        if(value.equals("Female"))
+        {
+            femaleRad.setChecked(true);
+        }
+    }
+
+    public String nicNumber(EditText textField, String errorMessage1, String errorMessage2,String errorMessage3,boolean ifExists)
     {
         String nicNo = textField.getText().toString();
         String nicPattern = "[0-9]{9}[x|X|v|V]$";
@@ -164,33 +152,15 @@ public class Validation {
         }
         else
         {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
-
-            databaseReference.orderByChild("nicNo").equalTo(nicNo).addValueEventListener(new ValueEventListener()
+            if(ifExists) // checking whether email is exist
             {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if(dataSnapshot.exists()) {
-
-                        textField.setError(errorMessage3);
-                        nicValue = "";
-                    }
-                    else
-                    {
-                        nicValue = textField.getText().toString();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-
-            return nicValue;
+                textField.setError(errorMessage3);
+                return "";
+            }
+            else
+            {
+                return nicNo;
+            }
         }
     }
 
@@ -427,7 +397,46 @@ public class Validation {
 
     //  Update Validation
 
-    public String nicNumberUpdate(final EditText textField, final String id, String errorMessage1, String errorMessage2, final String errorMessage3)
+    public String emailIdCheckUpdate(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,boolean ifExists,
+                                     boolean getUpdate)
+    {
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String emailId = textField.getText().toString();
+
+        if(emailId.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            return "";
+        }
+        else if(!emailId.matches(emailPattern)) // checking email pattern
+        {
+            textField.setError(errorMessage2);
+            return "";
+        }
+        else
+        {
+            if(ifExists) // checking whether email is exist
+            {
+                if(getUpdate)
+                {
+                    return emailId;
+                }
+                else {
+                    textField.setError(errorMessage3);
+                    return "";
+                }
+            }
+            else
+            {
+                return emailId;
+            }
+        }
+    }
+
+
+    public String nicNumberUpdate(EditText textField, String errorMessage1, String errorMessage2,String errorMessage3,boolean ifExists,
+                                  boolean getUpdate)
     {
         String nicNo = textField.getText().toString();
         String nicPattern = "[0-9]{9}[x|X|v|V]$";
@@ -444,109 +453,26 @@ public class Validation {
         }
         else
         {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
-
-            databaseReference.orderByChild("nicNo").equalTo(nicNo).addValueEventListener(new ValueEventListener()
+            if(ifExists) // checking whether nic is exist
             {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<Member> list = new ArrayList<>();
-                    if(dataSnapshot.exists()) {
-
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            Member user = postSnapshot.getValue(Member.class);
-                            list.add(user);
-
-                        }
-                        if(id.equals(list.get(0).getId()))
-                        {
-                            nicValue = textField.getText().toString();
-                        }
-                        else {
-                            textField.setError(errorMessage3);
-                            nicValue = "";
-                        }
-                    }
-                    else
-                    {
-                        nicValue = textField.getText().toString();
-                    }
+                if(getUpdate)
+                {
+                    return nicNo;
+                }
+                else {
+                    textField.setError(errorMessage3);
+                    return "";
                 }
 
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-
-            return nicValue;
+            }
+            else
+            {
+                return nicNo;
+            }
         }
     }
 
 
-    public String emaiIdUpdate(final EditText textField,final String id, String errorMessage1, String errorMessage2,final String errorMessage3)
-    {
-
-        mAuth = FirebaseAuth.getInstance();
-
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        final String emailId = textField.getText().toString();
-        String finalValue = "";
-
-        if(emailId.isEmpty())
-        {
-            textField.setError(errorMessage1);
-            return "";
-        }
-        else if(!emailId.matches(emailPattern)) // checking email pattern
-        {
-            textField.setError(errorMessage2);
-            return "";
-        }
-        else
-        {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
-
-            databaseReference.orderByChild("email").equalTo(emailId).addValueEventListener(new ValueEventListener()
-            {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<Member> list = new ArrayList<>();
-                    if(dataSnapshot.exists()) {
-
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            Member user = postSnapshot.getValue(Member.class);
-                            list.add(user);
-
-                        }
-                        if(id.equals(list.get(0).getId()))
-                        {
-                            value = textField.getText().toString();
-                        }
-                        else {
-                            textField.setError(errorMessage3);
-                            value = "";
-                        }
-                    }
-                    else
-                    {
-                        value = textField.getText().toString();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-            return value;
-
-        }
-    }
 
     public String passwordUpdate(EditText textField,TextView textView,String errorMessage1,String errorMessage2)
     {

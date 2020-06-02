@@ -214,7 +214,7 @@ public class PayFeeFragment extends Fragment {
                         memberPhone.setText(list.get(0).getPhoneNo());
                         memberEmail.setText(list.get(0).getEmail());
                         memberNic.setText(list.get(0).getNicNo());
-                        Picasso.get().load(list.get(0).getImage()).into(memberImage);
+                        memberImage.setImageBitmap(list.get(0).getImage());
                         progressBar.setVisibility(View.GONE);
                         relativeLayout.setVisibility(View.VISIBLE);
 

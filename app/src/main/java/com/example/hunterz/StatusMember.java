@@ -1,5 +1,8 @@
 package com.example.hunterz;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -28,7 +31,6 @@ public class StatusMember extends Fragment {
     ViewPager viewPager;
     RecyclerView recyclerView;
     ArrayList<Member> member;
-    DatabaseReference databaseReference;
     RecycleViewerMember adapterMenu;
     ProgressBar progressBar;
 
@@ -43,49 +45,31 @@ public class StatusMember extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         progressBar=view.findViewById(R.id.progressBar1);
 
-        new Get().execute();
-
+        viewNewMember();
 
         return view;
     }
 
-    class Get extends AsyncTask<String,String,String> {
-        protected void onPreExecute() {
-            //progressBar.setVisibility(View.VISIBLE);
-            super.onPreExecute();
+
+    public void viewNewMember() {
+        ArrayList<Member> member = new ArrayList<>();
+        DatabaseHandler db = new DatabaseHandler(getContext());
+        Cursor res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id");
+
+        while (res.moveToNext()) {
+            byte[] image = res.getBlob(9);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+            member.add(new Member(res.getString(0),res.getString(1),res.getString(4),res.getString(13),
+                    res.getString(5),res.getString(7),res.getString(2),res.getString(3),
+                    res.getString(6), res.getString(14),res.getString(8),bmp));
         }
-        @Override
-        protected String doInBackground(String... strings) {
+        res.close();
 
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+        adapterMenu = new RecycleViewerMember(member,"status",getContext());
+        recyclerView.setAdapter(adapterMenu);
+        progressBar.setVisibility(View.GONE);
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    ArrayList<Member> list = new ArrayList<>();
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Member user=postSnapshot.getValue(Member.class);
-                        list.add(user);
-                    }
-
-                    adapterMenu = new RecycleViewerMember(list,"status",getContext());
-                    recyclerView.setAdapter(adapterMenu);
-                    progressBar.setVisibility(View.GONE);
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-            return null;
-        }
-        protected void onPostExecute(String file_url) {
-
-        }
     }
+
 }

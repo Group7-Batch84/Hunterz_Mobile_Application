@@ -1,6 +1,9 @@
 package com.example.hunterz;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +34,6 @@ public class NewMember extends Fragment {
     ViewPager viewPager;
     RecyclerView recyclerView;
     ArrayList<Member> member;
-    DatabaseReference databaseReference;
     RecycleViewerMember adapterMenu;
     ProgressBar progressBar;
 
@@ -46,49 +48,33 @@ public class NewMember extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         progressBar=view.findViewById(R.id.progressBar1);
 
-        new Get().execute();
+        viewNewMember();
 
         return view;
     }
 
-    class Get extends AsyncTask<String,String,String> {
-        protected void onPreExecute() {
-            //progressBar.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-        @Override
-        protected String doInBackground(String... strings) {
+    public void viewNewMember()
+    {
+        ArrayList<Member> member = new ArrayList<>();
+        DatabaseHandler db = new DatabaseHandler(getContext());
+        Cursor res = db.getMember("SELECT * FROM pendingMember_Table");
 
-            databaseReference = FirebaseDatabase.getInstance().getReference("Pending_Member");
+        while (res.moveToNext())
+        {
+            byte[] image = res.getBlob(10);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    ArrayList<Member> list = new ArrayList<>();
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Member user=postSnapshot.getValue(Member.class);
-                        list.add(user);
-                    }
-
-                    adapterMenu = new RecycleViewerMember(list,"new",getContext());
-                    recyclerView.setAdapter(adapterMenu);
-                    progressBar.setVisibility(View.GONE);
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
-            return null;
-        }
-        protected void onPostExecute(String file_url) {
+            member.add(new Member(res.getString(0),res.getString(1),res.getString(4),res.getString(9),
+                    res.getString(5),res.getString(7),res.getString(2),res.getString(3),
+                    res.getString(6), res.getString(8),bmp));
 
         }
+        res.close();
+
+        adapterMenu = new RecycleViewerMember(member,"new",getContext());
+        recyclerView.setAdapter(adapterMenu);
+        progressBar.setVisibility(View.GONE);
+
     }
 
 }
