@@ -22,6 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String authenticationTable = "authentication_Table";  // Authentication Table
     private static final String pendingMemberTable = "pendingMember_Table";  // Pending Member Table
     private static final String paymentTable = "payment_Table";  // Payment Table
+    private static final String postTable = "post_Table";  // Post Table
 
 
     public DatabaseHandler(Context context) {
@@ -80,6 +81,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 ")";
         db.execSQL(PendingMemberTable);   // Create Pending Member Table
 
+        String PaymentTable = "CREATE TABLE "+paymentTable+"("+
+                "payment_id TEXT PRIMARY KEY ,"+
+                "payment_month TEXT ,"+
+                "payment_date TEXT ,"+
+                "payment_amount REAL,"+
+                "admin_id TEXT,"+
+                "CONSTRAINT payment_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+        db.execSQL(PaymentTable);   // Create Payment Table
+
+        String PostTable = "CREATE TABLE "+postTable+"("+
+                "post_id TEXT PRIMARY KEY ,"+
+                "post_date TEXT ,"+
+                "post_subject TEXT ,"+
+                "post_message TEXT,"+
+                "post_image BLOB,"+
+                "admin_id TEXT,"+
+                "CONSTRAINT post_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+        db.execSQL(PostTable);   // Create Post Table
+
     }
 
     @Override
@@ -88,6 +108,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+authenticationTable);
         db.execSQL("DROP TABLE IF EXISTS "+pendingMemberTable);
         db.execSQL("DROP TABLE IF EXISTS "+adminTable);
+        db.execSQL("DROP TABLE IF EXISTS "+paymentTable);
+        db.execSQL("DROP TABLE IF EXISTS "+postTable);
         onCreate(db);
     }
 
@@ -269,6 +291,72 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(pendingMemberTable, "member_id='" + member_id+"'", null) > 0;
+
+    }
+
+    // Insert Into Payment Table
+    public boolean insertPayemnt(String payment_id, String payment_month, String payment_date,Double payment_amount, String admin_id)
+    {
+        SQLiteDatabase dbHandlerPayment = this.getWritableDatabase();
+        // Member Table
+        ContentValues contentValuesPayment = new ContentValues();
+        contentValuesPayment.put("payment_id",payment_id);
+        contentValuesPayment.put("payment_month",payment_month);
+        contentValuesPayment.put("payment_date",payment_date);
+        contentValuesPayment.put("payment_amount",payment_amount);
+        contentValuesPayment.put("admin_id",admin_id);
+
+        long resultPayment = dbHandlerPayment.insert(paymentTable,null,contentValuesPayment);
+
+        dbHandlerPayment.close();
+
+        if(resultPayment == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
+    }
+
+
+    // Insert Into Payment Table
+    public boolean insertPost(String post_id, String post_date,String post_subject,String post_message,byte[] post_image, String admin_id)
+    {
+        SQLiteDatabase dbHandlerPost = this.getWritableDatabase();
+        // Member Table
+        ContentValues contentValuesPost = new ContentValues();
+        contentValuesPost.put("post_id",post_id);
+        contentValuesPost.put("post_date",post_date);
+        contentValuesPost.put("post_subject",post_subject);
+        contentValuesPost.put("post_message",post_message);
+        contentValuesPost.put("post_image",post_image);
+        contentValuesPost.put("admin_id",admin_id);
+
+        long resultPost = dbHandlerPost.insert(postTable,null,contentValuesPost);
+
+        dbHandlerPost.close();
+
+        if(resultPost == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
+    }
+
+    // Delete pending Member
+    public boolean deletePost(String post_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(postTable, "post_id='" + post_id+"'", null) > 0;
 
     }
 

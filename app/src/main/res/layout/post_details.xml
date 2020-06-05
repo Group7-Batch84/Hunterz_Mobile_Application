@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/detailPostLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="500dp"
+    android:layout_gravity="center"
+    android:background="@drawable/detail_background">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentPaddingTop="10dp"
+        app:contentPaddingRight="10dp"
+        app:contentPaddingLeft="10dp"
+        app:contentPaddingBottom="10dp"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <!--Post Image-->
+        <ImageView
+            android:id="@+id/post_imageU"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/imageview_border"
+            android:contentDescription="@string/app_name"
+            />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!--Post Date-->
+                <TextView
+                    android:id="@+id/post_date_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/post_date"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:id="@+id/post_dateM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="2020.02.04"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".Post">
+
+            <TextView
+                android:id="@+id/post_subject_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/post_subject_title"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/post_subject"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:accessibilityLiveRegion="none"
+                android:drawableStart="@drawable/ic_subject_28dp"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:inputType="none"
+                android:editable="false"
+                android:hint="@string/post_subject_hint"
+                android:layout_marginTop="5dp"
+                android:importantForAutofill="no"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_below="@+id/post_subject_title" />
+
+            <TextView
+                android:id="@+id/post_description_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:clickable="false"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/post_description_title"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/post_subject"
+                />
+
+            <EditText
+                android:id="@+id/post_description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:accessibilityLiveRegion="none"
+                android:drawableStart="@drawable/ic_post_description_28dp"
+                android:drawablePadding="10dp"
+                android:editable="false"
+                android:ems="10"
+                android:hint="@string/post_description_hint"
+                android:layout_marginTop="5dp"
+                android:importantForAutofill="no"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_below="@+id/post_description_title" />
+
+                    <Button
+                        android:id="@+id/post_delete_btn"
+                        android:layout_marginStart="10dp"
+                        android:layout_alignParentTop="false"
+                        android:layout_weight="0.5"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/post_description"
+                        android:background="@drawable/danger_button"
+                        android:text="@string/post_delete_btn"
+                        android:textColor="#EE1809"
+                        android:textSize="14sp"
+                        android:layout_width="match_parent"
+                        />
+
+            </RelativeLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

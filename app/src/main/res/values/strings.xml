@@ -126,16 +126,16 @@
     <!--Member Status-->
     <string name="new_member">New Member</string>
     <string name="member_status">Member Status</string>
-                <!--New Member-->
+    <!--New Member-->
     <string name="accept_btn">ACCEPT</string>
     <string name="refuse_btn">REFUSE</string>
-            <!--Status Member-->
+    <!--Status Member-->
     <string name="activate_btn">ACTIVATE</string>
     <string name="deactivate_btn">DEACTIVATE</string>
 
     <!--PAY FEE-->
     <string name="fee_month_title">Select The Month</string>
-            <!--Search & Update Member-->
+    <!--Search & Update Member-->
     <string-array name="month_array">    <!--Drop Down List-->
         <item>Month</item>
         <item>January</item>
@@ -155,6 +155,29 @@
     <string name="pay_amount_hint">Enter Pay Amount</string>
     <string name="pay_btn">PAY</string>
     <string name="month_errorMessage">Select A Payment Month</string>
+    <string name="amount_errorMessage1">Enter Month Payment</string>
+    <string name="amount_errorMessage2">Amount Can\'t be \'0\' or below</string>
+    <string name="amount_errorMessage3">Pay Amount Need to be \'Rs.1500\'</string>
+
+
+    <!--POST-->
+    <string name="send_post">Send Post</string>
+    <string name="delete_post">View &amp; Delete Post</string>
+            <!--Send Post-->
+    <string name="post_subject_title">Post Subject</string>
+    <string name="post_subject_hint">Enter Post Subject</string>
+    <string name="post_description_title">Post Description</string>
+    <string name="post_description_hint">Enter Post Description</string>
+    <string name="post_add_btn">SEND POST</string>
+    <string name="post_subject_errorMessage1">Enter Post Subject</string>
+    <string name="post_subject_errorMessage2">Characters Need to be \'100\' or Below</string>
+    <string name="post_description_errorMessage1">Enter Post Description</string>
+    <string name="post_description_errorMessage2">Characters Need to be \'300\' or Below</string>
+    <string name="post_image_errorMessage">Upload Post Image</string>
+            <!--Modify Post-->
+    <string name="post_date">Posted Date:</string>
+    <string name="post_update_btn">Update Post</string>
+    <string name="post_delete_btn">Delete Post</string>
 
 
 

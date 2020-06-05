@@ -48,7 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.example.hunterz.R.id.member_image;
-
+import static java.security.AccessController.getContext;
 
 
 public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMember.ViewHolder> {
@@ -225,7 +225,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         if (type.equals("view")) {
             holder.memberImage.setImageBitmap(member.get(position).getImage());
@@ -276,13 +276,13 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         else if(type.equals("status"))
         {
             id = member.get(position).getId();
-
+            final String idStatus = id;
             holder.memberImageStatus.setImageBitmap(member.get(position).getImage());
             holder.memberNameStatus.setText(member.get(position).getFullName());
             holder.memberNicNoStatus.setText(member.get(position).getNicNo());
             holder.memberEmailStatus.setText(member.get(position).getEmail());
 
-            String status = member.get(position).getStatus();
+            final String status = member.get(position).getStatus();
 
             if (status.equals("Activate")) {
                 holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
@@ -293,7 +293,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             holder.activateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    changeStatus("Activate",id);
+                    changeStatus("Activate",idStatus);
+                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
                     Toast.makeText(v.getContext(),"Activate", Toast.LENGTH_LONG).show();
                 }
             });
@@ -301,7 +302,8 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
             holder.deactivateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    changeStatus("Deactivate",id);
+                    changeStatus("Deactivate",idStatus);
+                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#b42959"));
                     Toast.makeText(v.getContext(),"Deactivate", Toast.LENGTH_LONG).show();
                 }
             });
@@ -363,10 +365,10 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
 
         if(result == true)
         {
-            Toast.makeText(context,"Member Status Changed!", LENGTH_LONG).show();
+          //  Toast.makeText(context,"Member Status Changed!", LENGTH_LONG).show();
         } else
         {
-            Toast.makeText(context,"Error While Changing", LENGTH_LONG).show();
+            //Toast.makeText(context,"Error While Changing", LENGTH_LONG).show();
         }
     }
 

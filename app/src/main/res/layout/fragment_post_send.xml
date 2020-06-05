@@ -1,0 +1,114 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".Post">
+
+        <TextView
+            android:id="@+id/post_subject_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/post_subject_title"
+            android:layout_marginTop="20dp"
+            />
+
+        <EditText
+            android:id="@+id/post_subject_txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:accessibilityLiveRegion="none"
+            android:drawableStart="@drawable/ic_subject_28dp"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="@string/post_subject_hint"
+            android:layout_marginTop="5dp"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_below="@+id/post_subject_title" />
+
+        <TextView
+            android:id="@+id/post_description_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/post_description_title"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/post_subject_txt"
+            />
+
+        <EditText
+            android:id="@+id/post_description_txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:accessibilityLiveRegion="none"
+            android:drawableStart="@drawable/ic_post_description_28dp"
+            android:drawablePadding="10dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:hint="@string/post_description_hint"
+            android:layout_marginTop="5dp"
+            android:importantForAutofill="no"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_below="@+id/post_description_title" />
+
+        <Button
+            android:id="@+id/add_image_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="32dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/sign_up_button"
+            android:text="@string/add_image_btn"
+            android:textColor="#4A84FF"
+            android:layout_below="@+id/post_description_txt"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/imageview_border"
+            android:contentDescription="@string/app_name"
+            android:layout_below="@+id/add_image_btn"
+            />
+
+        <Button
+            android:id="@+id/send_post_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/custom_button"
+            android:text="@string/post_add_btn"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_below="@+id/post_image"
+            />
+
+    </RelativeLayout>
+</ScrollView>

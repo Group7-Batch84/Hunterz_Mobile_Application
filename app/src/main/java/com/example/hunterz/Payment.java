@@ -2,15 +2,13 @@ package com.example.hunterz;
 
 public class Payment {
 
-    private String paymentId,month,id,paymentDate,amount;
+    private String paymentId,month,memberid,paymentDate;
+    private double amount;
 
-    public Payment() {
-    }
-
-    public Payment(String paymentId, String month, String id, String paymentDate, String amount) {
+    public Payment(String paymentId, String month, String memberid, String paymentDate, double amount) {
         this.paymentId = paymentId;
         this.month = month;
-        this.id = id;
+        this.memberid = memberid;
         this.paymentDate = paymentDate;
         this.amount = amount;
     }
@@ -31,12 +29,12 @@ public class Payment {
         this.month = month;
     }
 
-    public String getId() {
-        return id;
+    public String getMemberid() {
+        return memberid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMemberid(String memberid) {
+        this.memberid = memberid;
     }
 
     public String getPaymentDate() {
@@ -47,11 +45,11 @@ public class Payment {
         this.paymentDate = paymentDate;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

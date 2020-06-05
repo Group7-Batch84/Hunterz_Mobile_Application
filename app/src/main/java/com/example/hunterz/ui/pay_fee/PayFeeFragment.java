@@ -1,6 +1,8 @@
 package com.example.hunterz.ui.pay_fee;
 
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,26 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.example.hunterz.Member;
-import com.example.hunterz.Payment;
+import com.example.hunterz.DatabaseHandler;
 import com.example.hunterz.R;
-import com.example.hunterz.RecycleViewerMember;
 import com.example.hunterz.Validation;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,10 +39,9 @@ public class PayFeeFragment extends Fragment {
     private TextView memberName,memberEmail,memberPhone,memberNic,monthError;
     private Button payBtn,searchBtn,clearBtn;
     private RelativeLayout relativeLayout;
-    private String selectedSearchType,IDS,selectedMonth;
+    private String selectedSearchType,memberID,selectedMonth;
     private ProgressBar progressBar;
 
-    DatabaseReference databaseReference,databaseReferencePayment;
 
     Validation valid = new Validation();
 
@@ -74,7 +65,7 @@ public class PayFeeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar1);
         monthError = view.findViewById(R.id.month_error);
 
-        generateID("PAY",3,"Payment");
+        generateID("PAY","select payment_id from payment_Table");
 
         // Drop down list (Search Type)
         searchType = view.findViewById(R.id.select_search);
@@ -123,7 +114,6 @@ public class PayFeeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 selectedMonth = parent.getItemAtPosition(position).toString().trim();
-
             }
 
             @Override
@@ -140,7 +130,8 @@ public class PayFeeFragment extends Fragment {
 //                search = searchTxt.getText().toString();
                 if(!searchTxt.getText().toString().equals(""))
                 {
-                    new Get().execute();
+                    progressBar.setVisibility(View.VISIBLE);
+                    search(selectedSearchType);
                 }
                 else
                 {
@@ -154,9 +145,7 @@ public class PayFeeFragment extends Fragment {
         payBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
-                valid.payMonth(monthError,selectedMonth,getString(R.string.month_errorMessage));
-
+                addPayment();
             }
         });
 
@@ -171,67 +160,52 @@ public class PayFeeFragment extends Fragment {
         return view;
     }
 
-    class Get extends AsyncTask<String,String,String> {
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-        }
-        @Override
-        protected String doInBackground(String... strings) {
-
-            search(selectedSearchType);
-            return null;
-        }
-        protected void onPostExecute(String file_url) {
-
-        }
-    }
-
 
     public void search(String searchType)
     {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Member");
+        DatabaseHandler db=new DatabaseHandler(getContext());
+        Cursor res =null;
 
-            databaseReference.orderByChild(searchType).equalTo(searchTxt.getText().toString().toUpperCase())
-                    .addValueEventListener(new ValueEventListener()
+        if(!searchTxt.getText().toString().equals(""))
+        {
+            if(searchType.equals("id"))
             {
+                res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id AND member_Table.member_id='" + searchTxt.getText().toString().toUpperCase() + "'");
+            }
+            if(searchType.equals("nicNo"))
+            {
+                res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id AND member_Table.member_nic='" + searchTxt.getText().toString().toUpperCase() + "'");
+            }
+            if(res.moveToFirst())
+            {
+                memberID = res.getString(0);
+                searchTxt.setEnabled(false);
+                memberName.setText(res.getString(1));
+                memberPhone.setText(res.getString(4));
+                memberEmail.setText(res.getString(13));
+                memberNic.setText(res.getString(5));
+                memberImage.setImageBitmap(printImage(res.getBlob(9)));
+                progressBar.setVisibility(View.GONE);
+                relativeLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                searchTxt.setError("Invalid Search Value");
+            }
+        }
+        else
+        {
+            searchTxt.setError("Search Field is Empty");
+        }
 
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+    }
 
-                    if(dataSnapshot.exists()) {
+    private Bitmap printImage(byte[] imageValue)  // To print the image. Convert byte to Bitmap
+    {
+        byte[] image = imageValue;
+        Bitmap bmImage = BitmapFactory.decodeByteArray(image, 0, image.length);
+        return bmImage;
 
-                        progressBar.setVisibility(View.VISIBLE);
-                        ArrayList<Member> list = new ArrayList<>();
-
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            Member user = postSnapshot.getValue(Member.class);
-                            list.add(user);
-                        }
-
-                        searchTxt.setEnabled(false);
-                        memberName.setText(list.get(0).getFullName());
-                        memberPhone.setText(list.get(0).getPhoneNo());
-                        memberEmail.setText(list.get(0).getEmail());
-                        memberNic.setText(list.get(0).getNicNo());
-                        memberImage.setImageBitmap(list.get(0).getImage());
-                        progressBar.setVisibility(View.GONE);
-                        relativeLayout.setVisibility(View.VISIBLE);
-
-
-                    }
-                    else
-                    {
-                        searchTxt.setError("Invalid Search Value");
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.e("TAG", "Failed to read user", error.toException());
-                }
-            });
     }
 
 
@@ -244,68 +218,102 @@ public class PayFeeFragment extends Fragment {
         memberPhone.setText("");
         memberEmail.setText("");
         memberNic.setText("");
+        amountTxt.getText().clear();
+        selectMonth.setSelection(0);
         memberImage.setImageDrawable(null);
     }
 
-    public void generateID(final String id,final int length,String table) // Auto Generate ID
+    public String generateID(String id, String query) // Auto Generate ID
     {
-        databaseReferencePayment = FirebaseDatabase.getInstance().getReference(table);
+        DatabaseHandler db = new DatabaseHandler(getContext());
 
-        databaseReferencePayment.addValueEventListener(new ValueEventListener() {
+        String IDS = "";
+        try
+        {
+            Cursor cursor = db.getId(query);
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int count = 0;
-                String idType = "";
-                ArrayList<Member> list = new ArrayList<>();
+            String idType = "";
+            int count=0;
 
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Member user = postSnapshot.getValue(Member.class);
-                    list.add(user);
-                    count++;
-                }
-
-                if (count > 0) {
-
-                    idType = list.get(list.size() - 1).getId().toString();
-                    String x = idType.substring(length);
-                    int ID = Integer.parseInt(x);
-
-                    if (ID > 0 && ID < 9) {
-                        ID = ID + 1;
-                        IDS = id + "000" + ID;
-                    } else if (ID >= 9 && ID < 99) {
-                        ID = ID + 1;
-                        IDS = id + "00" + ID;
-                    } else if (ID >= 99 && ID < 999) {
-                        ID = ID + 1;
-                        IDS = id +"0"+ ID;
-                    } else if (ID >= 999) {
-                        ID = ID + 1;
-                        IDS = id + ID;
-                    }
-
-                } else {
-                    IDS = id + "0001";
-                }
-
-//                memberId.setText(IDS);
+            while (cursor.moveToNext())
+            {
+                idType = cursor.getString(0);
+                count++;
             }
+            if (count > 0)
+            {
+                String x = idType.substring(3);
+                int ID = Integer.parseInt(x);
 
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("TAG", "Failed to read user", error.toException());
+                if (ID > 0 && ID < 9)
+                {
+                    ID = ID + 1;
+                    IDS = id+"00" + ID;
+                }
+                else if (ID >= 9 && ID < 99)
+                {
+                    ID = ID + 1;
+                    IDS = id+"0" + ID;
+                }
+                else if (ID >= 99)
+                {
+                    ID = ID + 1;
+                    IDS = id + ID;
+                }
             }
-
-        });
+            else
+            {
+                IDS = id + "001";
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR ----",e.toString());
+        }
+        return IDS;
     }
 
     public void addPayment()
     {
-        Payment payment = new Payment();
-        databaseReferencePayment.child(IDS).setValue(payment);
+        DatabaseHandler dbHandler = new DatabaseHandler(getContext());
+
+        Double amount = 0.0;
+        String[] value = new String[4];
+        int count = 0;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        simpleDateFormat.format(new Date());
+
+        value[0] = generateID("PAY","select payment_id from payment_Table");
+        value[1] = memberID;
+        value[2] = valid.payMonth(monthError,selectedMonth,getString(R.string.month_errorMessage));
+        amount = valid.offValue(amountTxt,getString(R.string.amount_errorMessage1),getString(R.string.amount_errorMessage2),getString(R.string.amount_errorMessage3));
+        value[3] = simpleDateFormat.format(new Date());
+
+        for(int i = 0; i < value.length;i++)
+        {
+            if(value[i] != "")
+            {
+                count++;
+            }
+        }
+
+        if(count == 4)
+        {
+            if(amount != 0.0)
+            {
+                boolean res = dbHandler.insertPayemnt(value[0],value[2],value[3],amount,"admin001"); // Insert Method
+
+                if(res == true) {
+                    Toast.makeText(getContext(),"Successfully Paid!", Toast.LENGTH_LONG).show();
+                    clearDetails(); // Clear all input field and image view
+                    generateID("PAY","select payment_id from payment_Table");
+                } else {
+                    Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
+
 
 }

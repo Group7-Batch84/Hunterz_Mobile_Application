@@ -25,13 +25,7 @@ public class PaymentFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_pay_fee, container, false);
 
-        final TextView textView = view.findViewById(R.id.text_send);
-        paymentViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+       
 
 
         return view;

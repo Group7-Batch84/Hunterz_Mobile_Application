@@ -157,16 +157,24 @@ public class AddMember extends Fragment {
 
                     selectedImage.compress(Bitmap.CompressFormat.PNG,100,stream);
                     byte[] byteArray=stream.toByteArray(); // To get the Image
+                    long sizeOfImage = byteArray.length;
 
-                    boolean res = dbHandler.insertMember(value[0],value[1],value[6],value[7],value[2],value[4],value[8],value[5],value[11],byteArray,
-                            "admin001",authId,value[3],value[9],"Member"); // Insert Method
+                    if((sizeOfImage  / 1024) < 1024)
+                    {
+                        boolean res = dbHandler.insertMember(value[0],value[1],value[6],value[7],value[2],value[4],value[8],value[5],value[11],byteArray,
+                                "admin001",authId,value[3],value[9],"Member"); // Insert Method
 
-                    if(res == true) {
-                        Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
-                        clearDetails(); // Clear all input field and image view
-                        memberId.setText(generateID("LCC","select member_id from member_Table")); // update the Id after adding an item
-                    } else {
-                        Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
+                        if(res == true) {
+                            Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
+                            clearDetails(); // Clear all input field and image view
+                            memberId.setText(generateID("LCC","select member_id from member_Table")); // update the Id after adding an item
+                        } else {
+                            Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(),"Image Is Too Large!", Toast.LENGTH_LONG).show();
                     }
                 }
             }

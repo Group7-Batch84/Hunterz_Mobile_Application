@@ -1,5 +1,6 @@
 package com.example.hunterz;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,17 +23,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
 
 
 public class StatusMember extends Fragment {
 
     ViewPager viewPager;
     RecyclerView recyclerView;
-    ArrayList<Member> member;
+    ArrayList<Member> member=new ArrayList<>();
     RecycleViewerMember adapterMenu;
     ProgressBar progressBar;
+    DatabaseHandler db ;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,16 +53,16 @@ public class StatusMember extends Fragment {
         recyclerView=view.findViewById(R.id.memberStatus);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         progressBar=view.findViewById(R.id.progressBar1);
+        db = new DatabaseHandler(getContext());
+
 
         viewNewMember();
 
         return view;
     }
 
-
     public void viewNewMember() {
-        ArrayList<Member> member = new ArrayList<>();
-        DatabaseHandler db = new DatabaseHandler(getContext());
+
         Cursor res = db.getMember("SELECT * FROM member_Table,authentication_Table WHERE member_Table.authentication_id = authentication_Table.authentication_id");
 
         while (res.moveToNext()) {
@@ -68,6 +77,7 @@ public class StatusMember extends Fragment {
 
         adapterMenu = new RecycleViewerMember(member,"status",getContext());
         recyclerView.setAdapter(adapterMenu);
+       // adapterMenu.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
 
     }

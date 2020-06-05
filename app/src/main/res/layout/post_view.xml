@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:id="@+id/post_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+
+        <!--admin Image-->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/admin_image"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="3dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/hunterz_logo"
+            android:elevation="1dp"
+            />
+
+        <!--Post Subject-->
+        <TextView
+            android:id="@+id/post_subject"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/admin_image"
+            android:layout_toRightOf="@+id/member_image"
+            android:text="Game"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Post Image-->
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/cricket"
+            android:background="@drawable/imageview_border"
+            android:contentDescription="@string/app_name"
+            android:layout_below="@+id/admin_image"
+            />
+
+        <!--Post Description-->
+        <TextView
+            android:id="@+id/post_date"
+            android:padding="1dp"
+            android:textStyle="bold"
+            android:textColor="#A09191"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentRight="true"
+            android:text="2020.06.04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_image"
+            />
+
+        <!--Post Description-->
+        <TextView
+            android:id="@+id/post_description"
+            android:padding="1dp"
+            android:textStyle="bold"
+            android:textColor="#867979"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:text="The articles in English are the definite article the and the indefinite articles a and an"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_date"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

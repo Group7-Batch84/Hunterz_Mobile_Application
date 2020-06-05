@@ -247,7 +247,7 @@ public class Validation {
                 textField.setError(errorMessage2);
                 return 0;
             }
-            else if(amount >= 100)
+            else if(amount < 1500)
             {
                 textField.setError(errorMessage3);
                 return 0;
@@ -390,6 +390,7 @@ public class Validation {
         }
         else
         {
+            errorText.setText("");
             return month;
         }
     }
@@ -472,8 +473,6 @@ public class Validation {
         }
     }
 
-
-
     public String passwordUpdate(EditText textField,TextView textView,String errorMessage1,String errorMessage2)
     {
         String password = "(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-]).{8}";
@@ -493,6 +492,36 @@ public class Validation {
         {
             textView.setText(passWord);
             return passWord;
+        }
+    }
+
+    // Post Validation
+
+    public String getPostSubject(EditText textField,String errorMessage1,String errorMessage2,int letter)
+    {
+        String postSubject = textField.getText().toString();
+        int count = 0;
+
+        for (int i = 0; i < postSubject.length();i++)
+        {
+            if(postSubject.charAt(i) != ' ') {
+                count++;
+            }
+        }
+
+        if(postSubject.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            return "";
+        }
+        else if(count > letter)
+        {
+            textField.setError(errorMessage2);
+            return "";
+        }
+        else
+        {
+            return postSubject;
         }
     }
 
