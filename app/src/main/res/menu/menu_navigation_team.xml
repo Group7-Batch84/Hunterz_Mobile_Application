@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/add_new_team"
+        android:title="@string/add_new_team"
+        android:icon="@drawable/ic_add_team_26dp"/>
+    <item
+        android:id="@+id/view_team"
+        android:title="@string/view_team"
+        android:icon="@drawable/ic_view_team_26dp"/>
+</menu>

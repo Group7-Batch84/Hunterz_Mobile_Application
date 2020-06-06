@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddNewTeam">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cricket_btn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="10dp"
+        android:layout_weight="1"
+        >
+
+            <TextView
+                android:id="@+id/cricket_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:scaleType="fitXY"
+                android:background="@drawable/cricket_cover"
+                android:fontFamily="sans-serif"
+                android:text="@string/cricket_title"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/football_btn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:id="@+id/football_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/football_cover"
+            android:fontFamily="sans-serif"
+            android:text="@string/football_title"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/volleyball_btn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="10dp"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:id="@+id/volleyball_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/volleyball_cover"
+            android:fontFamily="sans-serif"
+            android:scaleType="fitXY"
+            android:text="@string/volleyball_title"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

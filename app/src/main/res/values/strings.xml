@@ -163,7 +163,7 @@
     <!--POST-->
     <string name="send_post">Send Post</string>
     <string name="delete_post">View &amp; Delete Post</string>
-            <!--Send Post-->
+    <!--Send Post-->
     <string name="post_subject_title">Post Subject</string>
     <string name="post_subject_hint">Enter Post Subject</string>
     <string name="post_description_title">Post Description</string>
@@ -174,11 +174,18 @@
     <string name="post_description_errorMessage1">Enter Post Description</string>
     <string name="post_description_errorMessage2">Characters Need to be \'300\' or Below</string>
     <string name="post_image_errorMessage">Upload Post Image</string>
-            <!--Modify Post-->
+    <!--Modify Post-->
     <string name="post_date">Posted Date:</string>
     <string name="post_update_btn">Update Post</string>
     <string name="post_delete_btn">Delete Post</string>
 
+    <!--MANAGE TEAM-->
+    <string name="add_new_team">Add New Team</string>
+    <string name="view_team">View Teams</string>
+        <!--Add New Team-->
+    <string name="cricket_title">CRICKET</string>
+    <string name="football_title">FOOTBALL</string>
+    <string name="volleyball_title">VOLLEY BALL</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

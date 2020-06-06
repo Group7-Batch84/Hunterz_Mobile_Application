@@ -5,49 +5,39 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.hunterz.AddMember;
+import com.example.hunterz.AddNewTeam;
+import com.example.hunterz.NewMember;
 import com.example.hunterz.R;
-import com.example.hunterz.SearchMember;
-import com.example.hunterz.ViewMember;
-import com.example.hunterz.ui.send_notification.SendNotificationViewModel;
+import com.example.hunterz.StatusMember;
+import com.example.hunterz.ViewTeam;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ManageTeamFragment  extends Fragment {
+public class ManageTeamFragment extends Fragment {
 
-    private SendNotificationViewModel sendNotificationViewModel;
+    private ManageTeamViewModel manageTeamViewModel;
     BottomNavigationView bottomNavigationView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sendNotificationViewModel = ViewModelProviders.of(this).get(SendNotificationViewModel.class);
+        manageTeamViewModel = ViewModelProviders.of(this).get(ManageTeamViewModel.class);
 
         View view = inflater.inflate(R.layout.fragment_manage_team, container, false);
 
-//        final TextView textView = view.findViewById(R.id.text_slideshow);
-//        sendNotificationViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
 
         // Bottom Navigation
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.add_member);
+        bottomNavigationView.setSelectedItemId(R.id.add_new_team);
 
         if(savedInstanceState == null)
         {
-            getFragmentManager().beginTransaction().replace(R.id.frameLayout_member,new AddMember()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.frameLayout_team,new AddNewTeam()).commit();
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,22 +49,19 @@ public class ManageTeamFragment  extends Fragment {
 
                 switch (menuItem.getItemId())
                 {
-                    case R.id.add_member:
-                        fragment = new AddMember();
+                    case R.id.add_new_team:
+                        fragment = new AddNewTeam();
                         break;
 
-                    case R.id.view_member:
-                        fragment = new ViewMember();
-                        break;
-
-                    case R.id.search_member:
-                        fragment = new SearchMember();
+                    case R.id.view_team:
+                        fragment = new ViewTeam();
                         break;
                 }
-                getFragmentManager().beginTransaction().replace(R.id.frameLayout_member,fragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frameLayout_team,fragment).commit();
                 return true;
             }
         });
+
 
         return view;
     }

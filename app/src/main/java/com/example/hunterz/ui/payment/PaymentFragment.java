@@ -23,7 +23,7 @@ public class PaymentFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
 
-        View view = inflater.inflate(R.layout.fragment_pay_fee, container, false);
+        View view = inflater.inflate(R.layout.fragment_payment, container, false);
 
        
 
