@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -294,16 +296,17 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                 @Override
                 public void onClick(View v) {
                     changeStatus("Activate",idStatus);
-                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
+                   // holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
+
                     Toast.makeText(v.getContext(),"Activate", Toast.LENGTH_LONG).show();
                 }
             });
-
             holder.deactivateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     changeStatus("Deactivate",idStatus);
-                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#b42959"));
+                   // holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#b42959"));
+                    notifyDataSetChanged();
                     Toast.makeText(v.getContext(),"Deactivate", Toast.LENGTH_LONG).show();
                 }
             });
