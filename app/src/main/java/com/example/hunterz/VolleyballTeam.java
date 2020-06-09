@@ -148,7 +148,7 @@ public class VolleyballTeam extends Fragment {
                 if(res == true) {
                     Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
                     clearDetails(); // Clear all input field and image view
-                    teamId.setText(generateID("FTM","select team_id from football_Table")); // update the team Id after adding a team
+                    teamId.setText(generateID("FTM","select team_id from volleyball_Table")); // update the team Id after adding a team
                 } else {
                     Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
                 }
