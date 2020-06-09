@@ -432,7 +432,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Insert into Cricket Table
     public boolean insertCricketTeam(String team_id, String team_name, String captain, String player2, String player3, String player4, String player5,
                                      String player6, String player7, String player8, String player9, String player10, String player11, String player12,
-                                     String player13, String player14, String admin_id, String addmin001)
+                                     String player13, String player14,String player15, String admin_id)
     {
         SQLiteDatabase dbHandlerCricket = this.getWritableDatabase();
         // Cricket Table
@@ -453,6 +453,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValuesCricket.put("player12",player12);
         contentValuesCricket.put("player13",player13);
         contentValuesCricket.put("player14",player14);
+        contentValuesCricket.put("player15",player15);
         contentValuesCricket.put("admin_id",admin_id);
 
         long resultCricket = dbHandlerCricket.insert(cricketTable,null,contentValuesCricket);
@@ -482,7 +483,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Insert into Football Table
     public boolean insertFootballTeam(String team_id, String team_name, String captain, String player2, String player3, String player4, String player5,
                                       String player6, String player7, String player8, String player9, String player10, String player11, String player12,
-                                      String player13, String player14, String admin_id, String admin001)
+                                      String player13, String player14,String player15, String admin_id)
     {
         SQLiteDatabase dbHandlerFootball = this.getWritableDatabase();
         // Cricket Table
@@ -503,6 +504,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValuesFootabll.put("player12",player12);
         contentValuesFootabll.put("player13",player13);
         contentValuesFootabll.put("player14",player14);
+        contentValuesFootabll.put("player15",player15);
         contentValuesFootabll.put("admin_id",admin_id);
 
         long resultCricket = dbHandlerFootball.insert(footballTable,null,contentValuesFootabll);
@@ -528,28 +530,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                       String player6,String player7,String player8,String player9,String player10,String player11,String player12,
                                         String admin_id)
     {
-        SQLiteDatabase dbHandlerFootball = this.getWritableDatabase();
+        SQLiteDatabase dbHandlerVolleyball = this.getWritableDatabase();
         // Cricket Table
-        ContentValues contentValuesFootabll = new ContentValues();
-        contentValuesFootabll.put("team_id",team_id);
-        contentValuesFootabll.put("team_name",team_name);
-        contentValuesFootabll.put("captain",captain);
-        contentValuesFootabll.put("player2",player2);
-        contentValuesFootabll.put("player3",player3);
-        contentValuesFootabll.put("player4",player4);
-        contentValuesFootabll.put("player5",player5);
-        contentValuesFootabll.put("player6",player6);
-        contentValuesFootabll.put("player7",player7);
-        contentValuesFootabll.put("player8",player8);
-        contentValuesFootabll.put("player9",player9);
-        contentValuesFootabll.put("player10",player10);
-        contentValuesFootabll.put("player11",player11);
-        contentValuesFootabll.put("player12",player12);
-        contentValuesFootabll.put("admin_id",admin_id);
+        ContentValues contentValuesVolleyball = new ContentValues();
+        contentValuesVolleyball.put("team_id",team_id);
+        contentValuesVolleyball.put("team_name",team_name);
+        contentValuesVolleyball.put("captain",captain);
+        contentValuesVolleyball.put("player2",player2);
+        contentValuesVolleyball.put("player3",player3);
+        contentValuesVolleyball.put("player4",player4);
+        contentValuesVolleyball.put("player5",player5);
+        contentValuesVolleyball.put("player6",player6);
+        contentValuesVolleyball.put("player7",player7);
+        contentValuesVolleyball.put("player8",player8);
+        contentValuesVolleyball.put("player9",player9);
+        contentValuesVolleyball.put("player10",player10);
+        contentValuesVolleyball.put("player11",player11);
+        contentValuesVolleyball.put("player12",player12);
+        contentValuesVolleyball.put("admin_id",admin_id);
 
-        long resultCricket = dbHandlerFootball.insert(footballTable,null,contentValuesFootabll);
+        long resultCricket = dbHandlerVolleyball.insert(volleyballTable,null,contentValuesVolleyball);
 
-        dbHandlerFootball.close();
+        dbHandlerVolleyball.close();
 
         if(resultCricket == -1)
         {
@@ -561,6 +563,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.d("Message","Successfully Added");
             return true;
         }
+    }
+
+    public Cursor getTeam(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
     }
 
 }

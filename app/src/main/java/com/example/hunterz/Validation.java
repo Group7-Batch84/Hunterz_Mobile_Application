@@ -133,10 +133,22 @@ public class Validation {
         }
     }
 
+    public int getCharacter(String value)
+    {
+        int count = 0;
+
+        for(int i = 0; i < value.length(); i++)
+        {
+            count++;
+        }
+        return count;
+    }
+
     public String nicNumber(EditText textField, String errorMessage1, String errorMessage2,String errorMessage3,boolean ifExists)
     {
         String nicNo = textField.getText().toString();
         String nicPattern = "[0-9]{9}[x|X|v|V]$";
+
 
         if(nicNo.isEmpty())
         {
@@ -145,8 +157,23 @@ public class Validation {
         }
         else if(!nicNo.matches(nicPattern))
         {
-            textField.setError(errorMessage2);
-            return "";
+            if(15 != getCharacter(nicNo))
+            {
+                textField.setError(errorMessage2);
+                return "";
+            }
+            else
+            {
+                if(ifExists) // checking whether email is exist
+                {
+                    textField.setError(errorMessage3);
+                    return "";
+                }
+                else
+                {
+                    return nicNo;
+                }
+            }
         }
         else
         {
@@ -394,7 +421,7 @@ public class Validation {
     }
 
 
-    //  Update Validation
+    //  Update Validation Email
 
     public String emailIdCheckUpdate(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,boolean ifExists,
                                      boolean getUpdate)
@@ -433,6 +460,7 @@ public class Validation {
         }
     }
 
+    //  Update Validation NIC
 
     public String nicNumberUpdate(EditText textField, String errorMessage1, String errorMessage2,String errorMessage3,boolean ifExists,
                                   boolean getUpdate)
@@ -447,8 +475,29 @@ public class Validation {
         }
         else if(!nicNo.matches(nicPattern))
         {
-            textField.setError(errorMessage2);
-            return "";
+            if( 15 != getCharacter(nicNo))
+            {
+                textField.setError(errorMessage2);
+                return "";
+            }
+            else
+            {
+                if(ifExists) // checking whether nic is exist
+                {
+                    if(getUpdate)
+                    {
+                        return nicNo;
+                    }
+                    else {
+                        textField.setError(errorMessage3);
+                        return "";
+                    }
+                }
+                else
+                {
+                    return nicNo;
+                }
+            }
         }
         else
         {
@@ -462,7 +511,6 @@ public class Validation {
                     textField.setError(errorMessage3);
                     return "";
                 }
-
             }
             else
             {

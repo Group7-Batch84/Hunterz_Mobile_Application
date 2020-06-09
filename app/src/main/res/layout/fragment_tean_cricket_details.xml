@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/detailLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/detail_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="135dp"
+                android:layout_height="140dp"
+                android:src="@drawable/hunterz_logo"
+                android:layout_centerHorizontal="true"
+                android:elevation="1dp"
+                tools:targetApi="lollipop" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="85dp"
+                    app:contentPaddingTop="10dp"
+                    app:contentPaddingRight="10dp"
+                    app:contentPaddingLeft="10dp"
+                    app:contentPaddingBottom="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/profile_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="50dp"
+                            android:fontFamily="sans-serif"
+                            android:text="CRICKET"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/profile_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cricket A Team"
+                            android:textSize="18sp"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center_horizontal"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                //
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        android:layout_marginTop="5dp"
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/playerView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <ProgressBar
+                            android:id="@+id/progressBar1"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:visibility="visible" />
+
+
+                        <Button
+                            android:id="@+id/delete_team_btn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="15dp"
+                            android:background="@drawable/danger_button"
+                            android:text="DELETE TEAM"
+                            android:textColor="#EE1010"
+                            android:textSize="16sp"
+                            android:layout_below="@+id/playerView"
+                            />
+
+                    </RelativeLayout>
+
+
+                </ScrollView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

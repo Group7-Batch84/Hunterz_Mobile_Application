@@ -73,7 +73,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     myDialog = new Dialog(context);
                     myDialog.setContentView(R.layout.fragment_new_member_details);
 
-                    TextView fullName, phoneNo, emailId, nicNo, address, password,gender,dateOfBirth,sportType;
+                    TextView fullName, phoneNo, emailId, nicNo, address,gender,dateOfBirth,sportType;
                     RelativeLayout relativeLayoutDetail;
 
                     ImageView memberImageDetails = myDialog.findViewById(R.id.profile_pic);
@@ -85,7 +85,6 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender = myDialog.findViewById(R.id.member_gender);
                     dateOfBirth = myDialog.findViewById(R.id.member_dateOfBirth);
                     sportType = myDialog.findViewById(R.id.member_sport);
-                    password = myDialog.findViewById(R.id.member_password);
                     relativeLayoutDetail = myDialog.findViewById(R.id.detailLayout);
 
                     memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
@@ -97,7 +96,6 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender.setText(member.get(viewHolder.getAdapterPosition()).getGender());
                     dateOfBirth.setText(member.get(viewHolder.getAdapterPosition()).getDateOfBirth());
                     sportType.setText(member.get(viewHolder.getAdapterPosition()).getSportType());
-                    password.setText(member.get(viewHolder.getAdapterPosition()).getPassword());
 
                     String status = member.get(viewHolder.getAdapterPosition()).getStatus();
 
@@ -126,7 +124,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     myDialog = new Dialog(context);
                     myDialog.setContentView(R.layout.fragment_new_member_details);
 
-                    TextView fullName, phoneNo, emailId, nicNo, address, password,gender,dateOfBirth,sportType;
+                    TextView fullName, phoneNo, emailId, nicNo, address,gender,dateOfBirth,sportType;
 
                     ImageView memberImageDetails = myDialog.findViewById(R.id.profile_pic);
                     fullName = myDialog.findViewById(R.id.profile_name);
@@ -137,7 +135,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender = myDialog.findViewById(R.id.member_gender);
                     dateOfBirth = myDialog.findViewById(R.id.member_dateOfBirth);
                     sportType = myDialog.findViewById(R.id.member_sport);
-                    password = myDialog.findViewById(R.id.member_password);
+
 
                     memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
                     fullName.setText(member.get(viewHolder.getAdapterPosition()).getFullName());
@@ -148,7 +146,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender.setText(member.get(viewHolder.getAdapterPosition()).getGender());
                     dateOfBirth.setText(member.get(viewHolder.getAdapterPosition()).getDateOfBirth());
                     sportType.setText(member.get(viewHolder.getAdapterPosition()).getSportType());
-                    password.setText(member.get(viewHolder.getAdapterPosition()).getPassword());
+
 
                     myDialog.show();
                 }
@@ -168,7 +166,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     myDialog = new Dialog(context);
                     myDialog.setContentView(R.layout.fragment_new_member_details);
 
-                    TextView fullName, phoneNo, emailId, nicNo, address, password,gender,dateOfBirth,sportType;
+                    TextView fullName, phoneNo, emailId, nicNo, address,gender,dateOfBirth,sportType;
                     RelativeLayout relativeLayoutDetail;
 
                     ImageView memberImageDetails = myDialog.findViewById(R.id.profile_pic);
@@ -180,7 +178,6 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender = myDialog.findViewById(R.id.member_gender);
                     dateOfBirth = myDialog.findViewById(R.id.member_dateOfBirth);
                     sportType = myDialog.findViewById(R.id.member_sport);
-                    password = myDialog.findViewById(R.id.member_password);
                     relativeLayoutDetail = myDialog.findViewById(R.id.detailLayout);
 
                     memberImageDetails.setImageBitmap(member.get(viewHolder.getAdapterPosition()).getImage());
@@ -192,7 +189,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                     gender.setText(member.get(viewHolder.getAdapterPosition()).getGender());
                     dateOfBirth.setText(member.get(viewHolder.getAdapterPosition()).getDateOfBirth());
                     sportType.setText(member.get(viewHolder.getAdapterPosition()).getSportType());
-                    password.setText(member.get(viewHolder.getAdapterPosition()).getPassword());
+
 
                     String status = member.get(viewHolder.getAdapterPosition()).getStatus();
 
