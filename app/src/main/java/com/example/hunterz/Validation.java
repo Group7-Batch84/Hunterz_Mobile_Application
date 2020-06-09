@@ -1,5 +1,6 @@
 package com.example.hunterz;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
@@ -16,15 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,9 +26,15 @@ import static android.widget.Toast.makeText;
 
 public class Validation {
 
+    private Context context;
+
+    public Validation(Context context) {
+        this.context = context;
+    }
+
     public String emptyField(EditText textField, String errorMessage)
     {
-        if(textField.getText().toString().isEmpty())
+        if(textField.getText().toString().trim().isEmpty())
         {
             textField.setError(errorMessage);
             return "";
@@ -496,7 +494,6 @@ public class Validation {
     }
 
     // Post Validation
-
     public String getPostSubject(EditText textField,String errorMessage1,String errorMessage2,int letter)
     {
         String postSubject = textField.getText().toString();
@@ -524,5 +521,164 @@ public class Validation {
             return postSubject;
         }
     }
+
+    public String generateID(String id, String query) // Auto Generate ID
+    {
+        DatabaseHandler db = new DatabaseHandler(context);
+
+        String IDS = "";
+        try
+        {
+            Cursor cursor = db.getId(query);
+
+            String idType = "";
+            int count=0;
+
+            while (cursor.moveToNext())
+            {
+                idType = cursor.getString(0);
+                count++;
+            }
+            if (count > 0)
+            {
+                String x = idType.substring(3);
+                int ID = Integer.parseInt(x);
+
+                if (ID > 0 && ID < 9)
+                {
+                    ID = ID + 1;
+                    IDS = id+"00" + ID;
+                }
+                else if (ID >= 9 && ID < 99)
+                {
+                    ID = ID + 1;
+                    IDS = id+"0" + ID;
+                }
+                else if (ID >= 99)
+                {
+                    ID = ID + 1;
+                    IDS = id + ID;
+                }
+            }
+            else
+            {
+                IDS = id + "001";
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR ----",e.toString());
+        }
+        return IDS;
+    }
+
+    // Team Member ID validation
+//    public String memberIdCheck(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,String[] ifExists)
+//    {
+//        DatabaseHandler db=new DatabaseHandler(context);
+//        String memberID = textField.getText().toString().toUpperCase();
+//        boolean result = false;
+//        Cursor res = null;
+//
+//        if(memberID.isEmpty())
+//        {
+//            textField.setError(errorMessage1);
+//            return "";
+//        }
+//        else
+//        {
+//            res = db.getMemberID("SELECT member FROM member_Table WHERE member_id='"+memberID+"'");
+//
+//            if(res.moveToFirst())
+//            {
+//                textField.setError(errorMessage2);
+//                return "";
+//            }
+//            else
+//            {
+//                for(int i = 0; i <ifExists.length; i++)
+//                {
+//                    if (!memberID.equals(ifExists[i])) // checking member ID is exist
+//                    {
+//                        result = true;
+//                    } else {
+//                        result = false;
+//
+//                    }
+//                }
+//                if (result)
+//                {
+//                    return memberID;
+//                }
+//                else
+//                {
+//                    textField.setError(errorMessage3);
+//                    return "";
+//                }
+//            }
+//        }
+//
+//    }
+
+
+    public String memberIdCheck(EditText textField,String errorMessage1,String errorMessage2,String errorMessage3,String errorMessage4
+                        ,String[] ifExists,String validID, TextView memberName)
+    {
+        String memberID = textField.getText().toString().toUpperCase();
+        boolean result = false;
+        int count = 0 ;
+
+
+        if(memberID.isEmpty())
+        {
+            textField.setError(errorMessage1);
+            memberName.setText("");
+            return "";
+        }
+        else
+        {
+            if(validID.equals(""))
+            {
+                textField.setError(errorMessage2);
+                memberName.setText("");
+                return "";
+            }
+            else if(validID.equals("Not"))
+            {
+                textField.setError(errorMessage3);
+                memberName.setText("");
+                return "";
+            }
+            else
+            {
+                for(int i = 0; i <ifExists.length; i++)
+                {
+                    if (memberID.equals(ifExists[i])) // checking member ID is exist
+                    {
+                        count++;
+                      //  result = true;
+                    } else {
+                      //  result = false;
+
+                    }
+
+                }
+                if(count == 1)
+                {
+                    textField.setError(null);
+                    memberName.setText(validID);
+                    return memberID;
+                }
+                else
+                {
+                    textField.setError(errorMessage4);
+                    memberName.setText("");
+                    return "";
+                }
+            }
+        }
+
+    }
+
 
 }

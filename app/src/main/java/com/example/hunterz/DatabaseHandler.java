@@ -23,6 +23,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String pendingMemberTable = "pendingMember_Table";  // Pending Member Table
     private static final String paymentTable = "payment_Table";  // Payment Table
     private static final String postTable = "post_Table";  // Post Table
+    private static final String cricketTable = "cricket_Table";  // Cricket Table
+    private static final String footballTable = "football_Table";  // Football Table
+    private static final String volleyballTable = "volleyball_Table";  // Volleyball Table
 
 
     public DatabaseHandler(Context context) {
@@ -100,6 +103,69 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "CONSTRAINT post_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
         db.execSQL(PostTable);   // Create Post Table
 
+        String CricketTable = "CREATE TABLE "+cricketTable+"("+
+                "team_id TEXT PRIMARY KEY ,"+
+                "team_name TEXT ,"+
+                "captain TEXT ,"+
+                "player2 TEXT,"+
+                "player3 TEXT,"+
+                "player4 TEXT,"+
+                "player5 TEXT,"+
+                "player6 TEXT,"+
+                "player7 TEXT,"+
+                "player8 TEXT,"+
+                "player9 TEXT,"+
+                "player10 TEXT,"+
+                "player11 TEXT,"+
+                "player12 TEXT,"+
+                "player13 TEXT,"+
+                "player14 TEXT,"+
+                "player15 TEXT,"+
+                "admin_id TEXT,"+
+                "CONSTRAINT cricket_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+        db.execSQL(CricketTable);   // Create Cricket Table
+
+        String FootballTable = "CREATE TABLE "+footballTable+"("+
+                "team_id TEXT PRIMARY KEY ,"+
+                "team_name TEXT ,"+
+                "captain TEXT ,"+
+                "player2 TEXT,"+
+                "player3 TEXT,"+
+                "player4 TEXT,"+
+                "player5 TEXT,"+
+                "player6 TEXT,"+
+                "player7 TEXT,"+
+                "player8 TEXT,"+
+                "player9 TEXT,"+
+                "player10 TEXT,"+
+                "player11 TEXT,"+
+                "player12 TEXT,"+
+                "player13 TEXT,"+
+                "player14 TEXT,"+
+                "player15 TEXT,"+
+                "admin_id TEXT,"+
+                "CONSTRAINT football_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+        db.execSQL(FootballTable);   // Create Football Table
+
+        String VolleyballTable = "CREATE TABLE "+volleyballTable+"("+
+                "team_id TEXT PRIMARY KEY ,"+
+                "team_name TEXT ,"+
+                "captain TEXT ,"+
+                "player2 TEXT,"+
+                "player3 TEXT,"+
+                "player4 TEXT,"+
+                "player5 TEXT,"+
+                "player6 TEXT,"+
+                "player7 TEXT,"+
+                "player8 TEXT,"+
+                "player9 TEXT,"+
+                "player10 TEXT,"+
+                "player11 TEXT,"+
+                "player12 TEXT,"+
+                "admin_id TEXT,"+
+                "CONSTRAINT volleyball_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+        db.execSQL(VolleyballTable);   // Create Volleyball Table
+
     }
 
     @Override
@@ -110,6 +176,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+adminTable);
         db.execSQL("DROP TABLE IF EXISTS "+paymentTable);
         db.execSQL("DROP TABLE IF EXISTS "+postTable);
+        db.execSQL("DROP TABLE IF EXISTS "+cricketTable);
+        db.execSQL("DROP TABLE IF EXISTS "+footballTable);
+        db.execSQL("DROP TABLE IF EXISTS "+volleyballTable);
         onCreate(db);
     }
 
@@ -358,6 +427,140 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(postTable, "post_id='" + post_id+"'", null) > 0;
 
+    }
+
+    // Insert into Cricket Table
+    public boolean insertCricketTeam(String team_id, String team_name, String captain, String player2, String player3, String player4, String player5,
+                                     String player6, String player7, String player8, String player9, String player10, String player11, String player12,
+                                     String player13, String player14, String admin_id, String addmin001)
+    {
+        SQLiteDatabase dbHandlerCricket = this.getWritableDatabase();
+        // Cricket Table
+        ContentValues contentValuesCricket = new ContentValues();
+        contentValuesCricket.put("team_id",team_id);
+        contentValuesCricket.put("team_name",team_name);
+        contentValuesCricket.put("captain",captain);
+        contentValuesCricket.put("player2",player2);
+        contentValuesCricket.put("player3",player3);
+        contentValuesCricket.put("player4",player4);
+        contentValuesCricket.put("player5",player5);
+        contentValuesCricket.put("player6",player6);
+        contentValuesCricket.put("player7",player7);
+        contentValuesCricket.put("player8",player8);
+        contentValuesCricket.put("player9",player9);
+        contentValuesCricket.put("player10",player10);
+        contentValuesCricket.put("player11",player11);
+        contentValuesCricket.put("player12",player12);
+        contentValuesCricket.put("player13",player13);
+        contentValuesCricket.put("player14",player14);
+        contentValuesCricket.put("admin_id",admin_id);
+
+        long resultCricket = dbHandlerCricket.insert(cricketTable,null,contentValuesCricket);
+
+        dbHandlerCricket.close();
+
+        if(resultCricket == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
+    }
+
+    public Cursor getMemberID(String id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT member_name,member_sport FROM member_Table WHERE member_id='"+id+"'";
+        Cursor cursor = db.rawQuery(query,null);
+        return cursor;
+    }
+
+    // Insert into Football Table
+    public boolean insertFootballTeam(String team_id, String team_name, String captain, String player2, String player3, String player4, String player5,
+                                      String player6, String player7, String player8, String player9, String player10, String player11, String player12,
+                                      String player13, String player14, String admin_id, String admin001)
+    {
+        SQLiteDatabase dbHandlerFootball = this.getWritableDatabase();
+        // Cricket Table
+        ContentValues contentValuesFootabll = new ContentValues();
+        contentValuesFootabll.put("team_id",team_id);
+        contentValuesFootabll.put("team_name",team_name);
+        contentValuesFootabll.put("captain",captain);
+        contentValuesFootabll.put("player2",player2);
+        contentValuesFootabll.put("player3",player3);
+        contentValuesFootabll.put("player4",player4);
+        contentValuesFootabll.put("player5",player5);
+        contentValuesFootabll.put("player6",player6);
+        contentValuesFootabll.put("player7",player7);
+        contentValuesFootabll.put("player8",player8);
+        contentValuesFootabll.put("player9",player9);
+        contentValuesFootabll.put("player10",player10);
+        contentValuesFootabll.put("player11",player11);
+        contentValuesFootabll.put("player12",player12);
+        contentValuesFootabll.put("player13",player13);
+        contentValuesFootabll.put("player14",player14);
+        contentValuesFootabll.put("admin_id",admin_id);
+
+        long resultCricket = dbHandlerFootball.insert(footballTable,null,contentValuesFootabll);
+
+        dbHandlerFootball.close();
+
+        if(resultCricket == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
+
+    }
+
+
+    // Insert into Volleyball Table
+    public boolean insertVolleyballTeam(String team_id,String team_name,String captain,String player2,String player3,String player4,String player5,
+                                      String player6,String player7,String player8,String player9,String player10,String player11,String player12,
+                                        String admin_id)
+    {
+        SQLiteDatabase dbHandlerFootball = this.getWritableDatabase();
+        // Cricket Table
+        ContentValues contentValuesFootabll = new ContentValues();
+        contentValuesFootabll.put("team_id",team_id);
+        contentValuesFootabll.put("team_name",team_name);
+        contentValuesFootabll.put("captain",captain);
+        contentValuesFootabll.put("player2",player2);
+        contentValuesFootabll.put("player3",player3);
+        contentValuesFootabll.put("player4",player4);
+        contentValuesFootabll.put("player5",player5);
+        contentValuesFootabll.put("player6",player6);
+        contentValuesFootabll.put("player7",player7);
+        contentValuesFootabll.put("player8",player8);
+        contentValuesFootabll.put("player9",player9);
+        contentValuesFootabll.put("player10",player10);
+        contentValuesFootabll.put("player11",player11);
+        contentValuesFootabll.put("player12",player12);
+        contentValuesFootabll.put("admin_id",admin_id);
+
+        long resultCricket = dbHandlerFootball.insert(footballTable,null,contentValuesFootabll);
+
+        dbHandlerFootball.close();
+
+        if(resultCricket == -1)
+        {
+            Log.d("Message","Error While adding");
+            return false;
+        }
+        else
+        {
+            Log.d("Message","Successfully Added");
+            return true;
+        }
     }
 
 }

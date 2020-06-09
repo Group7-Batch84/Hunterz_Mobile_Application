@@ -43,7 +43,7 @@ public class PayFeeFragment extends Fragment {
     private ProgressBar progressBar;
 
 
-    Validation valid = new Validation();
+    Validation valid = new Validation(getContext());
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

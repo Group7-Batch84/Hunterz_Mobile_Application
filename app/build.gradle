@@ -25,10 +25,6 @@ apply plugin: 'com.google.gms.google-services'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.firebase:firebase-analytics:17.2.2' // Fire-base library
-    implementation 'com.google.firebase:firebase-auth:19.3.0'  // Fire-base library
-    implementation 'com.google.firebase:firebase-storage:19.1.1' // Fire-base library
-    implementation 'com.google.firebase:firebase-database:19.2.0' // Fire-base library
     implementation 'com.squareup.picasso:picasso:2.71828'   // Picasso Library
     implementation 'com.muddzdev:styleabletoast:2.0.1'  //Styleable Toast Library
     implementation 'de.hdodenhof:circleimageview:3.0.0'  // Circle Image View

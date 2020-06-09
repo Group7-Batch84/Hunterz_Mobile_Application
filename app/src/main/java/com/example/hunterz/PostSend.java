@@ -41,7 +41,7 @@ public class PostSend extends Fragment {
 
     String[] value = new String[4];
 
-    Validation valid = new Validation();
+    Validation valid = new Validation(getContext());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

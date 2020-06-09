@@ -47,7 +47,11 @@ public class AddNewTeam extends Fragment {
         footballImageBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                Fragment footballTeam = new FootballTeam();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameLayout_team, footballTeam );
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -55,7 +59,11 @@ public class AddNewTeam extends Fragment {
         volleyballImageBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                Fragment volleyballTeam = new VolleyballTeam();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameLayout_team, volleyballTeam);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         return view;

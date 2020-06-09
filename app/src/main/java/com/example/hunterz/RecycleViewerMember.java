@@ -26,21 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.sql.Blob;
@@ -59,7 +44,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
     ArrayList<Member> user = new ArrayList<>();
     private String type, get;
     private String IDS="",idN,id,image;
-    private FirebaseAuth mAuth;
+
     Context context;
     Dialog myDialog;
     private Bitmap imageMember;
@@ -375,28 +360,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
         }
     }
 
-    public void authentication(String email, String password, final View v) {
-        mAuth = FirebaseAuth.getInstance();
 
-        if (value[2] != "" && value[8] != "") {
-            mAuth.createUserWithEmailAndPassword(email, password).
-                    addOnCompleteListener((Activity) v.getContext(), new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d("Success", "createUserWithEmail:success");
-                                Toast.makeText(v.getContext(), "Accepted!" , Toast.LENGTH_LONG).show();
-
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w("Not Success", "createUserWithEmail:failure", task.getException());
-
-                            }
-                        }
-                    });
-        }
-    }
 
     public void delete(String value) // Delete Pending member
     {

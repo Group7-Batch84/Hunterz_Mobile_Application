@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
+
 
 public class SignIn extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class SignIn extends AppCompatActivity {
 
    // private FirebaseAuth mAuth;
 
-    Validation valid = new Validation();
+    Validation valid = new Validation(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

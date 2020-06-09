@@ -16,9 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
-
-public class CricketTeam extends Fragment {
+public class FootballTeam extends Fragment {
 
     private TextView[] playerName = new TextView[15];
     private EditText[] playerID = new EditText[15];
@@ -27,6 +25,7 @@ public class CricketTeam extends Fragment {
     private EditText teamName;
 
     Validation valid = new Validation(getContext());
+
     String[] memberID = new String[15];
     String[] txtData = new String[15];
 
@@ -34,7 +33,7 @@ public class CricketTeam extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_cricket_team, container, false);
+        View view = inflater.inflate(R.layout.fragment_football_team, container, false);
 
         teamId = view.findViewById(R.id.team_id);
         teamName = view.findViewById(R.id.team_txt);
@@ -71,18 +70,14 @@ public class CricketTeam extends Fragment {
         playerID[14] = view.findViewById(R.id.player15_txt);
         playerName[14] = view.findViewById(R.id.player15_name);
 
-        teamId.setText(generateID("CTM","select team_id from cricket_Table")); // Set the team Id
+        teamId.setText(generateID("FTM","select team_id from football_Table")); // Set the team Id
 
-        // Click On Add Team Button
-        addTeamBtn.setOnClickListener(new View.OnClickListener(){
+        addTeamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addTeam();
             }
         });
-
-
 
         return view;
     }
@@ -99,52 +94,52 @@ public class CricketTeam extends Fragment {
 
         String getTamName = valid.emptyField(teamName,getString(R.string.teamName_errorMessage1));
 
-        teamID = generateID("CTM","select team_id from cricket_Table");
+        teamID = generateID("FTM","select team_id from football_Table");
 
         memberID[0] = valid.memberIdCheck(playerID[0],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[0].getText().toString().toUpperCase()),playerName[0]);
         memberID[1] = valid.memberIdCheck(playerID[1],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[1].getText().toString().toUpperCase()),playerName[1]);
         memberID[2] = valid.memberIdCheck(playerID[2],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[2].getText().toString().toUpperCase()),playerName[2]);
         memberID[3] = valid.memberIdCheck(playerID[3],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[3].getText().toString().toUpperCase()),playerName[3]);
         memberID[4] = valid.memberIdCheck(playerID[4],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[4].getText().toString().toUpperCase()),playerName[4]);
         memberID[5] = valid.memberIdCheck(playerID[5],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[5].getText().toString().toUpperCase()),playerName[5]);
         memberID[6] = valid.memberIdCheck(playerID[6],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[6].getText().toString().toUpperCase()),playerName[6]);
         memberID[7] = valid.memberIdCheck(playerID[7],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[7].getText().toString().toUpperCase()),playerName[7]);
         memberID[8] = valid.memberIdCheck(playerID[8],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[8].getText().toString().toUpperCase()),playerName[8]);
         memberID[9] = valid.memberIdCheck(playerID[9],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[9].getText().toString().toUpperCase()),playerName[9]);
         memberID[10] = valid.memberIdCheck(playerID[10],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[10].getText().toString().toUpperCase()),playerName[10]);
         memberID[11] = valid.memberIdCheck(playerID[11],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[11].getText().toString().toUpperCase()),playerName[11]);
         memberID[12] = valid.memberIdCheck(playerID[12],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[12].getText().toString().toUpperCase()),playerName[12]);
         memberID[13] = valid.memberIdCheck(playerID[13],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[13].getText().toString().toUpperCase()),playerName[13]);
         memberID[14] = valid.memberIdCheck(playerID[14],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
-                getString(R.string.memberId_errorMessage3),getString(R.string.memberId_errorMessage4),txtData,
+                getString(R.string.memberId_errorMessage5),getString(R.string.memberId_errorMessage4),txtData,
                 validMemberID(playerID[14].getText().toString().toUpperCase()),playerName[14]);
 
         for(int i = 0; i < memberID.length;i++)
@@ -159,13 +154,13 @@ public class CricketTeam extends Fragment {
         {
             if(!getTamName.equals(""))
             {
-                res = dbHandler.insertCricketTeam(teamID,getTamName,memberID[0],memberID[1],memberID[2],memberID[3],memberID[4],memberID[5],memberID[6],memberID[7],
-                        memberID[8],memberID[9],memberID[10],memberID[11],memberID[12],memberID[13],memberID[14],"addmin001");
+                res = dbHandler.insertFootballTeam(teamID,getTamName,memberID[0],memberID[1],memberID[2],memberID[3],memberID[4],memberID[5],memberID[6],memberID[7],
+                        memberID[8],memberID[9],memberID[10],memberID[11],memberID[12],memberID[13],memberID[14],"admin001");
 
                 if(res == true) {
                     Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
                     clearDetails(); // Clear all input field and image view
-                    teamId.setText(generateID("CTM","select team_id from cricket_Table")); // update the team Id after adding a team
+                    teamId.setText(generateID("FTM","select team_id from football_Table")); // update the team Id after adding a team
                 } else {
                     Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
                 }
@@ -173,77 +168,6 @@ public class CricketTeam extends Fragment {
         }
     }
 
-    public void getTextData()
-    {
-        txtData[0] = playerID[0].getText().toString().toUpperCase();
-        txtData[1] = playerID[1].getText().toString().toUpperCase();
-        txtData[2] = playerID[2].getText().toString().toUpperCase();
-        txtData[3] = playerID[3].getText().toString().toUpperCase();
-        txtData[4] = playerID[4].getText().toString().toUpperCase();
-        txtData[5] = playerID[5].getText().toString().toUpperCase();
-        txtData[6] = playerID[6].getText().toString().toUpperCase();
-        txtData[7] = playerID[7].getText().toString().toUpperCase();
-        txtData[8] = playerID[8].getText().toString().toUpperCase();
-        txtData[9] = playerID[9].getText().toString().toUpperCase();
-        txtData[10] = playerID[10].getText().toString().toUpperCase();
-        txtData[11] = playerID[11].getText().toString().toUpperCase();
-        txtData[12] = playerID[12].getText().toString().toUpperCase();
-        txtData[13] = playerID[13].getText().toString().toUpperCase();
-        txtData[14] = playerID[14].getText().toString().toUpperCase();
-    }
-
-    public String validMemberID(String id)
-    {
-        DatabaseHandler db=new DatabaseHandler(getContext());
-        Cursor cursor = null;
-        String sport = "";
-        boolean result = false;
-
-        cursor = db.getMemberID(id);
-
-        if(cursor.moveToFirst())
-        {
-            sport = cursor.getString(1);
-
-            String[] splitedType = sport.split(" ");
-
-            for(int i = 0 ; i < splitedType.length; i++)
-            {
-                if(splitedType[i].equals("Cricket"))
-                {
-                    result = true;
-                }
-            }
-
-            if(result)
-            {
-                return cursor.getString(0);
-            }
-            else
-            {
-                return "Not";
-            }
-
-        }
-        return "";
-    }
-
-
-    public void clearDetails()
-    {
-        teamName.getText().clear();
-
-        for(int i = 0; i < playerID.length; i++)
-        {
-            playerID[i].getText().clear();
-        }
-
-        for(int i = 0; i < playerName.length; i++)
-        {
-            playerName[i].setText("");
-        }
-
-    }
 
     public String generateID(String id, String query) // Auto Generate ID
     {
@@ -293,6 +217,77 @@ public class CricketTeam extends Fragment {
             Log.d("ERROR ----",e.toString());
         }
         return IDS;
+    }
+
+    public void clearDetails()
+    {
+        teamName.getText().clear();
+
+        for(int i = 0; i < playerID.length; i++)
+        {
+            playerID[i].getText().clear();
+        }
+
+        for(int i = 0; i < playerName.length; i++)
+        {
+            playerName[i].setText("");
+        }
+
+    }
+
+    public String validMemberID(String id)
+    {
+        DatabaseHandler db=new DatabaseHandler(getContext());
+        Cursor cursor = null;
+        String sport = "";
+        boolean result = false;
+
+        cursor = db.getMemberID(id);
+
+        if(cursor.moveToFirst())
+        {
+            sport = cursor.getString(1);
+
+            String[] splitedType = sport.split(" ");
+
+            for(int i = 0 ; i < splitedType.length; i++)
+            {
+                if(splitedType[i].equals("Football"))
+                {
+                    result = true;
+                }
+            }
+
+            if(result)
+            {
+                return cursor.getString(0);
+            }
+            else
+            {
+                return "Not";
+            }
+
+        }
+        return "";
+    }
+
+    public void getTextData()
+    {
+        txtData[0] = playerID[0].getText().toString().toUpperCase();
+        txtData[1] = playerID[1].getText().toString().toUpperCase();
+        txtData[2] = playerID[2].getText().toString().toUpperCase();
+        txtData[3] = playerID[3].getText().toString().toUpperCase();
+        txtData[4] = playerID[4].getText().toString().toUpperCase();
+        txtData[5] = playerID[5].getText().toString().toUpperCase();
+        txtData[6] = playerID[6].getText().toString().toUpperCase();
+        txtData[7] = playerID[7].getText().toString().toUpperCase();
+        txtData[8] = playerID[8].getText().toString().toUpperCase();
+        txtData[9] = playerID[9].getText().toString().toUpperCase();
+        txtData[10] = playerID[10].getText().toString().toUpperCase();
+        txtData[11] = playerID[11].getText().toString().toUpperCase();
+        txtData[12] = playerID[12].getText().toString().toUpperCase();
+        txtData[13] = playerID[13].getText().toString().toUpperCase();
+        txtData[14] = playerID[14].getText().toString().toUpperCase();
     }
 
 }

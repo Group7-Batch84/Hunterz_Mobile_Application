@@ -186,7 +186,17 @@
     <string name="cricket_title">CRICKET</string>
     <string name="football_title">FOOTBALL</string>
     <string name="volleyball_title">VOLLEY BALL</string>
-
+    <!--Cricket-->
+    <string name="addTeamBtn">ADD TEAM</string>
+    <string name="teamName_errorMessage1">Enter Team Name</string>
+    <string name="memberId_errorMessage1">Enter Member Id</string>
+    <string name="memberId_errorMessage2">Invalid Member Id</string>
+    <string name="memberId_errorMessage3">Member Don\'t Play Cricket</string>
+    <string name="memberId_errorMessage4">Member Id Already Added</string>
+    <!--Football-->
+    <string name="memberId_errorMessage5">Member Don\'t Play Football</string>
+    <!--Volleyball-->
+    <string name="memberId_errorMessage6">Member Don\'t Play Volleyball</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
