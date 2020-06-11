@@ -38,8 +38,8 @@ public class Home extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_manage_member, R.id.nav_member_status,
-                R.id.nav_pay_fee, R.id.nav_chat, R.id.nav_send_post,R.id.nav_payment,
-                R.id.nav_manage_team,R.id.nav_send_notification)
+                R.id.nav_pay_fee, R.id.nav_send_post,R.id.nav_payment,
+                R.id.nav_manage_team,R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
 

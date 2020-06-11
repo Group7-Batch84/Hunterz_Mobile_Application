@@ -41,11 +41,6 @@
         android:label="@string/menu_manage_team"
         tools:layout="@layout/fragment_manage_team" />
     <!--Communicate-->
-    <fragment
-        android:id="@+id/nav_chat"
-        android:name="com.example.hunterz.ui.chat.ChatFragment"
-        android:label="@string/menu_chat"
-        tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/nav_send_post"
@@ -53,9 +48,9 @@
         android:label="@string/menu_send_post"
         tools:layout="@layout/fragment_send_post" />
 
-    <fragment
-        android:id="@+id/nav_send_notification"
-        android:name="com.example.hunterz.ui.send_notification.SendNotificationFragment"
-        android:label="@string/menu_send_notification"
-        tools:layout="@layout/fragment_send_notification" />
+    <activity
+        android:id="@+id/nav_logout"
+        android:name="com.example.hunterz.SignIn"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/activity_sign_in" />
 </navigation>

@@ -69,7 +69,7 @@
     <string name="menu_manage_team">Manage Team</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_send_post">Send Post</string>
-    <string name="menu_send_notification">Send Notification</string>
+    <string name="menu_logout">Logout</string>
 
     <!--MANAGE MEMBER-->
     <string name="add_member">Add Member</string>
