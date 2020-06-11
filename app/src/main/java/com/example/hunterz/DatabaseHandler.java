@@ -571,4 +571,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+    // Delete Cricket Team
+    public boolean deleteCricketTeam(String team_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(cricketTable, "team_id='" + team_id+"'", null) > 0;
+    }
+
+    public Cursor getAuthentication(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
 }

@@ -22,6 +22,8 @@ public class ViewTeam extends Fragment {
 
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    DatabaseHandler db;
+    ArrayList<Team> team;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,71 +31,72 @@ public class ViewTeam extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_view_team, container, false);
 
+        db = new DatabaseHandler(getContext());
+        team = new ArrayList<>();
         progressBar=view.findViewById(R.id.progressBar1);
         recyclerView=view.findViewById(R.id.teamView);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
 
         // To View all the Team
-        viewTeams("cricket");
-        viewTeams("football");
-        viewTeams("volleyball");
+        viewTeams();
+
+
+        progressBar.setVisibility(View.GONE);
 
         return view;
     }
 
-    public void viewTeams(String sportType)
+    public void viewTeams()
     {
         // Menu List
-        ArrayList<Team> team = new ArrayList<>();
-        DatabaseHandler db = new DatabaseHandler(getContext());
-        Cursor res = null;
 
-        if(sportType.equals("cricket"))
-        {
-            res = db.getTeam("SELECT * FROM cricket_Table");
-        }
-        else if(sportType.equals("football"))
-        {
-            res = db.getTeam("SELECT * FROM football_Table");
-        }
-        else if(sportType.equals("volleyball"))
-        {
-            res = db.getTeam("SELECT * FROM volleyball_Table");
-        }
+        Cursor resC = null;
+        Cursor resF = null;
+        Cursor resV = null;
 
-        while (res.moveToNext())
+            resC = db.getTeam("SELECT * FROM cricket_Table");
+
+            resF = db.getTeam("SELECT * FROM football_Table");
+
+            resV = db.getTeam("SELECT * FROM volleyball_Table");
+
+
+        while (resC.moveToNext())
         {
-            if(sportType.equals("cricket"))
-            {
-                team.add(new Team(res.getString(0), res.getString(1), res.getString(2), res.getString(3),
-                        res.getString(4), res.getString(5), res.getString(6), res.getString(7),
-                        res.getString(8), res.getString(9), res.getString(10), res.getString(11),
-                        res.getString(12), res.getString(13), res.getString(14), res.getString(15),
-                        res.getString(16)));
-            }
-            else if(sportType.equals("football"))
-            {
-                team.add(new Team(res.getString(0), res.getString(1), res.getString(2), res.getString(3),
-                        res.getString(4), res.getString(5), res.getString(6), res.getString(7),
-                        res.getString(8), res.getString(9), res.getString(10), res.getString(11),
-                        res.getString(12), res.getString(13), res.getString(14), res.getString(15),
-                        res.getString(16)));
-            }
-            else if(sportType.equals("volleyball"))
-            {
-                team.add(new Team(res.getString(0), res.getString(1), res.getString(2), res.getString(3),
-                        res.getString(4), res.getString(5), res.getString(6), res.getString(7),
-                        res.getString(8), res.getString(9), res.getString(10), res.getString(11),
-                        res.getString(12), res.getString(13)));
-            }
+                team.add(new Team(resC.getString(0), resC.getString(1), resC.getString(2), resC.getString(3),
+                        resC.getString(4), resC.getString(5), resC.getString(6), resC.getString(7),
+                        resC.getString(8), resC.getString(9), resC.getString(10), resC.getString(11),
+                        resC.getString(12), resC.getString(13), resC.getString(14), resC.getString(15),
+                        resC.getString(16)));
 
         }
-        res.close();
+
+        while(resF.moveToNext())
+        {
+            team.add(new Team(resF.getString(0), resF.getString(1), resF.getString(2), resF.getString(3),
+                    resF.getString(4), resF.getString(5), resF.getString(6), resF.getString(7),
+                    resF.getString(8), resF.getString(9), resF.getString(10), resF.getString(11),
+                    resF.getString(12), resF.getString(13), resF.getString(14), resF.getString(15),
+                    resF.getString(16)));
+
+        }
+
+        while(resV.moveToNext())
+        {
+            team.add(new Team(resV.getString(0), resV.getString(1), resV.getString(2), resV.getString(3),
+                    resV.getString(4), resV.getString(5), resV.getString(6), resV.getString(7),
+                    resV.getString(8), resV.getString(9), resV.getString(10), resV.getString(11),
+                    resV.getString(12), resV.getString(13)));
+        }
+        resC.close();
+        resF.close();
+        resV.close();
         // Menu List View
-        RecycleViewerTeam adapterTeam = new RecycleViewerTeam(team,getContext(),sportType);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-        recyclerView.setAdapter(adapterTeam);
 
-        progressBar.setVisibility(View.GONE);
+        RecycleViewerTeam adapterTeamC = new RecycleViewerTeam(team,getContext(),getFragmentManager(),"team");
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        recyclerView.setAdapter(adapterTeamC);
+
     }
 
 }

@@ -3,11 +3,12 @@ package com.example.hunterz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.Toast;
 
 
 public class SignIn extends AppCompatActivity {
@@ -15,14 +16,18 @@ public class SignIn extends AppCompatActivity {
     private Button signUp_btn,signIn_btn;
     private EditText password,username;
 
-   // private FirebaseAuth mAuth;
+    static String MemberID;
 
     Validation valid = new Validation(this);
+
+    DatabaseHandler dbHandle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        dbHandle = new DatabaseHandler(this);
 
         signUp_btn = findViewById(R.id.signUp_btn);
         signIn_btn = findViewById(R.id.signIn_btn);
@@ -35,10 +40,46 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                valid.emptyField(username, getString(R.string.userName_errorMessage));
-                valid.emptyField(password, getString(R.string.passWord_errorMessage));
+                String userName,passWord;
+                Cursor cursor = null;
 
-                openHome();
+                userName = valid.emptyField(username, getString(R.string.userName_errorMessage));
+                passWord = valid.emptyField(password, getString(R.string.passWord_errorMessage));
+
+                if(!userName.equals("") && !passWord.equals(""))
+                {
+                    cursor = dbHandle.getAuthentication("SELECT user_role,authentication_id FROM authentication_Table WHERE username='" + userName + "' AND password ='" + passWord + "'");
+
+                    if(cursor.moveToFirst())
+                    {
+                        String userRole,authenticationId;
+                        userRole = cursor.getString(0);
+                        authenticationId = cursor.getString(1);
+
+                        if(userRole.equals("Admin"))
+                        {
+                            openAdminHome();
+                        }
+                        else if(userRole.equals("Member"))
+                        {
+                            Cursor res = dbHandle.getMember("SELECT member_id FROM member_Table WHERE authentication_id ='" + authenticationId + "'");
+
+                            if(res.moveToFirst())
+                            {
+                                MemberID = res.getString(0);
+                                openMemberHome();
+                            }
+//                            res.close();
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(SignIn.this,"Incorrect Username Or Password",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+//                cursor.close();
+
             }
         });
 
@@ -59,9 +100,16 @@ public class SignIn extends AppCompatActivity {
         finish();
     }
 
-    public void openHome()
+    public void openAdminHome()
     {
         Intent intent = new Intent(this,Home.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void openMemberHome()
+    {
+        Intent intent = new Intent(this,MemberHome.class);
         startActivity(intent);
         finish();
     }

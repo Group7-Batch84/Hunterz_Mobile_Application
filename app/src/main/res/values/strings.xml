@@ -198,6 +198,16 @@
     <!--Volleyball-->
     <string name="memberId_errorMessage6">Member Don\'t Play Volleyball</string>
 
+
+    <!--MEMBER ACCOUNT-->
+
+    <!--HOME-->
+    <string name="member_home">Home</string>
+    <string name="member_profile">My Profile</string>
+    <string name="member_team">Teams</string>
+    <string name="member_account">Account</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

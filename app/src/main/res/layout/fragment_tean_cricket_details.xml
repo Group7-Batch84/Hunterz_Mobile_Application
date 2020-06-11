@@ -6,13 +6,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:translationZ="1dp"
     android:layout_gravity="center"
-    android:background="@drawable/detail_background">
+    android:background="#FFFFFF">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:background="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="BACK"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:background="@drawable/rounded_corner_sub_heading"
+        android:textColor="#4A64E7"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +70,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/profile_name"
+                            android:id="@+id/teamType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -65,10 +80,9 @@
                             android:textSize="24sp"
                             android:textStyle="bold" />
                         <TextView
-                            android:id="@+id/profile_email"
+                            android:id="@+id/team_nameC"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cricket A Team"
                             android:textSize="18sp"
                             android:layout_marginTop="5dp"
                             android:layout_gravity="center_horizontal"
@@ -82,25 +96,1257 @@
                     android:layout_height="match_parent">
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp">
+                        android:layout_height="100dp"
                         android:layout_marginTop="5dp"
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/playerView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <ProgressBar
-                            android:id="@+id/progressBar1"
-                            style="?android:attr/progressBarStyleLarge"
-                            android:layout_width="wrap_content"
+                        >
+                        // Captain Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card1"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:visibility="visible" />
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
 
+                            <RelativeLayout
+                                android:id="@+id/player1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name1"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image1"
+                                    android:layout_toRightOf="@+id/member_image1"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image1"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type1"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name1"
+                                    android:layout_toEndOf="@+id/member_image1"
+                                    android:layout_toRightOf="@+id/member_image1"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC1"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type1"
+                                    android:layout_toEndOf="@+id/member_image1"
+                                    android:layout_toRightOf="@+id/member_image1"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player2 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card2"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card1"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name2"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image2"
+                                    android:layout_toRightOf="@+id/member_image2"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image2"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type2"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name2"
+                                    android:layout_toEndOf="@+id/member_image2"
+                                    android:layout_toRightOf="@+id/member_image2"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC2"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type2"
+                                    android:layout_toEndOf="@+id/member_image2"
+                                    android:layout_toRightOf="@+id/member_image2"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player3 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card3"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card2"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name3"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image3"
+                                    android:layout_toRightOf="@+id/member_image3"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image3"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type3"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name3"
+                                    android:layout_toEndOf="@+id/member_image3"
+                                    android:layout_toRightOf="@+id/member_image3"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC3"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type3"
+                                    android:layout_toEndOf="@+id/member_image3"
+                                    android:layout_toRightOf="@+id/member_image3"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        // Player4 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card4"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card3"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name4"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image4"
+                                    android:layout_toRightOf="@+id/member_image4"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image4"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type4"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name4"
+                                    android:layout_toEndOf="@+id/member_image4"
+                                    android:layout_toRightOf="@+id/member_image4"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC4"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type4"
+                                    android:layout_toEndOf="@+id/member_image4"
+                                    android:layout_toRightOf="@+id/member_image4"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player5 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card5"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card4"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name5"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image5"
+                                    android:layout_toRightOf="@+id/member_image5"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image5"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type5"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name5"
+                                    android:layout_toEndOf="@+id/member_image5"
+                                    android:layout_toRightOf="@+id/member_image5"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC5"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type5"
+                                    android:layout_toEndOf="@+id/member_image5"
+                                    android:layout_toRightOf="@+id/member_image5"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player6 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card6"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card5"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name6"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image6"
+                                    android:layout_toRightOf="@+id/member_image6"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image6"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type6"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name6"
+                                    android:layout_toEndOf="@+id/member_image6"
+                                    android:layout_toRightOf="@+id/member_image6"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC6"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type6"
+                                    android:layout_toEndOf="@+id/member_image6"
+                                    android:layout_toRightOf="@+id/member_image6"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player7 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card7"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card6"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name7"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image7"
+                                    android:layout_toRightOf="@+id/member_image7"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image7"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type7"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name7"
+                                    android:layout_toEndOf="@+id/member_image7"
+                                    android:layout_toRightOf="@+id/member_image7"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC7"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type7"
+                                    android:layout_toEndOf="@+id/member_image7"
+                                    android:layout_toRightOf="@+id/member_image7"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player8 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card8"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card7"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name8"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image8"
+                                    android:layout_toRightOf="@+id/member_image8"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image8"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type8"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name8"
+                                    android:layout_toEndOf="@+id/member_image8"
+                                    android:layout_toRightOf="@+id/member_image8"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC8"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type8"
+                                    android:layout_toEndOf="@+id/member_image8"
+                                    android:layout_toRightOf="@+id/member_image8"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player9 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card9"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card8"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name9"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image9"
+                                    android:layout_toRightOf="@+id/member_image9"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image9"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type9"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name9"
+                                    android:layout_toEndOf="@+id/member_image9"
+                                    android:layout_toRightOf="@+id/member_image9"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC9"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type9"
+                                    android:layout_toEndOf="@+id/member_image9"
+                                    android:layout_toRightOf="@+id/member_image9"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player10 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card10"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card9"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name10"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image10"
+                                    android:layout_toRightOf="@+id/member_image10"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image10"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type10"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name10"
+                                    android:layout_toEndOf="@+id/member_image10"
+                                    android:layout_toRightOf="@+id/member_image10"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC10"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type10"
+                                    android:layout_toEndOf="@+id/member_image10"
+                                    android:layout_toRightOf="@+id/member_image10"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        // Player11 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card11"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card10"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name11"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image11"
+                                    android:layout_toRightOf="@+id/member_image11"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image11"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type11"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name11"
+                                    android:layout_toEndOf="@+id/member_image11"
+                                    android:layout_toRightOf="@+id/member_image11"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC11"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type11"
+                                    android:layout_toEndOf="@+id/member_image11"
+                                    android:layout_toRightOf="@+id/member_image11"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player12 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card12"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card11"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name12"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image12"
+                                    android:layout_toRightOf="@+id/member_image12"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image12"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type12"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name12"
+                                    android:layout_toEndOf="@+id/member_image12"
+                                    android:layout_toRightOf="@+id/member_image12"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC12"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type12"
+                                    android:layout_toEndOf="@+id/member_image12"
+                                    android:layout_toRightOf="@+id/member_image12"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player13 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card13"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card12"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player13"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name13"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image13"
+                                    android:layout_toRightOf="@+id/member_image13"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image13"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type13"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name13"
+                                    android:layout_toEndOf="@+id/member_image13"
+                                    android:layout_toRightOf="@+id/member_image13"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC13"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type13"
+                                    android:layout_toEndOf="@+id/member_image13"
+                                    android:layout_toRightOf="@+id/member_image13"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player14 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card14"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card13"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player14"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name14"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image14"
+                                    android:layout_toRightOf="@+id/member_image14"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image14"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type14"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name14"
+                                    android:layout_toEndOf="@+id/member_image14"
+                                    android:layout_toRightOf="@+id/member_image14"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC14"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type14"
+                                    android:layout_toEndOf="@+id/member_image14"
+                                    android:layout_toRightOf="@+id/member_image14"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        // Player15 Card
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/player_card15"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/player_card14"
+                            android:background="#B1A4A4"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="10dp"
+                            android:layout_margin="5dp">
+
+                            <RelativeLayout
+                                android:id="@+id/player15"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                >
+                                <!--Member Name-->
+                                <TextView
+                                    android:id="@+id/member_name15"
+                                    android:padding="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@drawable/rounded_corner_headng"
+                                    android:gravity="center"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="12sp"
+                                    android:layout_toEndOf="@+id/member_image15"
+                                    android:layout_toRightOf="@+id/member_image15"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member Image-->
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/member_image15"
+                                    android:layout_width="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_height="80dp"
+                                    android:src="@drawable/hunterz_logo"
+                                    android:elevation="1dp"
+                                    />
+
+                                <!--Member Type-->
+                                <TextView
+                                    android:id="@+id/member_type15"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_name15"
+                                    android:layout_toEndOf="@+id/member_image15"
+                                    android:layout_toRightOf="@+id/member_image15"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <!--Member ID-->
+                                <TextView
+                                    android:id="@+id/member_idC15"
+                                    android:padding="3dp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/rounded_corner_sub_heading"
+                                    android:textColor="#070202"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_below="@+id/member_type15"
+                                    android:layout_toEndOf="@+id/member_image15"
+                                    android:layout_toRightOf="@+id/member_image15"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
 
                         <Button
-                            android:id="@+id/delete_team_btn"
+                            android:id="@+id/delete_teambtn"
                             android:layout_width="fill_parent"
                             android:layout_height="32dp"
                             android:layout_marginTop="15dp"
@@ -111,7 +1357,7 @@
                             android:text="DELETE TEAM"
                             android:textColor="#EE1010"
                             android:textSize="16sp"
-                            android:layout_below="@+id/playerView"
+                            android:layout_below="@+id/player_card15"
                             />
 
                     </RelativeLayout>

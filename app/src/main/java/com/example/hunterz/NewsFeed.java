@@ -14,13 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 
-public class PostModify extends Fragment {
+public class NewsFeed extends Fragment {
 
     RecyclerView recyclerView;
     ArrayList<Post> post;
@@ -31,19 +30,16 @@ public class PostModify extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_modify, container, false);
+        View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
+
+        progressBar=view.findViewById(R.id.progressBar1);
 
         post = new ArrayList<Post>();
-        recyclerView=view.findViewById(R.id.postView);
+        recyclerView=view.findViewById(R.id.news_feed);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-//        progressBar=view.findViewById(R.id.progressBar1);
+
 
         viewPost();
-
-
-
-
-
 
         return view;
     }
@@ -61,11 +57,10 @@ public class PostModify extends Fragment {
         }
         res.close();
 
-        adapterMenu = new RecycleViewerPost(post,getContext(),PostModify.this);
+        adapterMenu = new RecycleViewerPost(post,getContext(),NewsFeed.this);
         recyclerView.setAdapter(adapterMenu);
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
     }
-
 
 }

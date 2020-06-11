@@ -90,7 +90,7 @@ public class VolleyballTeam extends Fragment {
 
         String getTamName = valid.emptyField(teamName,getString(R.string.teamName_errorMessage1));
 
-        teamID = generateID("FTM","select team_id from volleyball_Table");
+        teamID = generateID("VTM","select team_id from volleyball_Table");
 
         memberID[0] = valid.memberIdCheck(playerID[0],getString(R.string.memberId_errorMessage1),getString(R.string.memberId_errorMessage2),
                 getString(R.string.memberId_errorMessage6),getString(R.string.memberId_errorMessage4),txtData,
@@ -148,7 +148,7 @@ public class VolleyballTeam extends Fragment {
                 if(res == true) {
                     Toast.makeText(getContext(),"Successfully Added!", Toast.LENGTH_LONG).show();
                     clearDetails(); // Clear all input field and image view
-                    teamId.setText(generateID("FTM","select team_id from volleyball_Table")); // update the team Id after adding a team
+                    teamId.setText(generateID("VTM","select team_id from volleyball_Table")); // update the team Id after adding a team
                 } else {
                     Toast.makeText(getContext(),"Error While Adding", Toast.LENGTH_LONG).show();
                 }

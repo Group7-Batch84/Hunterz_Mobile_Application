@@ -5,6 +5,12 @@ public class Team {
     private String teamId,teamName,captain,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11,player12,player13,
             player14,player15;
 
+    public Team(String teamId, String teamName, String captain) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.captain = captain;
+    }
+
     public Team(String teamId, String teamName, String captain, String player2, String player3, String player4, String player5, String player6,
                 String player7, String player8, String player9, String player10, String player11, String player12) {
 
