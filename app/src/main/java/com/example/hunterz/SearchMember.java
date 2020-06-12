@@ -235,6 +235,8 @@ public class SearchMember extends Fragment {
         return view;
     }
 
+
+
     public String checkNewpassword(CheckBox passwordChk)
     {
         if(passwordChk.isChecked() == true)
@@ -402,6 +404,8 @@ public class SearchMember extends Fragment {
                 valid.getGender(res.getString(7),maleRad,femaleRad);
                 valid.viewSportType(res.getString(6),footballChk,cricketChk,volleyballChk);
                 authenticationID = res.getString(11); // authentication Id
+
+                selectedImage=printImage(res.getBlob(9)); // Convert and Update same Image
             }
             else
             {
@@ -421,6 +425,8 @@ public class SearchMember extends Fragment {
         Bitmap bmImage = BitmapFactory.decodeByteArray(image,0,image.length);
         return bmImage;
     }
+
+
 
     Bitmap selectedImage;
     public void onActivityResult(int reqCode, int resultCode, Intent data) // To crop and select the Image

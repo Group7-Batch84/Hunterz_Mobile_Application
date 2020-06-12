@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="15dp">
+
+    <RelativeLayout
+        android:id="@+id/member_viewDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+        <!--Member Name-->
+        <TextView
+            android:id="@+id/payment_idM"
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/rounded_corner_headng"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:text="PAY001"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--Member ID-->
+        <TextView
+            android:id="@+id/pay_monthM"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/payment_idM"
+            android:text="March"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member Email ID-->
+        <TextView
+            android:id="@+id/pay_dateM"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/pay_monthM"
+            android:gravity="center"
+            android:text="12.12.2020"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--Member Phone Number-->
+        <TextView
+            android:id="@+id/pay_amountM"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corner_sub_heading"
+            android:textColor="#070202"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/pay_dateM"
+            android:gravity="center"
+            android:text="Rs.1500"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

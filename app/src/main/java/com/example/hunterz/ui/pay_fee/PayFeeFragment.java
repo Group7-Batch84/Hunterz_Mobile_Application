@@ -302,7 +302,7 @@ public class PayFeeFragment extends Fragment {
         {
             if(amount != 0.0)
             {
-                boolean res = dbHandler.insertPayemnt(value[0],value[2],value[3],amount,"admin001"); // Insert Method
+                boolean res = dbHandler.insertPayemnt(value[0],value[2],value[3],amount,memberID.toUpperCase()); // Insert Method
 
                 if(res == true) {
                     Toast.makeText(getContext(),"Successfully Paid!", Toast.LENGTH_LONG).show();

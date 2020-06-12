@@ -52,9 +52,10 @@ public class SignIn extends AppCompatActivity {
 
                     if(cursor.moveToFirst())
                     {
-                        String userRole,authenticationId;
+                        String userRole,authenticationId,status;
                         userRole = cursor.getString(0);
                         authenticationId = cursor.getString(1);
+
 
                         if(userRole.equals("Admin"))
                         {
@@ -62,12 +63,24 @@ public class SignIn extends AppCompatActivity {
                         }
                         else if(userRole.equals("Member"))
                         {
-                            Cursor res = dbHandle.getMember("SELECT member_id FROM member_Table WHERE authentication_id ='" + authenticationId + "'");
+                            Cursor res = dbHandle.getMember("SELECT member_id,member_status FROM member_Table WHERE authentication_id ='" + authenticationId + "'");
 
                             if(res.moveToFirst())
                             {
-                                MemberID = res.getString(0);
-                                openMemberHome();
+                                status = res.getString(1);
+
+                                if(status.equals("Activate"))
+                                {
+                                    MemberID = res.getString(0);
+                                    openMemberHome();
+                                }
+                                else
+                                {
+                                    Toast.makeText(SignIn.this,"Account Is Blocked!",Toast.LENGTH_LONG).show();
+                                    username.getText().clear();
+                                    password.getText().clear();
+                                    username.setFocusable(true);
+                                }
                             }
 //                            res.close();
                         }

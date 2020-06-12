@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
     <RelativeLayout
@@ -91,39 +91,11 @@
                     android:textStyle="bold"
                     android:layout_marginLeft="20dp"
                     android:layout_height="wrap_content"
-                    android:text="About Us"
+                    android:text="About"
                     android:textSize="20sp"
                     />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/help_function"
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner_sub_heading"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_below="@+id/about_function">
-
-                <ImageView
-                    android:id="@+id/help_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toStartOf="@+id/help_title"
-                    android:background="@drawable/ic_help_28dp"
-                    />
-                <TextView
-                    android:id="@+id/help_title"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="20dp"
-                    android:layout_height="wrap_content"
-                    android:text="Help"
-                    android:textSize="20sp"
-                    />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/logout_function"
@@ -133,7 +105,7 @@
                 android:padding="10dp"
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_corner_sub_heading"
-                android:layout_below="@+id/help_function">
+                android:layout_below="@+id/about_function">
 
                 <ImageView
                     android:id="@+id/logout_logo"

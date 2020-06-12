@@ -89,8 +89,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "payment_month TEXT ,"+
                 "payment_date TEXT ,"+
                 "payment_amount REAL,"+
-                "admin_id TEXT,"+
-                "CONSTRAINT payment_admin_FK FOREIGN KEY ('admin_id') REFERENCES admin_Table('admin_id'))";
+                "member_id TEXT,"+
+                "CONSTRAINT payment_member_FK FOREIGN KEY ('member_id') REFERENCES member_Table('member_id'))";
         db.execSQL(PaymentTable);   // Create Payment Table
 
         String PostTable = "CREATE TABLE "+postTable+"("+
@@ -364,7 +364,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Insert Into Payment Table
-    public boolean insertPayemnt(String payment_id, String payment_month, String payment_date,Double payment_amount, String admin_id)
+    public boolean insertPayemnt(String payment_id, String payment_month, String payment_date,Double payment_amount, String member_id)
     {
         SQLiteDatabase dbHandlerPayment = this.getWritableDatabase();
         // Member Table
@@ -373,7 +373,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValuesPayment.put("payment_month",payment_month);
         contentValuesPayment.put("payment_date",payment_date);
         contentValuesPayment.put("payment_amount",payment_amount);
-        contentValuesPayment.put("admin_id",admin_id);
+        contentValuesPayment.put("member_id",member_id);
 
         long resultPayment = dbHandlerPayment.insert(paymentTable,null,contentValuesPayment);
 

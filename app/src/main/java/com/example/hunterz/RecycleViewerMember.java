@@ -276,10 +276,10 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
 
             holder.activateStatusBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     changeStatus("Activate",idStatus);
-                   // holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
-
+                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#3b944b"));
                     Toast.makeText(v.getContext(),"Activate", Toast.LENGTH_LONG).show();
                 }
             });
@@ -287,7 +287,7 @@ public class RecycleViewerMember extends RecyclerView.Adapter<RecycleViewerMembe
                 @Override
                 public void onClick(View v) {
                     changeStatus("Deactivate",idStatus);
-                   // holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#b42959"));
+                    holder.memberStatusLineStatus.setBackgroundColor(Color.parseColor("#b42959"));
                     notifyDataSetChanged();
                     Toast.makeText(v.getContext(),"Deactivate", Toast.LENGTH_LONG).show();
                 }
